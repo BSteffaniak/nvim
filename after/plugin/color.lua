@@ -2,4 +2,9 @@ vim.g.tokyonight_transparent_sidebar = true
 vim.g.tokyonight_transparent = true
 vim.opt.background = "dark"
 
-vim.cmd("colorscheme tokyonight")
+-- vim.cmd("colorscheme tokyonight")
+-- vim.cmd("colorscheme gruvbox")
+-- vim.cmd("colorscheme onedarkpro")
+-- vim.cmd("colorscheme blue-moon")
+-- vim.cmd("colorscheme ayu-vim")
+vim.cmd("colorscheme sonokai")

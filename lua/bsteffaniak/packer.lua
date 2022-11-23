@@ -7,6 +7,11 @@ return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
   use 'folke/tokyonight.nvim'
+  use 'morhetz/gruvbox'
+  use 'olimorris/onedarkpro.nvim'
+  use 'kyazdani42/blue-moon'
+  use 'ayu-theme/ayu-vim'
+  use 'sainnhe/sonokai'
 
   use("neovim/nvim-lspconfig")
   -- Visualize lsp progress
