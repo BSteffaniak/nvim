@@ -47,4 +47,7 @@ return require('packer').startup(function(use)
   use("nvim-telescope/telescope.nvim")
 
   use("rust-lang/rust.vim")
+
+  use { "junegunn/fzf", run = "./install --all" }
+  use { "junegunn/fzf.vim" }
 end)

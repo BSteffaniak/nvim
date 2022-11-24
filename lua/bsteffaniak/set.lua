@@ -19,6 +19,8 @@ vim.o.completeopt = "menuone,noinsert,noselect"
 
 vim.keymap.set("n", "<Leader>o", "o<Esc>", {noremap = true})
 vim.keymap.set("n", "<Leader>O", "O<Esc>", {noremap = true})
+vim.keymap.set("n", "<Leader>e", ":GFiles<Enter>", {noremap = true})
+vim.keymap.set("n", "<Leader><Leader>", ":Files<Enter>", {noremap = true})
 
 local function on_attach(client, buffer)
   -- This callback is called when the LSP is atttached/enabled for this buffer
