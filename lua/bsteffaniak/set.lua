@@ -1,3 +1,5 @@
+vim.keymap.set("n", "<Space>", "<Nop>", { silent = true, remap = false })
+vim.g.mapleader = " "
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
@@ -15,8 +17,8 @@ vim.o.setopt = "hidden"
 -- noselect: Do not auto-select, nvim-cmp plugin will handle this for us.
 vim.o.completeopt = "menuone,noinsert,noselect"
 
--- Avoid showing extra messages when using completion
-vim.opt.shortmess = vim.opt.shortmess + "c"
+vim.keymap.set("n", "<Leader>o", "o<Esc>", {noremap = true})
+vim.keymap.set("n", "<Leader>O", "O<Esc>", {noremap = true})
 
 local function on_attach(client, buffer)
   -- This callback is called when the LSP is atttached/enabled for this buffer
