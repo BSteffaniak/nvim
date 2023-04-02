@@ -133,3 +133,6 @@ cmp.setup({
   },
 })
 
+local elixir = require("elixir")
+
+elixir.setup()

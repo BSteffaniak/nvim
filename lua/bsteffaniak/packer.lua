@@ -60,4 +60,7 @@ return require('packer').startup(function(use)
   }
 
   use("airblade/vim-gitgutter")
+
+  use({ "mhanberg/elixir.nvim", requires = { "nvim-lua/plenary.nvim" }})
+  use("elixir-editors/vim-elixir")
 end)
