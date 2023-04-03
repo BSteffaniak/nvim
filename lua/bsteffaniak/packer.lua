@@ -45,6 +45,7 @@ return require('packer').startup(function(use)
   use("nvim-lua/popup.nvim")
   use("nvim-lua/plenary.nvim")
   use("nvim-telescope/telescope.nvim")
+  use("wincent/ferret")
 
   use("rust-lang/rust.vim")
 
