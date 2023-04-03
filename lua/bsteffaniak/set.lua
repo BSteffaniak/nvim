@@ -141,3 +141,9 @@ elixir.setup({
   -- on_attach is a callback called when the language server attachs to the buffer
   on_attach = on_attach,
 })
+
+require('telescope').setup({
+	defaults = {
+		path_display = {"smart"}
+	}
+})
