@@ -24,6 +24,7 @@ vim.keymap.set("n", "<Leader><Leader>", ":Files<Enter>", {noremap = true})
 vim.keymap.set("n", "<Leader>t", ":NvimTreeToggle<Enter>", {noremap = true})
 vim.keymap.set("n", "<Leader>g", ":NvimTreeFindFile<Enter>", {noremap = true})
 vim.keymap.set("n", "<Leader>c", ":NvimTreeCollapse<Enter>", {noremap = true})
+vim.keymap.set("n", "<Leader>f", ":Rg<Enter>", {noremap = true})
 
 local function on_attach(client, buffer)
   -- This callback is called when the LSP is atttached/enabled for this buffer
