@@ -26,6 +26,12 @@ vim.keymap.set("n", "<Leader>g", ":NvimTreeFindFile<Enter>", {noremap = true})
 vim.keymap.set("n", "<Leader>c", ":NvimTreeCollapse<Enter>", {noremap = true})
 vim.keymap.set("n", "<Leader>f", ":Rg<Enter>", {noremap = true})
 vim.keymap.set("n", "<Leader>b", ":Telescope buffers<Enter>", {noremap = true})
+vim.keymap.set("n", "<Leader>s", ":mksession! ~/session.vim<Enter>", {noremap = true})
+vim.keymap.set("n", "<Leader>S", ":mksession! ~/", {noremap = true})
+vim.keymap.set("n", "<Leader>q", ":mksession! ~/session.vim<Enter>:qa<enter>", {noremap = true})
+vim.keymap.set("n", "<Leader>Q", ":mksession! ~/session.vim<Enter>:qa!<enter>", {noremap = true})
+vim.keymap.set("n", "<Leader>l", ":source ~/session.vim<Enter>", {noremap = true})
+vim.keymap.set("n", "<Leader>L", ":source ~/", {noremap = true})
 
 local function on_attach(client, buffer)
   -- This callback is called when the LSP is atttached/enabled for this buffer
