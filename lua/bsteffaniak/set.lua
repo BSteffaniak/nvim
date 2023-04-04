@@ -17,6 +17,47 @@ vim.o.setopt = "hidden"
 -- noselect: Do not auto-select, nvim-cmp plugin will handle this for us.
 vim.o.completeopt = "menuone,noinsert,noselect"
 
+local util = require 'packer.util'
+
+local function get_session_file()
+  local homeDir = os.getenv("HOME")
+
+  if homeDir == nil or homeDir == "" then
+    homeDir = os.getenv("userprofile")
+  end
+
+  local sessions_directory = util.join_paths(homeDir, ".nvim_sessions")
+
+  if util.is_windows then
+    os.execute("if not exist " .. sessions_directory .. " mkdir " .. sessions_directory)
+  else
+    os.execute("mkdir -p " .. sessions_directory)
+  end
+
+  local fileName = vim.fn.getcwd():gsub(":", "_"):gsub("/", "_"):gsub("\\", "_")
+  local sessionFileName = fileName .. "_session.vim"
+
+  return util.join_paths(sessions_directory, sessionFileName)
+end
+
+function handle_save_session()
+  vim.cmd("mksession! " .. get_session_file())
+end
+
+function handle_load_session()
+  vim.cmd("source " .. get_session_file())
+end
+
+function handle_save_and_quit()
+  handle_save_session()
+  vim.cmd("qa")
+end
+
+function handle_force_save_and_quit()
+  handle_save_session()
+  vim.cmd("qa!")
+end
+
 vim.keymap.set("n", "<Leader>o", "o<Esc>", {noremap = true})
 vim.keymap.set("n", "<Leader>O", "O<Esc>", {noremap = true})
 vim.keymap.set("n", "<Leader>e", ":GFiles<Enter>", {noremap = true})
@@ -26,11 +67,11 @@ vim.keymap.set("n", "<Leader>g", ":NvimTreeFindFile<Enter>", {noremap = true})
 vim.keymap.set("n", "<Leader>c", ":NvimTreeCollapse<Enter>", {noremap = true})
 vim.keymap.set("n", "<Leader>f", ":Rg<Enter>", {noremap = true})
 vim.keymap.set("n", "<Leader>b", ":Telescope buffers<Enter>", {noremap = true})
-vim.keymap.set("n", "<Leader>s", ":mksession! ~/session.vim<Enter>", {noremap = true})
+vim.keymap.set("n", "<Leader>s", handle_save_session, {noremap = true})
 vim.keymap.set("n", "<Leader>S", ":mksession! ~/", {noremap = true})
-vim.keymap.set("n", "<Leader>q", ":mksession! ~/session.vim<Enter>:qa<enter>", {noremap = true})
-vim.keymap.set("n", "<Leader>Q", ":mksession! ~/session.vim<Enter>:qa!<enter>", {noremap = true})
-vim.keymap.set("n", "<Leader>l", ":source ~/session.vim<Enter>", {noremap = true})
+vim.keymap.set("n", "<Leader>q", handle_save_and_quit, {noremap = true})
+vim.keymap.set("n", "<Leader>Q", handle_force_save_and_quit, {noremap = true})
+vim.keymap.set("n", "<Leader>l", handle_load_session, {noremap = true})
 vim.keymap.set("n", "<Leader>L", ":source ~/", {noremap = true})
 
 local function on_attach(client, buffer)
