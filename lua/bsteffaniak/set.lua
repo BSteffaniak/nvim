@@ -19,6 +19,7 @@ vim.o.setopt = "hidden"
 vim.o.completeopt = "menuone,noinsert,noselect"
 
 local util = require 'packer.util'
+local cwd = vim.fn.getcwd()
 
 local function get_session_file()
   local homeDir = os.getenv("HOME")
@@ -35,10 +36,9 @@ local function get_session_file()
     os.execute("mkdir -p " .. sessions_directory)
   end
 
-  local fileName = vim.fn.getcwd():gsub(":", "_"):gsub("/", "_"):gsub("\\", "_")
-  local sessionFileName = fileName .. "_session.vim"
+  local fileName = vim.fn.getcwd():gsub(":", "_"):gsub("/", "_"):gsub("\\", "_") .. "_session.vim"
 
-  return util.join_paths(sessions_directory, sessionFileName)
+  return util.join_paths(sessions_directory, fileName)
 end
 
 function handle_save_session()
