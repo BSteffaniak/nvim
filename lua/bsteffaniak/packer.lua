@@ -112,4 +112,6 @@ return require('packer').startup(function(use)
     tag = "v0.1.8",
     requires = "neovim/nvim-lspconfig",
   }
+
+  use 'f-person/git-blame.nvim'
 end)
