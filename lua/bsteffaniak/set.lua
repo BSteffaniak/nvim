@@ -364,3 +364,5 @@ require "nvim-treesitter.configs".setup {
     persist_queries = false,
   },
 }
+
+require "lualine".setup {}
