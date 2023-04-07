@@ -303,6 +303,18 @@ nvim_lsp.tsserver.setup {
   cmd = { "typescript-language-server", "--stdio" },
 }
 
+nvim_lsp.lua_ls.setup {
+  on_attach = lsp_on_attach,
+  filetypes = { "lua" },
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { "vim" },
+      },
+    },
+  },
+}
+
 local function diag_on_attach(client)
   print('Attached to ' .. client.name)
 end
