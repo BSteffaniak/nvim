@@ -21,6 +21,8 @@ return require('packer').startup(function(use)
       require("fidget").setup()
     end
   })
+  use("jose-elias-alvarez/null-ls.nvim")
+  use("MunifTanjim/prettier.nvim")
 
   -- Autocompletion framework
   use("hrsh7th/nvim-cmp")
@@ -64,4 +66,50 @@ return require('packer').startup(function(use)
 
   use({ "mhanberg/elixir.nvim", requires = { "nvim-lua/plenary.nvim" }})
   use("elixir-editors/vim-elixir")
+
+  use "nvim-treesitter/nvim-treesitter"
+
+  use({
+    "glepnir/lspsaga.nvim",
+    opt = true,
+    branch = "main",
+    event = "LspAttach",
+    config = function()
+        require("lspsaga").setup({
+          lightbulb = {
+            enable = false,
+          },
+          -- finder
+          finder = {
+            keys = {
+              vsplit = "v",
+              split = "x"
+            }
+          },
+          -- peek definition
+          definition = {
+            keys = {
+              edit = "gq"
+            },
+          --  edit = 'gq',
+          --  vsplit = 'gv',
+          --  split = 'gx',
+          --  tabe = 'gt',
+          --  quit = '<Esc>',
+            close = '<Esc>',
+          },
+        })
+    end,
+    requires = {
+        {"nvim-tree/nvim-web-devicons"},
+        --Please make sure you install markdown and markdown_inline parser
+        {"nvim-treesitter/nvim-treesitter"}
+    }
+  })
+
+  use {
+    "creativenull/diagnosticls-configs-nvim",
+    tag = "v0.1.8",
+    requires = "neovim/nvim-lspconfig",
+  }
 end)
