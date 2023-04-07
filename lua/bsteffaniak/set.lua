@@ -21,14 +21,20 @@ vim.o.completeopt = "menuone,noinsert,noselect"
 local util = require 'packer.util'
 local cwd = vim.fn.getcwd()
 
-local function get_session_file()
-  local homeDir = os.getenv("HOME")
+local function get_home_directory()
+  local home_dir = os.getenv("HOME")
 
-  if homeDir == nil or homeDir == "" then
-    homeDir = os.getenv("userprofile")
+  if home_dir == nil or home_dir == "" then
+    home_dir = os.getenv("userprofile")
   end
 
-  local sessions_directory = util.join_paths(homeDir, ".nvim_sessions")
+  return home_dir
+end
+
+local home_dir = get_home_directory()
+
+local function get_session_file()
+  local sessions_directory = util.join_paths(home_dir, ".nvim_sessions")
 
   if util.is_windows then
     os.execute("if not exist " .. sessions_directory .. " mkdir " .. sessions_directory)
@@ -195,3 +201,166 @@ require('telescope').setup({
 		path_display = {"smart"}
 	}
 })
+
+local null_ls = require("null-ls")
+
+local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
+local event = "BufWritePre" -- or "BufWritePost"
+local async = event == "BufWritePost"
+
+null_ls.setup({
+  on_attach = function(client, bufnr)
+    if client.supports_method("textDocument/formatting") then
+      vim.keymap.set("n", "af", function()
+        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+      end, { buffer = bufnr, desc = "[lsp] format" })
+
+      -- format on save
+      -- vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
+      -- vim.api.nvim_create_autocmd(event, {
+      --   buffer = bufnr,
+      --   group = group,
+      --   callback = function()
+      --     vim.lsp.buf.format({ bufnr = bufnr, async = async })
+      --   end,
+      --   desc = "[lsp] format on save",
+      -- })
+    end
+
+    if client.supports_method("textDocument/rangeFormatting") then
+      vim.keymap.set("x", "af", function()
+        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+      end, { buffer = bufnr, desc = "[lsp] format" })
+    end
+  end,
+})
+
+local prettier = require("prettier")
+
+prettier.setup({
+  bin = 'prettierd',
+  filetypes = {
+    "css",
+    "graphql",
+    "html",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "less",
+    "markdown",
+    "scss",
+    "typescript",
+    "typescriptreact",
+    "yaml",
+  },
+  ["null-ls"] = {
+    condition = function()
+      return prettier.config_exists({
+        -- if `false`, skips checking `package.json` for `"prettier"` key
+        check_package_json = true,
+      })
+    end,
+    runtime_condition = function(params)
+      -- return false to skip running prettier
+      return true
+    end,
+    timeout = 5000,
+  }
+})
+
+local status, nvim_lsp = pcall(require, "lspconfig")
+
+if (not status) then return end
+
+local protocol = require('vim.lsp.protocol')
+
+local lsp_on_attach = function(client, bufnr)
+  vim.keymap.set('n', 'g[', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', { noremap = true, silent = true })
+  vim.keymap.set('n', 'g]', '<Cmd>Lspsaga diagnostic_jump_next<CR>', { noremap = true, silent = true })
+  vim.keymap.set('n', 'ga', '<Cmd>Lspsaga code_action<CR>', { noremap = true, silent = true })
+  vim.keymap.set('n', 'K', '<Cmd>Lspsaga hover_doc<CR>', { noremap = true, silent = true })
+  vim.keymap.set('n', 'gh', '<Cmd>Lspsaga lsp_finder<CR>', { noremap = true, silent = true })
+  vim.keymap.set('i', '<C-k>', '<Cmd>Lspsaga signature_help<CR>', { noremap = true, silent = true })
+  vim.keymap.set('n', 'gp', '<Cmd>Lspsaga peek_definition<CR>', { noremap = true, silent = true })
+  vim.keymap.set('n', 'gd', '<Cmd>Lspsaga goto_definition<CR>', { noremap = true, silent = true })
+  vim.keymap.set('n', 'g<F2>', '<Cmd>Lspsaga rename<CR>', { noremap = true, silent = true })
+
+ -- format on save
+  -- if client.server_capabilities.documentFormattingProvider then
+  --   vim.api.nvim_create_autocmd("BufWritePre", {
+  --     group = vim.api.nvim_create_augroup("Format", { clear = true }),
+  --     buffer = bufnr,
+  --     callback = function() vim.lsp.buf.formatting_seq_sync() end
+  --   })
+  -- end
+end
+
+-- TypeScript
+nvim_lsp.tsserver.setup {
+  on_attach = lsp_on_attach,
+  filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+  cmd = { "typescript-language-server", "--stdio" },
+}
+
+local function diag_on_attach(client)
+  print('Attached to ' .. client.name)
+end
+
+local dlsconfig = require 'diagnosticls-configs'
+
+dlsconfig.init {
+  -- Your custom attach function
+  on_attach = diag_on_attach,
+  default_config = true,
+  format = true,
+}
+
+local eslint = require 'diagnosticls-configs.linters.eslint'
+local standard = require 'diagnosticls-configs.linters.standard'
+local prettier = require 'diagnosticls-configs.formatters.prettier'
+local prettier_standard = require 'diagnosticls-configs.formatters.prettier_standard'
+
+dlsconfig.setup {
+  ['javascript'] = {
+    linter = eslint,
+    formatter = prettier,
+  },
+  ['javascriptreact'] = {
+    -- Add multiple linters
+    linter = { eslint, standard },
+    -- Add multiple formatters
+    formatter = { prettier, prettier_standard },
+  },
+}
+
+-- vim.lsp.set_log_level("debug")
+
+-- Java
+nvim_lsp.jdtls.setup {
+  on_attach = lsp_on_attach,
+  filetypes = { "java" },
+  cmd = { util.join_paths(home_dir, '.local', 'bin', 'jdtls') },
+}
+
+-- local jdtls_config = {
+--   cmd = {util.join_paths(vim.fn.stdpath('data'), 'lsp_servers', 'jdtls', 'bin', 'jdtls')},
+--   root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw'}, { upward = true })[1]),
+--   on_attach = lsp_on_attach,
+-- }
+-- require('jdtls').start_or_attach(jdtls_config)
+
+require "nvim-treesitter.configs".setup {
+  ensure_installed = "all",
+  highlight = {
+    enable = true,
+  },
+}
+
+require "nvim-treesitter.configs".setup {
+  playground = {
+    enable = true,
+    disable = {},
+    updatetime = 25,
+    persist_queries = false,
+  },
+}
