@@ -367,3 +367,5 @@ require "nvim-treesitter.configs".setup {
 }
 
 require "lualine".setup {}
+
+-- require "bufferline".setup {}
