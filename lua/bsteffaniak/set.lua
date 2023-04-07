@@ -316,21 +316,21 @@ dlsconfig.init {
   format = true,
 }
 
-local eslint = require 'diagnosticls-configs.linters.eslint'
-local standard = require 'diagnosticls-configs.linters.standard'
-local prettier = require 'diagnosticls-configs.formatters.prettier'
-local prettier_standard = require 'diagnosticls-configs.formatters.prettier_standard'
+local eslint_linter = require 'diagnosticls-configs.linters.eslint'
+local standard_linter = require 'diagnosticls-configs.linters.standard'
+local prettier_formatter = require 'diagnosticls-configs.formatters.prettier'
+local prettier_standard_formatter = require 'diagnosticls-configs.formatters.prettier_standard'
 
 dlsconfig.setup {
   ['javascript'] = {
-    linter = eslint,
-    formatter = prettier,
+    linter = eslint_linter,
+    formatter = prettier_formatter,
   },
   ['javascriptreact'] = {
     -- Add multiple linters
-    linter = { eslint, standard },
+    linter = { eslint_linter, standard_linter },
     -- Add multiple formatters
-    formatter = { prettier, prettier_standard },
+    formatter = { prettier_formatter, prettier_standard_formatter },
   },
 }
 
