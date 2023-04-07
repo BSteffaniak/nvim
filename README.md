@@ -14,4 +14,5 @@ Just use WSL and follow the instructions below:
 1. `nvim ~/.config/nvim/lua/bsteffaniak/packer.lua`
 1. `:luafile %`
 1. `:PackerSync`
+1. ubuntu: `sudo apt-get install openjdk-17-jdk openjdk-17-jre` mac: `brew install openjdk@17`
 1. `curl https://raw.githubusercontent.com/eruizc-dev/jdtls-launcher/master/install.sh | bash`
