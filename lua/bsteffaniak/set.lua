@@ -43,7 +43,7 @@ local function get_session_file()
     os.execute("mkdir -p " .. sessions_directory)
   end
 
-  local fileName = vim.fn.getcwd():gsub(":", "_"):gsub("/", "_"):gsub("\\", "_") .. "_session.vim"
+  local fileName = cwd:gsub(":", "_"):gsub("/", "_"):gsub("\\", "_") .. "_session.vim"
 
   return util.join_paths(sessions_directory, fileName)
 end
