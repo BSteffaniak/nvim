@@ -48,21 +48,21 @@ local function get_session_file()
   return util.join_paths(sessions_directory, fileName)
 end
 
-function handle_save_session()
+function Handle_save_session()
   vim.cmd("mksession! " .. get_session_file())
 end
 
-function handle_load_session()
+function Handle_load_session()
   vim.cmd("source " .. get_session_file())
 end
 
-function handle_save_and_quit()
-  handle_save_session()
+function Handle_save_and_quit()
+  Handle_save_session()
   vim.cmd("qa")
 end
 
-function handle_force_save_and_quit()
-  handle_save_session()
+function Handle_force_save_and_quit()
+  Handle_save_session()
   vim.cmd("qa!")
 end
 
@@ -75,13 +75,14 @@ vim.keymap.set("n", "<Leader>g", ":NvimTreeFindFile<Enter>", {noremap = true})
 vim.keymap.set("n", "<Leader>c", ":NvimTreeCollapse<Enter>", {noremap = true})
 vim.keymap.set("n", "<Leader>f", ":Rg<Enter>", {noremap = true})
 vim.keymap.set("n", "<Leader>b", ":Telescope buffers<Enter>", {noremap = true})
-vim.keymap.set("n", "<Leader>s", handle_save_session, {noremap = true})
+vim.keymap.set("n", "<Leader>s", Handle_save_session, {noremap = true})
 vim.keymap.set("n", "<Leader>S", ":mksession! ~/", {noremap = true})
-vim.keymap.set("n", "<Leader>q", handle_save_and_quit, {noremap = true})
-vim.keymap.set("n", "<Leader>Q", handle_force_save_and_quit, {noremap = true})
-vim.keymap.set("n", "<Leader>l", handle_load_session, {noremap = true})
+vim.keymap.set("n", "<Leader>q", Handle_save_and_quit, {noremap = true})
+vim.keymap.set("n", "<Leader>Q", Handle_force_save_and_quit, {noremap = true})
+vim.keymap.set("n", "<Leader>l", Handle_load_session, {noremap = true})
 vim.keymap.set("n", "<Leader>L", ":source ~/", {noremap = true})
 
+---@diagnostic disable-next-line: unused-local
 local function on_attach(client, buffer)
   -- This callback is called when the LSP is atttached/enabled for this buffer
   -- we could set keymaps related to LSP, etc here.
@@ -205,10 +206,6 @@ require('telescope').setup({
 
 local null_ls = require("null-ls")
 
-local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
-local event = "BufWritePre" -- or "BufWritePost"
-local async = event == "BufWritePost"
-
 null_ls.setup({
   on_attach = function(client, bufnr)
     if client.supports_method("textDocument/formatting") then
@@ -216,7 +213,11 @@ null_ls.setup({
         vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
       end, { buffer = bufnr, desc = "[lsp] format" })
 
-      -- format on save
+      -- local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
+      -- local event = "BufWritePre" -- or "BufWritePost"
+      -- local async = event == "BufWritePost"
+      -- 
+      -- -- format on save
       -- vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
       -- vim.api.nvim_create_autocmd(event, {
       --   buffer = bufnr,
@@ -261,6 +262,7 @@ prettier.setup({
         check_package_json = true,
       })
     end,
+---@diagnostic disable-next-line: unused-local
     runtime_condition = function(params)
       -- return false to skip running prettier
       return true
@@ -273,8 +275,9 @@ local status, nvim_lsp = pcall(require, "lspconfig")
 
 if (not status) then return end
 
-local protocol = require('vim.lsp.protocol')
+-- local protocol = require('vim.lsp.protocol')
 
+---@diagnostic disable-next-line: unused-local
 local lsp_on_attach = function(client, bufnr)
   vim.keymap.set('n', 'g[', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', { noremap = true, silent = true })
   vim.keymap.set('n', 'g]', '<Cmd>Lspsaga diagnostic_jump_next<CR>', { noremap = true, silent = true })
