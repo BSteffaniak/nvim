@@ -19,6 +19,17 @@ vim.o.setopt = "hidden"
 -- noselect: Do not auto-select, nvim-cmp plugin will handle this for us.
 vim.o.completeopt = "menuone,noinsert,noselect"
 
+local function regex_escape(str)
+  return str:gsub("[%(%)%.%%%+%-%*%?%[%^%$%]]", "%%%1")
+end
+
+string.replace = function (str, this, that)
+  local pattern = regex_escape(this)
+  local replacement = that:gsub("%%", "%%%%") -- only % needs to be escaped for 'that'
+
+  return str:gsub(pattern, replacement)
+end
+
 local util = require 'packer.util'
 local cwd = vim.fn.getcwd()
 
