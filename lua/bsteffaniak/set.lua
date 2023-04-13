@@ -118,6 +118,7 @@ vim.keymap.set("n", "<Leader>q", Handle_save_and_quit, {noremap = true})
 vim.keymap.set("n", "<Leader>Q", Handle_force_save_and_quit, {noremap = true})
 vim.keymap.set("n", "<Leader>l", Handle_load_session, {noremap = true})
 vim.keymap.set("n", "<Leader>L", ":source ~/", {noremap = true})
+vim.keymap.set("n", "<Leader>;", "@:", {noremap = true})
 
 ---@diagnostic disable-next-line: unused-local
 local function on_attach(client, buffer)
