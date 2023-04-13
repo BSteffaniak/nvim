@@ -32,6 +32,11 @@ end
 
 local util = require 'packer.util'
 local cwd = vim.fn.getcwd()
+local executable_ext = ".sh"
+
+if util.is_windows then
+  executable_ext = ".bat"
+end
 
 local function get_home_directory()
   local home_dir = os.getenv("HOME")
