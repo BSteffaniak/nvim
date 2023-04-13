@@ -140,4 +140,6 @@ return require('packer').startup(function(use)
   use "rrethy/vim-illuminate"
 
   use "wesQ3/vim-windowswap"
+
+  use "folke/zen-mode.nvim"
 end)
