@@ -425,13 +425,6 @@ nvim_lsp.jdtls.setup {
   cmd = { util.join_paths(home_dir, '.local', 'bin', 'jdtls') },
 }
 
--- local jdtls_config = {
---   cmd = {util.join_paths(vim.fn.stdpath('data'), 'lsp_servers', 'jdtls', 'bin', 'jdtls')},
---   root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw'}, { upward = true })[1]),
---   on_attach = lsp_on_attach,
--- }
--- require('jdtls').start_or_attach(jdtls_config)
-
 require "nvim-treesitter.configs".setup {
   ensure_installed = "all",
   highlight = {
