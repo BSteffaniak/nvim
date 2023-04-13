@@ -229,10 +229,24 @@ cmp.setup({
   },
 })
 
+local telescope = require('telescope')
 
-require('telescope').setup({
+telescope.setup({
 	defaults = {
-		path_display = {"smart"}
+		path_display = {"smart"},
+    vimgrep_arguments = {
+      "rg",
+      "--files",
+      '--color=never',
+      '--no-heading',
+      '--with-filename',
+      '--line-number',
+      '--column',
+      '--smart-case',
+      '--hidden',
+      "--ignore-file",
+      util.join_paths(cwd, ".gitignore"),
+    }
 	}
 })
 
