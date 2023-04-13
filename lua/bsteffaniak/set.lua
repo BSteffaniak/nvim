@@ -383,3 +383,4 @@ require "nvim-treesitter.configs".setup {
 
 require "lualine".setup {}
 
+require "illuminate".configure {}
