@@ -385,35 +385,8 @@ nvim_lsp.lua_ls.setup {
   },
 }
 
-local function diag_on_attach(client)
-  print('Attached to ' .. client.name)
-end
-
-local dlsconfig = require 'diagnosticls-configs'
-
-dlsconfig.init {
-  -- Your custom attach function
-  on_attach = diag_on_attach,
-  default_config = true,
-  format = true,
-}
-
-local eslint_linter = require 'diagnosticls-configs.linters.eslint'
-local standard_linter = require 'diagnosticls-configs.linters.standard'
-local prettier_formatter = require 'diagnosticls-configs.formatters.prettier'
-local prettier_standard_formatter = require 'diagnosticls-configs.formatters.prettier_standard'
-
-dlsconfig.setup {
-  ['javascript'] = {
-    linter = eslint_linter,
-    formatter = prettier_formatter,
-  },
-  ['javascriptreact'] = {
-    -- Add multiple linters
-    linter = { eslint_linter, standard_linter },
-    -- Add multiple formatters
-    formatter = { prettier_formatter, prettier_standard_formatter },
-  },
+nvim_lsp.eslint.setup {
+  on_attach = lsp_on_attach,
 }
 
 -- vim.lsp.set_log_level("debug")
