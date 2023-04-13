@@ -338,6 +338,7 @@ local lsp_on_attach = function(client, bufnr)
   vim.keymap.set('n', 'gp', '<Cmd>Lspsaga peek_definition<CR>', { noremap = true, silent = true })
   vim.keymap.set('n', 'gd', '<Cmd>Lspsaga goto_definition<CR>', { noremap = true, silent = true })
   vim.keymap.set('n', 'g<F2>', '<Cmd>Lspsaga rename<CR>', { noremap = true, silent = true })
+  vim.keymap.set('n', 'gl', '<Cmd>Lspsaga show_line_diagnostics<CR>', { noremap = true, silent = true })
 
  -- format on save
   -- if client.server_capabilities.documentFormattingProvider then
