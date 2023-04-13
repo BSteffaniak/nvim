@@ -242,6 +242,18 @@ require('telescope').setup({
 	}
 })
 
+function get_range()
+  local start_sel_row = vim.api.nvim_eval('getpos("v")[1]')
+  local start_sel_col = vim.api.nvim_eval('getpos("v")[2]')
+  local end_sel_row = vim.api.nvim_eval('getpos(".")[1]')
+  local end_sel_col = vim.api.nvim_eval('getpos(".")[2]')
+
+  return {
+    start = { start_sel_row, start_sel_col },
+    ["end"] = { end_sel_row, end_sel_col },
+  }
+end
+
 local null_ls = require("null-ls")
 
 null_ls.setup({
