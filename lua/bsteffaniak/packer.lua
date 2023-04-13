@@ -138,3 +138,6 @@ return require('packer').startup(function(use)
   }
 
   use "rrethy/vim-illuminate"
+
+  use "wesQ3/vim-windowswap"
+end)
