@@ -73,6 +73,27 @@ function Handle_load_session()
 end
 
 function Handle_save_and_quit()
+  local unsaved = ""
+
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_get_option(buf, 'modified') then
+      if #unsaved > 0 then
+        unsaved = unsaved .. ", "
+      end
+
+      local full_buf_name = vim.api.nvim_buf_get_name(buf)
+      local buf_name = string.replace(full_buf_name, cwd .. util.get_separator(), "")
+
+      unsaved = unsaved .. buf_name
+    end
+  end
+
+  if #unsaved > 0 then
+    print('Unsaved buffers: ' .. unsaved .. '. Save them before you quit!')
+
+    return
+  end
+
   Handle_save_session()
   vim.cmd("qa")
 end
