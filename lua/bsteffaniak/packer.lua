@@ -6,6 +6,9 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
+
+  use 'nathom/filetype.nvim'
+
   use 'folke/tokyonight.nvim'
   use 'morhetz/gruvbox'
   use 'olimorris/onedarkpro.nvim'
