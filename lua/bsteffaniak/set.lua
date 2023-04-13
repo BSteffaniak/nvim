@@ -361,6 +361,11 @@ local lsp_on_attach = function(client, bufnr)
   -- end
 end
 
+nvim_lsp.elixirls.setup {
+  on_attach = lsp_on_attach,
+  cmd = { util.join_paths(home_dir, '.local', 'share', 'nvim', 'lsp_servers', 'elixir', 'elixir-ls', 'language_server' .. executable_ext) }
+}
+
 -- TypeScript
 nvim_lsp.tsserver.setup {
   on_attach = lsp_on_attach,
