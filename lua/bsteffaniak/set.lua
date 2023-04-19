@@ -250,7 +250,7 @@ telescope.setup({
 	}
 })
 
-function get_range()
+local function get_range()
   local start_sel_row = vim.api.nvim_eval('getpos("v")[1]')
   local start_sel_col = vim.api.nvim_eval('getpos("v")[2]')
   local end_sel_row = vim.api.nvim_eval('getpos(".")[1]')
