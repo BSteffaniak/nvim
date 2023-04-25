@@ -257,6 +257,8 @@ telescope.setup({
       '--column',
       '--smart-case',
       '--hidden',
+      '--glob',
+      '!.git',
       "--ignore-file",
       util.join_paths(cwd, ".gitignore"),
     }
