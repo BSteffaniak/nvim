@@ -15,6 +15,11 @@ return require('packer').startup(function(use)
   use 'kyazdani42/blue-moon'
   use 'ayu-theme/ayu-vim'
   use 'sainnhe/sonokai'
+  use 'srcery-colors/srcery-vim'
+  use 'fcpg/vim-fahrenheit'
+  use 'jdsimcoe/hyper.vim'
+  use 'yearofmoo/vim-darkmate'
+  use 'tomasiser/vim-code-dark'
 
   use("neovim/nvim-lspconfig")
   -- Visualize lsp progress
