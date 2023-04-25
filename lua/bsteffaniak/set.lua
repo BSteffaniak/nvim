@@ -120,6 +120,18 @@ vim.keymap.set("n", "<Leader>l", Handle_load_session, {noremap = true})
 vim.keymap.set("n", "<Leader>L", ":source ~/", {noremap = true})
 vim.keymap.set("n", "<Leader>;", "@:", {noremap = true})
 
+require("filetype").setup {
+  overrides = {
+    extensions = {
+      sh = "sh",
+      xml = "xml",
+    },
+    complex = {
+      [".*tmux.conf"] = "tmux",
+    }
+  }
+}
+
 ---@diagnostic disable-next-line: unused-local
 local function on_attach(client, buffer)
   -- This callback is called when the LSP is atttached/enabled for this buffer
