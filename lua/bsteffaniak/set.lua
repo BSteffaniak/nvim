@@ -128,6 +128,7 @@ require("filetype").setup {
     },
     complex = {
       [".*tmux.conf"] = "tmux",
+      [".*.flat"] = "cs",
     }
   }
 }
