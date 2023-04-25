@@ -412,6 +412,10 @@ nvim_lsp.jdtls.setup {
   cmd = { util.join_paths(home_dir, '.local', 'bin', 'jdtls') },
 }
 
+nvim_lsp.bashls.setup {
+  on_attach = lsp_on_attach,
+}
+
 require "nvim-treesitter.configs".setup {
   ensure_installed = "all",
   highlight = {
