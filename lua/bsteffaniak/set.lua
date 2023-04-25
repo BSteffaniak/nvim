@@ -409,7 +409,6 @@ nvim_lsp.eslint.setup {
 nvim_lsp.jdtls.setup {
   on_attach = lsp_on_attach,
   filetypes = { "java" },
-  cmd = { util.join_paths(home_dir, '.local', 'bin', 'jdtls') },
 }
 
 nvim_lsp.bashls.setup {
