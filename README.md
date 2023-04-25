@@ -8,7 +8,7 @@ Just use WSL and follow the instructions below:
 
 --------------------------------
 
-1. `npm i -g typescript-language-server @fsouza/prettierd diagnostic-languageserver vscode-langservers-extracted`
+1. `npm i -g typescript-language-server @fsouza/prettierd diagnostic-languageserver vscode-langservers-extracted bash-language-server`
 1. ubuntu: `sudo apt-get install make cmake unzip gettext g++ ninja-build openjdk-17-jdk openjdk-17-jre bat` mac: `brew install ninja openjdk@17 bat`
 1. `curl https://raw.githubusercontent.com/eruizc-dev/jdtls-launcher/master/install.sh | bash`
 1. `git clone https://github.com/BSteffaniak/nvim.git ~/.config/nvim`
