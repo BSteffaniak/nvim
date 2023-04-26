@@ -6,6 +6,7 @@ vim.opt.shiftwidth = 2
 vim.opt.number = true
 vim.opt.expandtab = true
 vim.opt.termguicolors = true
+vim.o.nofixendofline = true
 
 vim.wo.signcolumn = "yes"
 
