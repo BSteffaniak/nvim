@@ -14,6 +14,11 @@ vim.bo.fileformat = "unix"
 vim.opt.wrap = false
 vim.o.setopt = "hidden"
 
+vim.api.nvim_create_autocmd(
+  { "BufNewFile", "BufRead" },
+  { pattern = "*.flat", command = "set syntax=cs" }
+)
+
 -- Set completeopt to have a better completion experience
 -- :help completeopt
 -- menuone: popup even when there's only one match
