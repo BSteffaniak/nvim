@@ -7,6 +7,7 @@ return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
 
+  use 'tweekmonster/startuptime.vim'
 
   use 'folke/tokyonight.nvim'
   use 'morhetz/gruvbox'
