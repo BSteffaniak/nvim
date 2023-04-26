@@ -9,6 +9,7 @@ vim.opt.termguicolors = true
 vim.o.nofixendofline = true
 
 vim.wo.signcolumn = "yes"
+vim.bo.fileformat = "unix"
 
 vim.opt.wrap = false
 vim.o.setopt = "hidden"
