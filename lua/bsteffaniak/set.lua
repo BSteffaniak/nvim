@@ -18,6 +18,10 @@ vim.api.nvim_create_autocmd(
   { "BufNewFile", "BufRead" },
   { pattern = "*.flat", command = "set syntax=cs" }
 )
+vim.api.nvim_create_autocmd(
+  { "BufWrite" },
+  { command = "GitGutter" }
+)
 
 -- Set completeopt to have a better completion experience
 -- :help completeopt
