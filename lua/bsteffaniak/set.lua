@@ -57,6 +57,17 @@ end
 
 local home_dir = get_home_directory()
 
+local function file_exists(name)
+  local f = io.open(name, "r")
+
+  if f ~= nil then
+    io.close(f)
+    return true
+  else
+    return false
+  end
+end
+
 local function get_session_file()
   local sessions_directory = util.join_paths(home_dir, ".nvim_sessions")
 
@@ -76,7 +87,15 @@ function Handle_save_session()
 end
 
 function Handle_load_session()
-  vim.cmd("source " .. get_session_file())
+  local session_file = get_session_file()
+
+  if file_exists(session_file) ~= true then
+    print('No session exists for ' .. cwd)
+
+    return
+  end
+
+  vim.cmd("source " .. session_file)
 end
 
 function Handle_save_and_quit()
