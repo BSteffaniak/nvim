@@ -451,3 +451,7 @@ require "nvim-treesitter.configs".setup {
 require "lualine".setup {}
 
 require "illuminate".configure {}
+
+nvim_lsp.gopls.setup {
+  on_attach = lsp_on_attach,
+}
