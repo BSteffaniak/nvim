@@ -455,3 +455,7 @@ require "illuminate".configure {}
 nvim_lsp.gopls.setup {
   on_attach = lsp_on_attach,
 }
+
+nvim_lsp.ccls.setup {
+  on_attach = lsp_on_attach,
+}
