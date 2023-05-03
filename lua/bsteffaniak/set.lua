@@ -14,9 +14,19 @@ vim.bo.fileformat = "unix"
 vim.opt.wrap = false
 vim.o.setopt = "hidden"
 
+local wrapping_files = "*.md"
+
 vim.api.nvim_create_autocmd(
   { "BufNewFile", "BufRead" },
   { pattern = "*.flat", command = "set syntax=cs" }
+)
+vim.api.nvim_create_autocmd(
+  { "BufNewFile", "BufRead" },
+  { pattern = wrapping_files, command = "setlocal wrap" }
+)
+vim.api.nvim_create_autocmd(
+  { "BufNewFile", "BufRead" },
+  { pattern = wrapping_files, command = "setlocal linebreak" }
 )
 vim.api.nvim_create_autocmd(
   { "BufWrite" },
