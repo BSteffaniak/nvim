@@ -151,8 +151,8 @@ vim.keymap.set("n", "<Leader>Q", Handle_force_save_and_quit, {noremap = true})
 vim.keymap.set("n", "<Leader>l", Handle_load_session, {noremap = true})
 vim.keymap.set("n", "<Leader>L", ":source ~/", {noremap = true})
 vim.keymap.set("n", "<Leader>;", "@:", {noremap = true})
-vim.keymap.set("n", "<M-ScrollWheelUp>", "<ScrollWheelLeft>", {noremap = true})
-vim.keymap.set("n", "<M-ScrollWheelDown>", "<ScrollWheelRight>", {noremap = true})
+vim.keymap.set({"n", "v", "i"}, "<M-ScrollWheelUp>", "<ScrollWheelLeft>", {noremap = true})
+vim.keymap.set({"n", "v", "i"}, "<M-ScrollWheelDown>", "<ScrollWheelRight>", {noremap = true})
 
 ---@diagnostic disable-next-line: unused-local
 local function on_attach(client, buffer)
