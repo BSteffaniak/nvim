@@ -124,11 +124,13 @@ function Handle_save_and_quit()
     return
   end
 
+  vim.cmd("NvimTreeClose")
   Handle_save_session()
   vim.cmd("qa")
 end
 
 function Handle_force_save_and_quit()
+  vim.cmd("NvimTreeClose")
   Handle_save_session()
   vim.cmd("qa!")
 end
