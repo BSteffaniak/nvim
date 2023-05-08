@@ -167,6 +167,10 @@ vim.keymap.set({"n", "v"}, ";", "l", {noremap = true})
 vim.keymap.set({"n", "v"}, "l", "k", {noremap = true})
 vim.keymap.set({"n", "v"}, "k", "j", {noremap = true})
 vim.keymap.set({"n", "v"}, "j", "h", {noremap = true})
+vim.keymap.set({"n", "v", "i"}, "<c-w>;", "<c-w><right>", {noremap = true})
+vim.keymap.set({"n", "v", "i"}, "<c-w>l", "<c-w><up>", {noremap = true})
+vim.keymap.set({"n", "v", "i"}, "<c-w>k", "<c-w><down>", {noremap = true})
+vim.keymap.set({"n", "v", "i"}, "<c-w>j", "<c-w><left>", {noremap = true})
 
 ---@diagnostic disable-next-line: unused-local
 local function on_attach(client, buffer)
