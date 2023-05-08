@@ -163,6 +163,10 @@ vim.keymap.set("n", "<Leader>L", ":source ~/", {noremap = true})
 vim.keymap.set("n", "<Leader>;", "@:", {noremap = true})
 vim.keymap.set({"n", "v", "i"}, "<M-ScrollWheelUp>", "<ScrollWheelLeft>", {noremap = true})
 vim.keymap.set({"n", "v", "i"}, "<M-ScrollWheelDown>", "<ScrollWheelRight>", {noremap = true})
+vim.keymap.set({"n", "v"}, ";", "l", {noremap = true})
+vim.keymap.set({"n", "v"}, "l", "k", {noremap = true})
+vim.keymap.set({"n", "v"}, "k", "j", {noremap = true})
+vim.keymap.set({"n", "v"}, "j", "h", {noremap = true})
 
 ---@diagnostic disable-next-line: unused-local
 local function on_attach(client, buffer)
