@@ -171,6 +171,7 @@ vim.keymap.set({"n", "v", "i"}, "<c-w>;", "<c-w><right>", {noremap = true})
 vim.keymap.set({"n", "v", "i"}, "<c-w>l", "<c-w><up>", {noremap = true})
 vim.keymap.set({"n", "v", "i"}, "<c-w>k", "<c-w><down>", {noremap = true})
 vim.keymap.set({"n", "v", "i"}, "<c-w>j", "<c-w><left>", {noremap = true})
+vim.keymap.set({"n", "v"}, "<Leader>.u", ":GitGutterUndoHunk<Enter>", {noremap = true})
 vim.keymap.set({"n", "v"}, "<Leader>z", ":ZenMode<Enter>", {noremap = true})
 
 local zenmode = require("zen-mode")
