@@ -171,11 +171,11 @@ vim.keymap.set({"n", "v", "i"}, "<c-w>;", "<c-w><right>", {noremap = true})
 vim.keymap.set({"n", "v", "i"}, "<c-w>l", "<c-w><up>", {noremap = true})
 vim.keymap.set({"n", "v", "i"}, "<c-w>k", "<c-w><down>", {noremap = true})
 vim.keymap.set({"n", "v", "i"}, "<c-w>j", "<c-w><left>", {noremap = true})
-vim.keymap.set({"n", "v", "i"}, "<Leader>z", ":ZenMode<Enter>", {noremap = true})
+vim.keymap.set({"n", "v"}, "<Leader>z", ":ZenMode<Enter>", {noremap = true})
 
 local zenmode = require("zen-mode")
 
-vim.keymap.set({"n", "v", "i"}, "<Leader><Tab>", function()
+vim.keymap.set({"n", "v"}, "<Leader><Tab>", function()
   zenmode.close()
   vim.cmd(vim.api.nvim_replace_termcodes("normal <c-w>w", true, true, true))
   zenmode.open()
