@@ -490,3 +490,7 @@ nvim_lsp.gopls.setup {
 nvim_lsp.ccls.setup {
   on_attach = lsp_on_attach,
 }
+
+nvim_lsp.jsonls.setup {
+  on_attach = lsp_on_attach,
+}
