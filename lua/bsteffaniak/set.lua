@@ -382,10 +382,11 @@ prettier.setup({
   },
   ["null-ls"] = {
     condition = function()
-      return prettier.config_exists({
-        -- if `false`, skips checking `package.json` for `"prettier"` key
-        check_package_json = true,
-      })
+      return true
+      -- return prettier.config_exists({
+      --   -- if `false`, skips checking `package.json` for `"prettier"` key
+      --   check_package_json = true,
+      -- })
     end,
 ---@diagnostic disable-next-line: unused-local
     runtime_condition = function(params)
