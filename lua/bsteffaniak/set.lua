@@ -147,6 +147,10 @@ end
 
 vim.keymap.set({"n", "v", "i"}, "m", "n")
 vim.keymap.set({"n", "v", "i"}, "M", "N")
+vim.keymap.set({"n", "v", "i"}, "h", "<left>", {noremap = true})
+vim.keymap.set({"n", "v", "i"}, "t", "<down>", {noremap = true})
+vim.keymap.set({"n", "v", "i"}, "n", "<up>", {noremap = true})
+vim.keymap.set({"n", "v", "i"}, "s", "<right>", {noremap = true})
 vim.keymap.set("n", "<Leader>o", "o<Esc>", {noremap = true})
 vim.keymap.set("n", "<Leader>O", "O<Esc>", {noremap = true})
 vim.keymap.set("n", "<Leader>e", ":GFiles<Enter>", {noremap = true})
