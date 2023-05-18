@@ -75,7 +75,7 @@ return require('packer').startup(function(use)
   use({ "mhanberg/elixir.nvim", requires = { "nvim-lua/plenary.nvim" }})
   use("elixir-editors/vim-elixir")
 
-  use "nvim-treesitter/nvim-treesitter"
+  use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
 
   use({
     "glepnir/lspsaga.nvim",
