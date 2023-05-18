@@ -453,15 +453,6 @@ nvim_lsp.eslint.setup {
   on_attach = lsp_on_attach,
 }
 
--- vim.lsp.set_log_level("debug")
-
--- Java
-nvim_lsp.jdtls.setup {
-  on_attach = lsp_on_attach,
-  filetypes = { "java" },
-  cmd = { util.join_paths(home_dir, '.local', 'opt', 'jdtls-launcher', 'jdtls', 'bin', 'jdtls') },
-}
-
 nvim_lsp.bashls.setup {
   on_attach = lsp_on_attach,
 }
