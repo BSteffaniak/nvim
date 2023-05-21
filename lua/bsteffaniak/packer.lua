@@ -147,4 +147,8 @@ return require('packer').startup(function(use)
   use "wesQ3/vim-windowswap"
 
   use "folke/zen-mode.nvim"
+  use {
+    'declancm/maximize.nvim',
+    config = function() require('maximize').setup() end
+  }
 end)

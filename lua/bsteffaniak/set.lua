@@ -180,14 +180,13 @@ vim.keymap.set({"n", "v", "i"}, "<c-w>j", "<c-w><left>", {noremap = true})
 vim.keymap.set({"n", "v"}, "<Leader>.u", ":GitGutterUndoHunk<Enter>", {noremap = true})
 vim.keymap.set({"n", "v"}, "<Leader>.]", ":GitGutterNextHunk<Enter>", {noremap = true})
 vim.keymap.set({"n", "v"}, "<Leader>.[", ":GitGutterPrevHunk<Enter>", {noremap = true})
-vim.keymap.set({"n", "v"}, "<Leader>z", ":ZenMode<Enter>", {noremap = true})
 
-local zenmode = require("zen-mode")
+local maximize = require('maximize')
 
 vim.keymap.set({"n", "v"}, "<Leader><Tab>", function()
-  zenmode.close()
+  maximize.restore()
   vim.cmd(vim.api.nvim_replace_termcodes("normal <c-w>w", true, true, true))
-  zenmode.open()
+  maximize.maximize()
 end, {noremap = true})
 
 ---@diagnostic disable-next-line: unused-local
