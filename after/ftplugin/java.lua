@@ -2,12 +2,6 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 
-local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
-local root_dir = require("jdtls.setup").find_root(root_markers)
-local jdtls = require("jdtls")
-local extendedClientCapabilities = jdtls.extendedClientCapabilities
-extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
-
 local util = require 'packer.util'
 
 local function get_home_directory()
@@ -21,6 +15,14 @@ local function get_home_directory()
 end
 
 local home_dir = get_home_directory()
+
+local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
+local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
+local workspace_dir = util.join_paths(home_dir, '.jdtls_nvim', project_name)
+local root_dir = require("jdtls.setup").find_root(root_markers)
+local jdtls = require("jdtls")
+local extendedClientCapabilities = jdtls.extendedClientCapabilities
+extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
 local function get_range()
   local start_sel_row = vim.api.nvim_eval('getpos("v")[1]')
@@ -122,6 +124,20 @@ local jdtls_config = {
         template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}",
       },
       useBlocks = true,
+    },
+  },
+
+  flags = {
+    allow_incremental_sync = true,
+  },
+  -- Language server `initializationOptions`
+  -- You need to extend the `bundles` with paths to jar files
+  -- if you want to use additional eclipse.jdt.ls plugins.
+  --
+  -- See https://github.com/mfussenegger/nvim-jdtls#java-debug-installation
+  init_options = {
+    bundles = {
+      vim.fn.glob(home_dir .. "/.local/share/vscode-java-decompiler/server/*.jar"),
     },
   },
 }

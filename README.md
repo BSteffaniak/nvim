@@ -12,6 +12,7 @@ Just use WSL and follow the instructions below:
 1. ubuntu: `sudo apt-get install make cmake unzip gettext g++ ninja-build openjdk-17-jdk openjdk-17-jre bat ccls gopls` mac: `brew install ninja openjdk@17 bat gopls ccls`
 1. `curl https://raw.githubusercontent.com/eruizc-dev/jdtls-launcher/master/install.sh | bash`
 1. `git clone https://github.com/BSteffaniak/nvim.git ~/.config/nvim`
+1. `git clone git@github.com:dgileadi/vscode-java-decompiler.git ~/.local/share/vscode-java-decompiler`
 1. `~/.config/nvim/lls.sh`
 1. `git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim`
 1. Build neovim from sources:
