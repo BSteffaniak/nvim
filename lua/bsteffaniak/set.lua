@@ -106,41 +106,14 @@ telescope.setup({
 	}
 })
 
+local lsp = require("bsteffaniak/lsp")
+local lsp_on_attach = lsp.lsp_on_attach
+
 local null_ls = require("null-ls")
 
-null_ls.setup({
-  on_attach = function(client, bufnr)
-    if client.supports_method("textDocument/formatting") then
-      vim.keymap.set("n", "<Leader>a", function()
-        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
-      end, { buffer = bufnr, desc = "[lsp] format" })
-
-      -- local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
-      -- local event = "BufWritePre" -- or "BufWritePost"
-      -- local async = event == "BufWritePost"
-      -- 
-      -- -- format on save
-      -- vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
-      -- vim.api.nvim_create_autocmd(event, {
-      --   buffer = bufnr,
-      --   group = group,
-      --   callback = function()
-      --     vim.lsp.buf.format({ bufnr = bufnr, async = async })
-      --   end,
-      --   desc = "[lsp] format on save",
-      -- })
-    end
-
-    if client.supports_method("textDocument/rangeFormatting") then
-      vim.keymap.set("x", "<Leader>a", function()
-        vim.lsp.buf.format({
-          bufnr = vim.api.nvim_get_current_buf(),
-          range = butil.get_range(),
-        })
-      end, { buffer = bufnr, desc = "[lsp] format" })
-    end
-  end,
-})
+null_ls.setup {
+  on_attach = lsp.init_formatting,
+}
 
 local prettier = require("prettier")
 
@@ -180,9 +153,6 @@ prettier.setup({
 local status, nvim_lsp = pcall(require, "lspconfig")
 
 if (not status) then return end
-
-local lsp = require("bsteffaniak/lsp")
-local lsp_on_attach = lsp.lsp_on_attach
 
 nvim_lsp.elixirls.setup {
   on_attach = lsp_on_attach,
