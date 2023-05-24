@@ -5,7 +5,8 @@ vim.opt_local.tabstop = 4
 vim.opt_local.softtabstop = 4
 vim.opt_local.shiftwidth = 4
 
-local util = require 'packer.util'
+local util = require 'packer/util'
+local lsp = require 'bsteffaniak/lsp'
 
 local function get_home_directory()
   local home_dir = os.getenv("HOME")
@@ -40,20 +41,7 @@ local function get_range()
 end
 
 local function on_attach(client, bufnr)
-  if client.supports_method("textDocument/formatting") then
-    vim.keymap.set("n", "<Leader>a", function()
-      vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
-    end, { buffer = bufnr, desc = "[lsp] format" })
-  end
-
-  if client.supports_method("textDocument/rangeFormatting") then
-    vim.keymap.set("x", "<Leader>a", function()
-      vim.lsp.buf.format({
-        bufnr = vim.api.nvim_get_current_buf(),
-        range = get_range(),
-      })
-    end, { buffer = bufnr, desc = "[lsp] format" })
-  end
+  lsp.init_formatting(client, bufnr)
 
   vim.keymap.set('n', 'g[', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', { noremap = true, silent = true })
   vim.keymap.set('n', 'g]', '<Cmd>Lspsaga diagnostic_jump_next<CR>', { noremap = true, silent = true })
