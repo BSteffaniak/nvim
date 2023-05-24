@@ -62,4 +62,21 @@ function M.on_attach(client, buffer)
   vim.keymap.set("n", "g]", vim.diagnostic.goto_next, keymap_opts)
 end
 
+function M.init_formatting(client, bufnr)
+  if client.supports_method("textDocument/formatting") then
+    vim.keymap.set("n", "<Leader>a", function()
+      vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+    end, { buffer = bufnr, desc = "[lsp] format" })
+  end
+
+  if client.supports_method("textDocument/rangeFormatting") then
+    vim.keymap.set("x", "<Leader>a", function()
+      vim.lsp.buf.format({
+        bufnr = vim.api.nvim_get_current_buf(),
+        range = get_range(),
+      })
+    end, { buffer = bufnr, desc = "[lsp] format" })
+  end
+end
+
 return M
