@@ -106,6 +106,8 @@ telescope.setup({
 	}
 })
 
+require("nvim-lsp-installer").setup {}
+
 local lsp = require("bsteffaniak/lsp")
 local lsp_on_attach = lsp.lsp_on_attach
 
