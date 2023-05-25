@@ -39,6 +39,8 @@ vim.keymap.set({"n", "v", "i"}, "<c-w>j", "<c-w><left>", {noremap = true})
 vim.keymap.set({"n", "v"}, "<Leader>.u", ":GitGutterUndoHunk<Enter>", {noremap = true})
 vim.keymap.set({"n", "v"}, "<Leader>.]", ":GitGutterNextHunk<Enter>", {noremap = true})
 vim.keymap.set({"n", "v"}, "<Leader>.[", ":GitGutterPrevHunk<Enter>", {noremap = true})
+vim.keymap.set("n", "H", "<c-o>", {noremap = true})
+vim.keymap.set("n", "S", "<c-i>", {noremap = true})
 
 local maximize = require('maximize')
 
