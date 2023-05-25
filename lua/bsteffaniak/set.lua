@@ -150,19 +150,6 @@ prettier.setup({
   }
 })
 
-local status, nvim_lsp = pcall(require, "lspconfig")
-
-if (not status) then return end
-
-nvim_lsp.elixirls.setup {
-  on_attach = lsp_on_attach,
-  cmd = { util.join_paths(butil.home_dir, '.local', 'share', 'nvim', 'lsp_servers', 'elixir', 'elixir-ls', 'language_server' .. butil.executable_ext) }
-}
-
-nvim_lsp.bashls.setup {
-  on_attach = lsp_on_attach,
-}
-
 require "nvim-treesitter.configs".setup {
   ensure_installed = "all",
   highlight = {
@@ -180,10 +167,33 @@ require "lualine".setup {}
 
 require "illuminate".configure {}
 
-nvim_lsp.ccls.setup {
+local status, nvim_lsp = pcall(require, "lspconfig")
+
+if (not status) then return end
+
+nvim_lsp.ccls.setup { on_attach = lsp_on_attach }
+nvim_lsp.jsonls.setup { on_attach = lsp_on_attach }
+nvim_lsp.gopls.setup { on_attach = lsp_on_attach }
+nvim_lsp.bashls.setup { on_attach = lsp_on_attach }
+nvim_lsp.elixirls.setup {
+  on_attach = lsp_on_attach,
+  cmd = { util.join_paths(butil.home_dir, '.local', 'share', 'nvim', 'lsp_servers', 'elixir', 'elixir-ls', 'language_server' .. butil.executable_ext) }
+}
+nvim_lsp.eslint.setup {
   on_attach = lsp_on_attach,
 }
-
-nvim_lsp.jsonls.setup {
+nvim_lsp.lua_ls.setup {
   on_attach = lsp_on_attach,
+  filetypes = { "lua" },
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { "vim" },
+      },
+    },
+  },
+}
+nvim_lsp.tsserver.setup {
+  on_attach = lsp_on_attach,
+  cmd = { "typescript-language-server", "--stdio" },
 }
