@@ -2,8 +2,9 @@ local M = {}
 
 -- local protocol = require('vim.lsp.protocol')
 
----@diagnostic disable-next-line: unused-local
 function M.lsp_on_attach(client, bufnr)
+  M.init_formatting(client, bufnr)
+
   vim.keymap.set('n', 'g[', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', { noremap = true, silent = true })
   vim.keymap.set('n', 'g]', '<Cmd>Lspsaga diagnostic_jump_next<CR>', { noremap = true, silent = true })
   vim.keymap.set('n', 'ga', '<Cmd>Lspsaga code_action<CR>', { noremap = true, silent = true })
