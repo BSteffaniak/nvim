@@ -2,6 +2,9 @@ local M = {}
 
 -- local protocol = require('vim.lsp.protocol')
 
+local butil = require 'bsteffaniak.util'
+local get_range = butil.get_range
+
 function M.lsp_on_attach(client, bufnr)
   M.init_formatting(client, bufnr)
 
