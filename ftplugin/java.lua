@@ -28,35 +28,8 @@ local jdtls = require("jdtls")
 local extendedClientCapabilities = jdtls.extendedClientCapabilities
 extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
-local function get_range()
-  local start_sel_row = vim.api.nvim_eval('getpos("v")[1]')
-  local start_sel_col = vim.api.nvim_eval('getpos("v")[2]')
-  local end_sel_row = vim.api.nvim_eval('getpos(".")[1]')
-  local end_sel_col = vim.api.nvim_eval('getpos(".")[2]')
-
-  return {
-    start = { start_sel_row, start_sel_col },
-    ["end"] = { end_sel_row, end_sel_col },
-  }
-end
-
-local function on_attach(client, bufnr)
-  lsp.init_formatting(client, bufnr)
-
-  vim.keymap.set('n', 'g[', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', { noremap = true, silent = true })
-  vim.keymap.set('n', 'g]', '<Cmd>Lspsaga diagnostic_jump_next<CR>', { noremap = true, silent = true })
-  vim.keymap.set('n', 'ga', '<Cmd>Lspsaga code_action<CR>', { noremap = true, silent = true })
-  vim.keymap.set('n', 'K', '<Cmd>Lspsaga hover_doc<CR>', { noremap = true, silent = true })
-  vim.keymap.set('n', 'gh', '<Cmd>Lspsaga lsp_finder<CR>', { noremap = true, silent = true })
-  vim.keymap.set('i', '<C-k>', '<Cmd>Lspsaga signature_help<CR>', { noremap = true, silent = true })
-  vim.keymap.set('n', 'gp', '<Cmd>Lspsaga peek_definition<CR>', { noremap = true, silent = true })
-  vim.keymap.set('n', 'gd', '<Cmd>Lspsaga goto_definition<CR>', { noremap = true, silent = true })
-  vim.keymap.set('n', 'g<F2>', '<Cmd>Lspsaga rename<CR>', { noremap = true, silent = true })
-  vim.keymap.set('n', 'gl', '<Cmd>Lspsaga show_line_diagnostics<CR>', { noremap = true, silent = true })
-end
-
 local jdtls_config = {
-  on_attach = on_attach,
+  on_attach = lsp.lsp_on_attach,
   cmd = { util.join_paths(home_dir, '.local', 'opt', 'jdtls-launcher', 'jdtls', 'bin', 'jdtls'), '-data', workspace_dir },
   root_dir = root_dir,
   -- Here you can configure eclipse.jdt.ls specific settings
