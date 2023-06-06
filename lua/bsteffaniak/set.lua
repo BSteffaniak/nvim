@@ -177,6 +177,7 @@ nvim_lsp.ccls.setup { on_attach = lsp_on_attach }
 nvim_lsp.jsonls.setup { on_attach = lsp_on_attach }
 nvim_lsp.gopls.setup { on_attach = lsp_on_attach }
 nvim_lsp.bashls.setup { on_attach = lsp_on_attach }
+nvim_lsp.svelte.setup { on_attach = lsp_on_attach }
 nvim_lsp.elixirls.setup {
   on_attach = lsp_on_attach,
   cmd = { util.join_paths(butil.home_dir, '.local', 'share', 'nvim', 'lsp_servers', 'elixir', 'elixir-ls', 'language_server' .. butil.executable_ext) }
