@@ -21,7 +21,7 @@ vim.api.nvim_create_autocmd(
 )
 vim.api.nvim_create_autocmd(
   { "BufNewFile", "BufRead" },
-  { pattern = "*.flat", command = "set syntax=cs" }
+  { pattern = "*.flat", command = "set filetype=cs" }
 )
 vim.api.nvim_create_autocmd(
   { "BufNewFile", "BufRead" },
