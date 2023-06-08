@@ -46,9 +46,12 @@ vim.keymap.set("v", "<Enter>", "\"*y", {noremap = true})
 
 local maximize = require('maximize')
 
-vim.keymap.set({"n", "v"}, "<Leader><Tab>", function()
+vim.keymap.set({"n", "v"}, "<Leader><Tab>", function ()
   maximize.restore()
   vim.cmd(vim.api.nvim_replace_termcodes("normal <c-w>w", true, true, true))
   maximize.maximize()
 end, {noremap = true})
 
+vim.keymap.set({"n", "v"}, "<Leader>l", function ()
+  vim.opt.relativenumber = not vim.opt.relativenumber:get()
+end, {noremap = true})
