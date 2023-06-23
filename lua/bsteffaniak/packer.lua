@@ -1,33 +1,53 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
 -- Only required if you have packer configured as `opt`
-vim.cmd [[packadd packer.nvim]]
+vim.cmd([[packadd packer.nvim]])
 
-return require('packer').startup(function(use)
+return require("packer").startup(function(use)
   -- Packer can manage itself
-  use 'wbthomason/packer.nvim'
+  use("wbthomason/packer.nvim")
 
-  use 'tweekmonster/startuptime.vim'
+  use("tweekmonster/startuptime.vim")
 
-  use 'folke/tokyonight.nvim'
-  use 'morhetz/gruvbox'
-  use 'olimorris/onedarkpro.nvim'
-  use 'kyazdani42/blue-moon'
-  use 'ayu-theme/ayu-vim'
-  use 'sainnhe/sonokai'
-  use 'srcery-colors/srcery-vim'
-  use 'fcpg/vim-fahrenheit'
-  use 'jdsimcoe/hyper.vim'
-  use 'yearofmoo/vim-darkmate'
-  use 'tomasiser/vim-code-dark'
+  use({
+    "williamboman/mason.nvim",
+    run = ":MasonUpdate", -- :MasonUpdate updates registry contents
+  })
 
+  use("williamboman/mason-lspconfig.nvim")
   use("neovim/nvim-lspconfig")
+
+  use("lewis6991/gitsigns.nvim")
+
+  use("folke/tokyonight.nvim")
+  use("morhetz/gruvbox")
+  use("olimorris/onedarkpro.nvim")
+  use("kyazdani42/blue-moon")
+  use("ayu-theme/ayu-vim")
+  use("sainnhe/sonokai")
+  use("srcery-colors/srcery-vim")
+  use("fcpg/vim-fahrenheit")
+  use("jdsimcoe/hyper.vim")
+  use("yearofmoo/vim-darkmate")
+  use("tomasiser/vim-code-dark")
+
+  use({
+    "folke/trouble.nvim",
+    wants = "nvim-web-devicons",
+    cmd = { "TroubleToggle", "Trouble" },
+    config = function()
+      require("trouble").setup({
+        use_diagnostic_signs = true,
+      })
+    end,
+  })
+
   -- Visualize lsp progress
   use({
     "j-hui/fidget.nvim",
     config = function()
       require("fidget").setup()
-    end
+    end,
   })
   use("jose-elias-alvarez/null-ls.nvim")
   use("MunifTanjim/prettier.nvim")
@@ -47,7 +67,7 @@ return require('packer').startup(function(use)
   })
   -- See hrsh7th other plugins for more great completion sources!
   -- Snippet engine
-  use('hrsh7th/vim-vsnip')
+  use("hrsh7th/vim-vsnip")
   -- Adds extra functionality over rust analyzer
   use("simrat39/rust-tools.nvim")
 
@@ -59,72 +79,33 @@ return require('packer').startup(function(use)
 
   use("rust-lang/rust.vim")
 
-  use { "junegunn/fzf", run = "./install --all" }
-  use { "junegunn/fzf.vim" }
+  use({ "junegunn/fzf", run = "./install --all" })
+  use({ "junegunn/fzf.vim" })
 
-  use {
-    'nvim-tree/nvim-tree.lua',
+  use({
+    "nvim-tree/nvim-tree.lua",
     requires = {
-      'nvim-tree/nvim-web-devicons', -- optional, for file icons
+      "nvim-tree/nvim-web-devicons", -- optional, for file icons
     },
-    tag = 'nightly' -- optional, updated every week. (see issue #1193)
-  }
+    tag = "nightly",              -- optional, updated every week. (see issue #1193)
+  })
 
   use("airblade/vim-gitgutter")
 
-  use({ "mhanberg/elixir.nvim", requires = { "nvim-lua/plenary.nvim" }})
+  use({ "mhanberg/elixir.nvim", requires = { "nvim-lua/plenary.nvim" } })
   use("elixir-editors/vim-elixir")
 
-  use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
+  use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
 
   use({
-    "glepnir/lspsaga.nvim",
-    opt = true,
-    branch = "main",
-    event = "LspAttach",
-    config = function()
-        require("lspsaga").setup({
-          lightbulb = {
-            enable = false,
-          },
-          -- finder
-          finder = {
-            keys = {
-              vsplit = "v",
-              split = "x"
-            }
-          },
-          -- peek definition
-          definition = {
-            keys = {
-              edit = "gq"
-            },
-          --  edit = 'gq',
-          --  vsplit = 'gv',
-          --  split = 'gx',
-          --  tabe = 'gt',
-          --  quit = '<Esc>',
-            close = '<Esc>',
-          },
-        })
-    end,
-    requires = {
-        {"nvim-tree/nvim-web-devicons"},
-        --Please make sure you install markdown and markdown_inline parser
-        {"nvim-treesitter/nvim-treesitter"}
-    }
-  })
-
-  use {
     "creativenull/diagnosticls-configs-nvim",
     tag = "v0.1.8",
     requires = "neovim/nvim-lspconfig",
-  }
+  })
 
-  use 'f-person/git-blame.nvim'
+  use("f-person/git-blame.nvim")
 
-  use 'williamboman/nvim-lsp-installer'
-  use 'mfussenegger/nvim-jdtls'
+  use("mfussenegger/nvim-jdtls")
 
   use({
     "iamcco/markdown-preview.nvim",
@@ -137,18 +118,31 @@ return require('packer').startup(function(use)
     ft = { "markdown" },
   })
 
-  use {
-    'nvim-lualine/lualine.nvim',
-    requires = { 'nvim-tree/nvim-web-devicons', opt = true },
-  }
+  use({
+    "nvim-lualine/lualine.nvim",
+    requires = { "nvim-tree/nvim-web-devicons", opt = true },
+  })
 
-  use "rrethy/vim-illuminate"
+  use("rrethy/vim-illuminate")
 
-  use "wesQ3/vim-windowswap"
+  use("wesQ3/vim-windowswap")
 
-  use "folke/zen-mode.nvim"
-  use {
-    'declancm/maximize.nvim',
-    config = function() require('maximize').setup() end
-  }
+  use("folke/zen-mode.nvim")
+  use({
+    "declancm/maximize.nvim",
+    config = function()
+      require("maximize").setup()
+    end,
+  })
+
+  use({
+    "rmagatti/goto-preview",
+    config = function()
+      require("goto-preview").setup({})
+    end,
+  })
+
+  use({
+    "ray-x/lsp_signature.nvim",
+  })
 end)
