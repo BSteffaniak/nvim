@@ -1,7 +1,7 @@
 if Rust_initialized then return end
 Rust_initialized = true
 
-local lsp = require("bsteffaniak/lsp")
+local lsp = require("bsteffaniak.lsp")
 local on_attach = lsp.on_attach
 
 -- Configure LSP through rust-tools.nvim plugin.

@@ -2,9 +2,9 @@ vim.opt_local.tabstop = 4
 vim.opt_local.softtabstop = 4
 vim.opt_local.shiftwidth = 4
 
-local util = require 'packer/util'
-local butil = require 'bsteffaniak/util'
-local lsp = require 'bsteffaniak/lsp'
+local util = require("packer/util")
+local butil = require("bsteffaniak.util")
+local lsp = require("bsteffaniak.lsp")
 
 local function get_home_directory()
   local home_dir = os.getenv("HOME")
@@ -20,7 +20,7 @@ local home_dir = get_home_directory()
 
 local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
 local project_name = butil.sanitize_location(butil.cwd)
-local workspace_dir = util.join_paths(home_dir, '.jdtls_nvim', project_name)
+local workspace_dir = util.join_paths(home_dir, ".jdtls_nvim", project_name)
 local root_dir = require("jdtls.setup").find_root(root_markers)
 local jdtls = require("jdtls")
 local extendedClientCapabilities = jdtls.extendedClientCapabilities
@@ -28,7 +28,11 @@ extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
 local jdtls_config = {
   on_attach = lsp.lsp_on_attach,
-  cmd = { util.join_paths(home_dir, '.local', 'opt', 'jdtls-launcher', 'jdtls', 'bin', 'jdtls'), '-data', workspace_dir },
+  cmd = {
+    util.join_paths(home_dir, ".local", "opt", "jdtls-launcher", "jdtls", "bin", "jdtls"),
+    "-data",
+    workspace_dir,
+  },
   root_dir = root_dir,
   -- Here you can configure eclipse.jdt.ls specific settings
   -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
@@ -56,7 +60,7 @@ local jdtls_config = {
       format = {
         enabled = true,
         settings = {
-          url = vim.fn.stdpath "config" .. "/lang-servers/eclipse-java-google-style.xml",
+          url = vim.fn.stdpath("config") .. "/lang-servers/eclipse-java-google-style.xml",
           profile = "GoogleStyle",
         },
       },

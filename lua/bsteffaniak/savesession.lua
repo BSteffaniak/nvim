@@ -1,5 +1,5 @@
 local util = require "packer/util"
-local butil = require "bsteffaniak/util"
+local butil = require "bsteffaniak.util"
 
 local function get_session_file()
   local sessions_directory = util.join_paths(butil.home_dir, ".nvim_sessions")
