@@ -29,7 +29,16 @@ extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 local jdtls_config = {
   on_attach = lsp.lsp_on_attach,
   cmd = {
-    util.join_paths(home_dir, ".local", "opt", "jdtls-launcher", "jdtls", "bin", "jdtls"),
+    util.join_paths(
+      home_dir,
+      ".local",
+      "eclipse.jdt.ls",
+      "org.eclipse.jdt.ls.product",
+      "target",
+      "repository",
+      "bin",
+      "jdtls"
+    ),
     "-data",
     workspace_dir,
   },
