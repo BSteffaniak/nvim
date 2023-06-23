@@ -1,6 +1,3 @@
-if Java_initialized then return end
-Java_initialized = true
-
 vim.opt_local.tabstop = 4
 vim.opt_local.softtabstop = 4
 vim.opt_local.shiftwidth = 4
