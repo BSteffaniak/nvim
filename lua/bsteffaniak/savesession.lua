@@ -10,7 +10,7 @@ local function get_session_file()
     os.execute("mkdir -p " .. sessions_directory)
   end
 
-  local fileName = butil.cwd:gsub(":", "_"):gsub("/", "_"):gsub("\\", "_") .. "_session.vim"
+  local fileName = butil.sanitize_location(butil.cwd) .. "_session.vim"
 
   return util.join_paths(sessions_directory, fileName)
 end

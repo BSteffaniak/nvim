@@ -12,6 +12,10 @@ function M.get_range()
   }
 end
 
+function M.sanitize_location(location)
+  return location:gsub(":", "_"):gsub("/", "_"):gsub("\\", "_")
+end
+
 function M.file_exists(name)
   local f = io.open(name, "r")
 
