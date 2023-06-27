@@ -9,7 +9,7 @@ Just use WSL and follow the instructions below:
 --------------------------------
 
 1. `npm i -g typescript-language-server prettier @fsouza/prettierd diagnostic-languageserver vscode-langservers-extracted bash-language-server write-good @johnnymorganz/stylua-bin`
-1. ubuntu: `sudo apt-get install make cmake unzip gettext g++ ninja-build openjdk-17-jdk openjdk-17-jre bat ccls gopls python3-pylsp shellcheck` mac: `brew install ninja openjdk@17 bat gopls ccls python3-pylsp shellcheck`
+1. ubuntu: `sudo apt-get install make cmake unzip gettext g++ ninja-build openjdk-17-jdk openjdk-17-jre bat ccls gopls python3-pylsp shellcheck ripgrep` mac: `brew install ninja openjdk@17 bat gopls ccls python3-pylsp shellcheck ripgrep`
 1. `curl -sS https://webi.sh/shfmt | sh`
 1. Install jdtls:
     ```
