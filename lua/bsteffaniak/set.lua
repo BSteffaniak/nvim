@@ -10,7 +10,6 @@ vim.wo.signcolumn = "yes"
 vim.bo.fileformat = "unix"
 
 vim.opt.wrap = false
-vim.o.setopt = "hidden"
 vim.opt.relativenumber = true
 
 local wrapping_files = "*.md"
