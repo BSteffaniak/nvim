@@ -4,7 +4,7 @@ vim.opt.shiftwidth = 2
 vim.opt.number = true
 vim.opt.expandtab = true
 vim.opt.termguicolors = true
-vim.o.nofixendofline = true
+vim.opt.fixendofline = false
 
 vim.wo.signcolumn = "yes"
 vim.bo.fileformat = "unix"
