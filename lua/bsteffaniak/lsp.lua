@@ -44,7 +44,12 @@ end
 function M.init_formatting(client, bufnr)
   if client.supports_method("textDocument/formatting") then
     vim.keymap.set("n", "<Leader>a", function()
-      vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+      vim.lsp.buf.format({
+        bufnr = vim.api.nvim_get_current_buf(),
+        filter = function(c)
+          return c.name ~= "tsserver"
+        end,
+      })
     end, { buffer = bufnr, desc = "[lsp] format" })
   end
 
@@ -53,6 +58,9 @@ function M.init_formatting(client, bufnr)
       vim.lsp.buf.format({
         bufnr = vim.api.nvim_get_current_buf(),
         range = get_range(),
+        filter = function(c)
+          return c.name ~= "tsserver"
+        end,
       })
     end, { buffer = bufnr, desc = "[lsp] format" })
   end
