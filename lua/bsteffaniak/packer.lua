@@ -48,6 +48,7 @@ return require("packer").startup(function(use)
     config = function()
       require("fidget").setup()
     end,
+    tag = "legacy",
   })
   use("jose-elias-alvarez/null-ls.nvim")
 
