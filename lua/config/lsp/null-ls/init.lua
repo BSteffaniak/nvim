@@ -6,7 +6,7 @@ local b = nls.builtins
 
 local with_diagnostics_code = function(builtin)
   return builtin.with({
-    diagnostics_format = "#{m} [#{c}]",
+    diagnostics_format = "[SC#{c}] #{m}",
   })
 end
 
