@@ -9,11 +9,7 @@ return require("packer").startup(function(use)
 
   use("tweekmonster/startuptime.vim")
 
-  use({
-    "williamboman/mason.nvim",
-    run = ":MasonUpdate", -- :MasonUpdate updates registry contents
-  })
-
+  use("williamboman/mason.nvim")
   use("williamboman/mason-lspconfig.nvim")
   use("neovim/nvim-lspconfig")
 
