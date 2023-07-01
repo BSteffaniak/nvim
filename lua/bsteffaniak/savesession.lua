@@ -1,5 +1,5 @@
-local util = require "packer/util"
-local butil = require "bsteffaniak.util"
+local util = require("packer/util")
+local butil = require("bsteffaniak.util")
 
 local function get_session_file()
   local sessions_directory = util.join_paths(butil.home_dir, ".nvim_sessions")
@@ -23,7 +23,7 @@ function Handle_load_session()
   local session_file = get_session_file()
 
   if butil.file_exists(session_file) ~= true then
-    print('No session exists for ' .. butil.cwd)
+    print("No session exists for " .. butil.cwd)
 
     return
   end
@@ -35,7 +35,7 @@ function Handle_save_and_quit()
   local unsaved = ""
 
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.api.nvim_buf_get_option(buf, 'modified') then
+    if vim.api.nvim_buf_get_option(buf, "modified") then
       if #unsaved > 0 then
         unsaved = unsaved .. ", "
       end
@@ -48,7 +48,7 @@ function Handle_save_and_quit()
   end
 
   if #unsaved > 0 then
-    print('Unsaved buffers: ' .. unsaved .. '. Save them before you quit!')
+    print("Unsaved buffers: " .. unsaved .. ". Save them before you quit!")
 
     return
   end

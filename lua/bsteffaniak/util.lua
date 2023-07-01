@@ -27,7 +27,7 @@ function M.file_exists(name)
   end
 end
 
-local util = require 'packer.util'
+local util = require("packer.util")
 M.executable_ext = ".sh"
 
 if util.is_windows then
@@ -51,7 +51,7 @@ function M.regex_escape(str)
   return str:gsub("[%(%)%.%%%+%-%*%?%[%^%$%]]", "%%%1")
 end
 
-string.replace = function (str, this, that)
+string.replace = function(str, this, that)
   local pattern = M.regex_escape(this)
   local replacement = that:gsub("%%", "%%%%") -- only % needs to be escaped for 'that'
 
