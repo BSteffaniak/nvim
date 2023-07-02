@@ -14,8 +14,8 @@ require("nvim-tree").setup()
 -- OR setup with some options
 require("nvim-tree").setup({
   sort_by = "case_sensitive",
-  on_attach = function (bufnr)
-    vim.keymap.del('n', 's', { buffer = bufnr })
+  on_attach = function(bufnr)
+    vim.keymap.del("n", "s", { buffer = bufnr })
   end,
   renderer = {
     group_empty = true,

@@ -9,10 +9,10 @@ function M.setup(servers)
     table.insert(server_names, server_name)
   end
 
-  lspconfig.setup {
+  lspconfig.setup({
     ensure_installed = server_names,
     automatic_installation = true,
-  }
+  })
 
   for server_name, _ in pairs(servers) do
     require("lspconfig")[server_name].setup(servers[server_name])
