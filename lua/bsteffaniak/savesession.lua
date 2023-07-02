@@ -2,7 +2,11 @@ local util = require("packer/util")
 local butil = require("bsteffaniak.util")
 
 local function get_session_file()
-  local sessions_directory = util.join_paths(butil.home_dir, ".nvim_sessions")
+  local sessions_directory = vim.g.sessions_home_directory
+
+  if sessions_directory == nil then
+    sessions_directory = util.join_paths(butil.home_dir, ".nvim_sessions")
+  end
 
   if util.is_windows then
     os.execute("if not exist " .. sessions_directory .. " mkdir " .. sessions_directory)

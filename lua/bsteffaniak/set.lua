@@ -12,6 +12,8 @@ vim.bo.fileformat = "unix"
 vim.opt.wrap = false
 vim.opt.relativenumber = true
 
+vim.g.sessions_home_directory = os.getenv("NVIM_SESSIONS_HOME_DIRECTORY")
+
 local wrapping_files = "*.md"
 
 vim.api.nvim_create_autocmd(
