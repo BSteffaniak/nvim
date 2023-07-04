@@ -1,5 +1,13 @@
 local M = {}
 
+function M.split(inputstr, sep)
+  local t = {}
+  for str in string.gmatch(inputstr, "([^" .. sep .. "]+)") do
+    table.insert(t, str)
+  end
+  return t
+end
+
 function M.get_range()
   local start_sel_row = vim.api.nvim_eval('getpos("v")[1]')
   local start_sel_col = vim.api.nvim_eval('getpos("v")[2]')
@@ -81,6 +89,88 @@ string.replace = function(str, this, that)
   local replacement = that:gsub("%%", "%%%%") -- only % needs to be escaped for 'that'
 
   return str:gsub(pattern, replacement)
+end
+
+M.table_to_toml = function(val)
+  local tmp = ""
+
+  if type(val) == "table" then
+    for k, v in pairs(val) do
+      tmp = tmp .. k .. " = " .. M.table_to_toml(v) .. "\n"
+    end
+  elseif type(val) == "number" then
+    tmp = tmp .. tostring(val)
+  elseif type(val) == "string" then
+    tmp = tmp .. string.format("%q", val)
+  elseif type(val) == "boolean" then
+    tmp = tmp .. (val and "true" or "false")
+  else
+    tmp = tmp .. '"[inserializeable datatype:' .. type(val) .. ']"'
+  end
+
+  return tmp
+end
+
+M.parse_value = function(str)
+  if str == "true" then
+    return true
+  elseif str == "false" then
+    return false
+  end
+
+  local num = tonumber(str)
+
+  if num ~= nil then
+    return num
+  end
+
+  return str
+end
+
+M.table_from_toml = function(str)
+  local val = {}
+
+  local lines = M.split(str, "\n")
+
+  for _, line in pairs(lines) do
+    local props = M.split(line, " = ")
+    local key = props[1]
+    local value = M.parse_value(props[2])
+    val[key] = value
+  end
+
+  return val
+end
+
+M.serialize_table = function(val, name, skipnewlines, depth)
+  skipnewlines = skipnewlines or false
+  depth = depth or 0
+
+  local tmp = string.rep(" ", depth)
+
+  if name then
+    tmp = tmp .. name .. " = "
+  end
+
+  if type(val) == "table" then
+    tmp = tmp .. "{" .. (not skipnewlines and "\n" or "")
+
+    for k, v in pairs(val) do
+      tmp = tmp .. M.serialize_table(v, k, skipnewlines, depth + 1) .. "," .. (not skipnewlines and "\n" or "")
+    end
+
+    tmp = tmp .. string.rep(" ", depth) .. "}"
+  elseif type(val) == "number" then
+    tmp = tmp .. tostring(val)
+  elseif type(val) == "string" then
+    tmp = tmp .. string.format("%q", val)
+  elseif type(val) == "boolean" then
+    tmp = tmp .. (val and "true" or "false")
+  else
+    tmp = tmp .. '"[inserializeable datatype:' .. type(val) .. ']"'
+  end
+
+  return tmp
 end
 
 return M

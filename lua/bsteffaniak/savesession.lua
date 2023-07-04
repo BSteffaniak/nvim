@@ -1,25 +1,98 @@
 local util = require("bsteffaniak.util")
+local nvim_tree_view = require("nvim-tree.view")
+local nvim_tree_api = require("nvim-tree.api")
 
-local function get_session_file()
-  local sessions_directory = vim.g.sessions_home_directory
+local function get_session_directory()
+  local sessions_home_directory = vim.g.sessions_home_directory
 
-  if sessions_directory == nil then
-    sessions_directory = util.join_paths(util.home_dir, ".nvim_sessions")
+  if sessions_home_directory == nil then
+    sessions_home_directory = util.join_paths(util.home_dir, ".nvim_sessions")
   end
+
+  local session_directory = util.join_paths(sessions_home_directory, util.sanitize_location(util.cwd) .. "_session")
 
   if util.is_windows then
-    os.execute("if not exist " .. sessions_directory .. " mkdir " .. sessions_directory)
+    os.execute("if not exist " .. session_directory .. " mkdir " .. session_directory)
   else
-    os.execute("mkdir -p " .. sessions_directory)
+    os.execute("mkdir -p " .. session_directory)
   end
 
-  local fileName = util.sanitize_location(util.cwd) .. "_session.vim"
+  return session_directory
+end
 
-  return util.join_paths(sessions_directory, fileName)
+local function get_session_file()
+  return util.join_paths(get_session_directory(), "session.vim")
+end
+
+local function get_session_props_file()
+  return util.join_paths(get_session_directory(), "props.toml")
+end
+
+local function write_props(props)
+  local file = io.open(get_session_props_file(), "w")
+
+  if file == nil then
+    return
+  end
+
+  file:write(util.table_to_toml(props))
+  file:close()
+end
+
+local function read_props()
+  local file = io.open(get_session_props_file(), "r")
+
+  if file == nil then
+    return
+  end
+
+  local props_str = file:read("a")
+  file:close()
+
+  return util.table_from_toml(props_str)
+end
+
+local function focus_buffer(desired_buf)
+  -- get all the windows from all the tabs
+  local all_tab_pages = vim.api.nvim_list_tabpages()
+  local buf_found = false
+  for _, tab_page in ipairs(all_tab_pages) do
+    local win_list = vim.api.nvim_tabpage_list_wins(tab_page)
+    -- for each window, check its bufer
+    for _, win in ipairs(win_list) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      -- move to it if it's what you want
+      if buf == desired_buf then
+        buf_found = true
+        vim.api.nvim_set_current_win(win)
+        break
+      end
+    end
+    if buf_found then
+      break
+    end
+  end
 end
 
 function Handle_save_session()
+  local focused_buf = vim.fn.bufnr("%")
+  local toggle_tree = nvim_tree_view.is_visible()
+
+  if toggle_tree then
+    nvim_tree_api.tree.close()
+  end
+
   vim.cmd("mksession! " .. get_session_file())
+  write_props({
+    toggle_tree = toggle_tree,
+    focused_buf = focused_buf,
+  })
+
+  if toggle_tree then
+    nvim_tree_api.tree.open()
+  end
+
+  focus_buffer(focused_buf)
 end
 
 function Handle_load_session()
@@ -32,6 +105,20 @@ function Handle_load_session()
   end
 
   vim.cmd("source " .. session_file)
+
+  local props = read_props()
+
+  if props == nil then
+    return
+  end
+
+  if props.toggle_tree then
+    nvim_tree_api.tree.open()
+  end
+
+  if props.focused_buf then
+    focus_buffer(props.focused_buf)
+  end
 end
 
 function Handle_save_and_quit()
@@ -56,13 +143,11 @@ function Handle_save_and_quit()
     return
   end
 
-  vim.cmd("NvimTreeClose")
   Handle_save_session()
   vim.cmd("qa")
 end
 
 function Handle_force_save_and_quit()
-  vim.cmd("NvimTreeClose")
   Handle_save_session()
   vim.cmd("qa!")
 end
