@@ -2,8 +2,7 @@ vim.opt_local.tabstop = 4
 vim.opt_local.softtabstop = 4
 vim.opt_local.shiftwidth = 4
 
-local util = require("packer/util")
-local butil = require("bsteffaniak.util")
+local util = require("bsteffaniak.util")
 local lsp = require("bsteffaniak.lsp")
 
 local function get_home_directory()
@@ -19,7 +18,7 @@ end
 local home_dir = get_home_directory()
 
 local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
-local project_name = butil.sanitize_location(butil.cwd)
+local project_name = util.sanitize_location(util.cwd)
 local workspace_dir = util.join_paths(home_dir, ".jdtls_nvim", project_name)
 local root_dir = require("jdtls.setup").find_root(root_markers)
 local jdtls = require("jdtls")

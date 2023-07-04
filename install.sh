@@ -12,11 +12,8 @@ git clone https://github.com/dgileadi/vscode-java-decompiler.git ~/.local/share/
 
 ~/.config/nvim/lls.sh
 
-git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-
 # neovim
 git clone --depth 1 https://github.com/neovim/neovim.git ~/.local/neovim-install
 cd ~/.local/neovim-install || exit 1
 make CMAKE_BUILD_TYPE=RelWithDebInfo
 sudo make install
-nvim ~/.config/nvim/lua/bsteffaniak/packer.lua -c "luafile %" -c PackerSync -c MasonUpdate

@@ -1,11 +1,10 @@
-local util = require("packer/util")
-local butil = require("bsteffaniak.util")
+local util = require("bsteffaniak.util")
 
 local function get_session_file()
   local sessions_directory = vim.g.sessions_home_directory
 
   if sessions_directory == nil then
-    sessions_directory = util.join_paths(butil.home_dir, ".nvim_sessions")
+    sessions_directory = util.join_paths(util.home_dir, ".nvim_sessions")
   end
 
   if util.is_windows then
@@ -14,7 +13,7 @@ local function get_session_file()
     os.execute("mkdir -p " .. sessions_directory)
   end
 
-  local fileName = butil.sanitize_location(butil.cwd) .. "_session.vim"
+  local fileName = util.sanitize_location(util.cwd) .. "_session.vim"
 
   return util.join_paths(sessions_directory, fileName)
 end
@@ -26,8 +25,8 @@ end
 function Handle_load_session()
   local session_file = get_session_file()
 
-  if butil.file_exists(session_file) ~= true then
-    print("No session exists for " .. butil.cwd)
+  if util.file_exists(session_file) ~= true then
+    print("No session exists for " .. util.cwd)
 
     return
   end
@@ -45,7 +44,7 @@ function Handle_save_and_quit()
       end
 
       local full_buf_name = vim.api.nvim_buf_get_name(buf)
-      local buf_name = string.replace(full_buf_name, butil.cwd .. util.get_separator(), "")
+      local buf_name = string.replace(full_buf_name, util.cwd .. util.get_separator(), "")
 
       unsaved = unsaved .. buf_name
     end

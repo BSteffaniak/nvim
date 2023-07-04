@@ -40,8 +40,7 @@ require("mason").setup({
 -- noselect: Do not auto-select, nvim-cmp plugin will handle this for us.
 vim.o.completeopt = "menuone,noinsert,noselect"
 
-local util = require("packer/util")
-local butil = require("bsteffaniak.util")
+local util = require("bsteffaniak.util")
 
 require("bsteffaniak/keymap")
 
@@ -98,7 +97,7 @@ telescope.setup({
       "--glob",
       "!.git",
       "--ignore-file",
-      util.join_paths(butil.cwd, ".gitignore"),
+      util.join_paths(util.cwd, ".gitignore"),
     },
   },
 })
@@ -107,18 +106,18 @@ require("goto-preview").setup({})
 
 require("lsp_signature").setup({})
 
-require("nvim-treesitter.configs").setup({
-  ensure_installed = "all",
-  highlight = {
-    enable = true,
-  },
-  playground = {
-    enable = true,
-    disable = {},
-    updatetime = 25,
-    persist_queries = false,
-  },
-})
+--require("nvim-treesitter.configs").setup({
+--  ensure_installed = "all",
+--  highlight = {
+--    enable = true,
+--  },
+--  playground = {
+--    enable = true,
+--    disable = {},
+--    updatetime = 25,
+--    persist_queries = false,
+--  },
+--})
 
 require("lualine").setup({})
 
@@ -151,14 +150,14 @@ local servers = {
   elixirls = {
     cmd = {
       util.join_paths(
-        butil.home_dir,
+        util.home_dir,
         ".local",
         "share",
         "nvim",
         "lsp_servers",
         "elixir",
         "elixir-ls",
-        "language_server" .. butil.executable_ext
+        "language_server" .. util.executable_ext
       ),
     },
   },
@@ -166,3 +165,25 @@ local servers = {
 
 require("config.lsp.null-ls").setup(lsp_on_attach)
 require("config.lsp.installer").setup(servers)
+
+vim.g.rustfmt_autosave = 1
+
+-- empty setup using defaults
+require("nvim-tree").setup()
+
+-- OR setup with some options
+require("nvim-tree").setup({
+  sort_by = "case_sensitive",
+  on_attach = function(bufnr)
+    vim.keymap.del("n", "s", { buffer = bufnr })
+  end,
+  renderer = {
+    group_empty = true,
+  },
+  filters = {
+    dotfiles = false,
+  },
+  git = {
+    ignore = false,
+  },
+})

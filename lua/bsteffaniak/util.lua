@@ -27,10 +27,35 @@ function M.file_exists(name)
   end
 end
 
-local util = require("packer.util")
+M.separator = package.config:sub(1, 1)
+M.is_windows = M.separator == "\\"
+
+if M.is_windows and vim.o.shellslash then
+  M.use_shellslash = true
+else
+  M.use_shallslash = false
+end
+
+M.get_separator = function()
+  if M.is_windows and not M.use_shellslash then
+    return "\\"
+  end
+  return "/"
+end
+
+M.strip_trailing_sep = function(path)
+  local res, _ = string.gsub(path, M.get_separator() .. "$", "", 1)
+  return res
+end
+
+M.join_paths = function(...)
+  local separator = M.get_separator()
+  return table.concat({ ... }, separator)
+end
+
 M.executable_ext = ".sh"
 
-if util.is_windows then
+if M.is_windows then
   M.executable_ext = ".bat"
 end
 
