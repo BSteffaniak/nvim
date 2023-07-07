@@ -44,3 +44,9 @@ if [[ ! -d ~/.local/neovim-install ]]; then
     make CMAKE_BUILD_TYPE=RelWithDebInfo
     sudo make install
 fi
+
+if [[ ! -d ~/.local/java-debug ]]; then
+    git clone --depth 1 https://github.com/microsoft/java-debug.git ~/.local/java-debug
+    cd ~/.local/java-debug || exit 1
+    ./mvnw clean install
+fi
