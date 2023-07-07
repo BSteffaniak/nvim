@@ -50,3 +50,10 @@ if [[ ! -d ~/.local/java-debug ]]; then
     cd ~/.local/java-debug || exit 1
     ./mvnw clean install
 fi
+
+if [[ ! -d ~/.local/vscode-java-test ]]; then
+    git clone --depth 1 https://github.com/microsoft/vscode-java-test.git ~/.local/vscode-java-test
+    cd ~/.local/vscode-java-test || exit 1
+    npm install
+    npm run build-plugin
+fi
