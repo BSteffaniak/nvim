@@ -9,9 +9,7 @@ Just use WSL and follow the instructions below:
 --------------------------------
 
 1. `git clone https://github.com/BSteffaniak/nvim.git ~/.config/nvim`
-1. Run install script
-    * Ubuntu: `~/.config/nvim/install_ubuntu.sh`
-    * Mac: `~/.config/nvim/install_mac.sh`
+1. `~/.config/nvim/install.sh`
 
 References:
 

@@ -4,6 +4,39 @@ command_exists() {
     command -v "$1"
 }
 
+dependency_required() {
+    echo "Dependency '$1' is required. Please install before running ./install.sh"
+    exit 1
+}
+
+[[ -z $(command_exists "mvn") ]] && dependency_required "mvn"
+[[ -z $(command_exists "git") ]] && dependency_required "git"
+
+if [[ "$(uname)" == "Darwin" ]]; then
+    [[ -z $(command_exists "ninja") ]] && brew install ninja
+    [[ -z $(command_exists "bat") ]] && brew install bat
+    [[ -z $(command_exists "gopls") ]] && brew install gopls
+    [[ -z $(command_exists "pylsp") ]] && brew install pylsp
+    [[ -z $(command_exists "shellcheck") ]] && brew install shellcheck
+    [[ -z $(command_exists "rg") ]] && brew install ripgrep
+else
+    sudo apt-get install \
+        make \
+        cmake \
+        unzip \
+        gettext \
+        g++ \
+        ninja-build \
+        openjdk-17-jdk \
+        openjdk-17-jre \
+        bat \
+        gopls \
+        python3-pylsp \
+        shellcheck \
+        ripgrep \
+        ;
+fi
+
 [[ -z $(command_exists "typescript-language-server") ]] && npm i -g typescript-language-server
 [[ -z $(command_exists "prettier") ]] && npm i -g prettier
 [[ -z $(command_exists "prettierd") ]] && npm i -g @fsouza/prettierd
