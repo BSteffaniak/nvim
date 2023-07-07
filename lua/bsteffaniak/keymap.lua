@@ -1,5 +1,3 @@
-
-
 require("bsteffaniak/savesession")
 
 local key_opts = { noremap = true }
@@ -54,4 +52,15 @@ end, key_opts)
 
 vim.keymap.set({ "n", "v" }, "<Leader>l", function()
   vim.opt.relativenumber = not vim.opt.relativenumber:get()
+end, key_opts)
+
+vim.keymap.set({ "n", "v" }, "<Leader>j", function()
+  local so = vim.opt.scrolloff:get()
+
+  if so == 0 then
+    vim.opt.scrolloff = vim.g.lastscrolloff
+  else
+    vim.g.lastscrolloff = so
+    vim.opt.scrolloff = 0
+  end
 end, key_opts)
