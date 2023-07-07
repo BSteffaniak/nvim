@@ -13,10 +13,7 @@ command_exists() {
 [[ -z $(command_exists "write-good") ]] && npm i -g write-good
 [[ -z $(command_exists "stylua") ]] && npm i -g @johnnymorganz/stylua-bin
 [[ -z $(command_exists "fixjson") ]] && npm i -g fixjson
-
-if [[ -z $(command_exists "shfmt") ]]; then
-    curl -sS https://webi.sh/shfmt | sh
-fi
+[[ -z $(command_exists "shfmt") ]] && curl -sS https://webi.sh/shfmt | sh
 
 if [[ ! -d ~/.local/eclipse.jdt.ls ]]; then
     git clone https://github.com/eclipse/eclipse.jdt.ls.git ~/.local/eclipse.jdt.ls
