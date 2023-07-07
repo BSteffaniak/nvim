@@ -1,11 +1,18 @@
 #!/bin/bash
 
-# dependencies
-npm i -g typescript-language-server prettier @fsouza/prettierd diagnostic-languageserver vscode-langservers-extracted bash-language-server write-good @johnnymorganz/stylua-bin fixjson
-
 command_exists() {
     command -v "$1"
 }
+
+[[ -z $(command_exists "typescript-language-server") ]] && npm i -g typescript-language-server
+[[ -z $(command_exists "prettier") ]] && npm i -g prettier
+[[ -z $(command_exists "prettierd") ]] && npm i -g @fsouza/prettierd
+[[ -z $(command_exists "diagnostic-languageserver") ]] && npm i -g diagnostic-languageserver
+[[ -z $(command_exists "vscode-json-language-server") ]] && npm i -g vscode-langservers-extracted
+[[ -z $(command_exists "bash-language-server") ]] && npm i -g bash-language-server
+[[ -z $(command_exists "write-good") ]] && npm i -g write-good
+[[ -z $(command_exists "stylua") ]] && npm i -g @johnnymorganz/stylua-bin
+[[ -z $(command_exists "fixjson") ]] && npm i -g fixjson
 
 if [[ -z $(command_exists "shfmt") ]]; then
     curl -sS https://webi.sh/shfmt | sh
