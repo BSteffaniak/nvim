@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # dependencies
-npm i -g typescript-language-server prettier @fsouza/prettierd diagnostic-languageserver vscode-langservers-extracted bash-language-server write-good @johnnymorganz/stylua-bin
+npm i -g typescript-language-server prettier @fsouza/prettierd diagnostic-languageserver vscode-langservers-extracted bash-language-server write-good @johnnymorganz/stylua-bin fixjson
 curl -sS https://webi.sh/shfmt | sh
 
 # jdtls
