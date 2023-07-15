@@ -53,10 +53,6 @@ if [[ ! -d ~/.local/eclipse.jdt.ls ]]; then
     mvn -f ~/.local/eclipse.jdt.ls clean verify -DskipTests=true
 fi
 
-if [[ ! -d ~/.config/nvim ]]; then
-    git clone https://github.com/BSteffaniak/nvim.git ~/.config/nvim
-fi
-
 if [[ ! -d ~/.local/share/vscode-java-decompiler ]]; then
     git clone https://github.com/dgileadi/vscode-java-decompiler.git ~/.local/share/vscode-java-decompiler
 fi
