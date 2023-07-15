@@ -26,40 +26,36 @@ dependency_required() {
 if [[ "$(uname)" == "Darwin" ]]; then
     [[ -z $(command_exists "brew") ]] && dependency_required "brew"
 
-    [[ -z $(command_exists "ninja") ]] && brew install ninja
-    [[ -z $(command_exists "bat") ]] && brew install bat
-    [[ -z $(command_exists "gopls") ]] && brew install gopls
-    [[ -z $(command_exists "pylsp") ]] && brew install pylsp
-    [[ -z $(command_exists "shellcheck") ]] && brew install shellcheck
-    [[ -z $(command_exists "rg") ]] && brew install ripgrep
+    [[ $update || -z $(command_exists "ninja") ]] && brew install ninja
+    [[ $update || -z $(command_exists "bat") ]] && brew install bat
+    [[ $update || -z $(command_exists "gopls") ]] && brew install gopls
+    [[ $update || -z $(command_exists "pylsp") ]] && brew install pylsp
+    [[ $update || -z $(command_exists "shellcheck") ]] && brew install shellcheck
+    [[ $update || -z $(command_exists "rg") ]] && brew install ripgrep
 else
-    sudo apt-get install \
-        make \
-        cmake \
-        unzip \
-        gettext \
-        g++ \
-        ninja-build \
-        openjdk-17-jdk \
-        openjdk-17-jre \
-        bat \
-        gopls \
-        python3-pylsp \
-        shellcheck \
-        ripgrep \
-        ;
+    [[ $update || -z $(command_exists "make") ]] && sudo apt-get install make
+    [[ $update || -z $(command_exists "cmake") ]] && sudo apt-get install cmake
+    [[ $update || -z $(command_exists "unzip") ]] && sudo apt-get install unzip
+    [[ $update || -z $(command_exists "gettext") ]] && sudo apt-get install gettext
+    [[ $update || -z $(command_exists "g++") ]] && sudo apt-get install g++
+    [[ $update || -z $(command_exists "ninja") ]] && sudo apt-get install ninja-build
+    [[ $update || -z $(command_exists "batcat") ]] && sudo apt-get install bat
+    [[ $update || -z $(command_exists "gopls") ]] && sudo apt-get install gopls
+    [[ $update || -z $(command_exists "pylsp") ]] && sudo apt-get install python3-pylsp
+    [[ $update || -z $(command_exists "shellcheck") ]] && sudo apt-get install shellcheck
+    [[ $update || -z $(command_exists "rg") ]] && sudo apt-get install ripgrep
 fi
 
-[[ -z $(command_exists "typescript-language-server") ]] && npm i -g typescript-language-server
-[[ -z $(command_exists "prettier") ]] && npm i -g prettier
-[[ -z $(command_exists "prettierd") ]] && npm i -g @fsouza/prettierd
-[[ -z $(command_exists "diagnostic-languageserver") ]] && npm i -g diagnostic-languageserver
-[[ -z $(command_exists "vscode-json-language-server") ]] && npm i -g vscode-langservers-extracted
-[[ -z $(command_exists "bash-language-server") ]] && npm i -g bash-language-server
-[[ -z $(command_exists "write-good") ]] && npm i -g write-good
-[[ -z $(command_exists "stylua") ]] && npm i -g @johnnymorganz/stylua-bin
-[[ -z $(command_exists "fixjson") ]] && npm i -g fixjson
-[[ -z $(command_exists "shfmt") ]] && curl -sS https://webi.sh/shfmt | sh
+[[ $update || -z $(command_exists "typescript-language-server") ]] && npm i -g typescript-language-server
+[[ $update || -z $(command_exists "prettier") ]] && npm i -g prettier
+[[ $update || -z $(command_exists "prettierd") ]] && npm i -g @fsouza/prettierd
+[[ $update || -z $(command_exists "diagnostic-languageserver") ]] && npm i -g diagnostic-languageserver
+[[ $update || -z $(command_exists "vscode-json-language-server") ]] && npm i -g vscode-langservers-extracted
+[[ $update || -z $(command_exists "bash-language-server") ]] && npm i -g bash-language-server
+[[ $update || -z $(command_exists "write-good") ]] && npm i -g write-good
+[[ $update || -z $(command_exists "stylua") ]] && npm i -g @johnnymorganz/stylua-bin
+[[ $update || -z $(command_exists "fixjson") ]] && npm i -g fixjson
+[[ $update || -z $(command_exists "shfmt") ]] && curl -sS https://webi.sh/shfmt | sh
 
 if [[ $update || ! -d ~/.local/eclipse.jdt.ls ]]; then
     clone_repo https://github.com/eclipse/eclipse.jdt.ls.git ~/.local/eclipse.jdt.ls
