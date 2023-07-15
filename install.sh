@@ -1,7 +1,16 @@
 #!/bin/bash
 
+[[ "$1" == "update" ]] && update=true
+
 command_exists() {
     command -v "$1"
+}
+
+clone_repo() {
+    local repo_url="$1"
+    local directory="$2"
+
+    [[ ! $update ]] || [[ ! -d "$directory" ]] && git clone --depth 1 "$repo_url" "$directory"
 }
 
 dependency_required() {
@@ -48,17 +57,17 @@ fi
 [[ -z $(command_exists "fixjson") ]] && npm i -g fixjson
 [[ -z $(command_exists "shfmt") ]] && curl -sS https://webi.sh/shfmt | sh
 
-if [[ ! -d ~/.local/eclipse.jdt.ls ]]; then
-    git clone https://github.com/eclipse/eclipse.jdt.ls.git ~/.local/eclipse.jdt.ls
+if [[ $update || ! -d ~/.local/eclipse.jdt.ls ]]; then
+    clone_repo https://github.com/eclipse/eclipse.jdt.ls.git ~/.local/eclipse.jdt.ls
     mvn -f ~/.local/eclipse.jdt.ls clean verify -DskipTests=true
 fi
 
-if [[ ! -d ~/.local/share/vscode-java-decompiler ]]; then
-    git clone https://github.com/dgileadi/vscode-java-decompiler.git ~/.local/share/vscode-java-decompiler
+if [[ $update || ! -d ~/.local/share/vscode-java-decompiler ]]; then
+    clone_repo https://github.com/dgileadi/vscode-java-decompiler.git ~/.local/share/vscode-java-decompiler
 fi
 
-if [[ ! -d ~/.local/share/lua-language-server ]]; then
-    git clone --depth 1 https://github.com/LuaLS/lua-language-server ~/.local/share/lua-language-server
+if [[ $update || ! -d ~/.local/share/lua-language-server ]]; then
+    clone_repo https://github.com/LuaLS/lua-language-server ~/.local/share/lua-language-server
     cd ~/.local/share/lua-language-server || exit 1
     ./make.sh
     echo '#!/usr/bin/env bash
@@ -67,21 +76,21 @@ if [[ ! -d ~/.local/share/lua-language-server ]]; then
     chmod +x ~/.local/bin/lua-language-server
 fi
 
-if [[ ! -d ~/.local/neovim-install ]]; then
-    git clone --depth 1 https://github.com/neovim/neovim.git ~/.local/neovim-install
+if [[ $update || ! -d ~/.local/neovim-install ]]; then
+    clone_repo https://github.com/neovim/neovim.git ~/.local/neovim-install
     cd ~/.local/neovim-install || exit 1
     make CMAKE_BUILD_TYPE=RelWithDebInfo
     sudo make install
 fi
 
-if [[ ! -d ~/.local/java-debug ]]; then
-    git clone --depth 1 https://github.com/microsoft/java-debug.git ~/.local/java-debug
+if [[ $update || ! -d ~/.local/java-debug ]]; then
+    clone_repo https://github.com/microsoft/java-debug.git ~/.local/java-debug
     cd ~/.local/java-debug || exit 1
     ./mvnw clean install
 fi
 
-if [[ ! -d ~/.local/vscode-java-test ]]; then
-    git clone --depth 1 https://github.com/microsoft/vscode-java-test.git ~/.local/vscode-java-test
+if [[ $update || ! -d ~/.local/vscode-java-test ]]; then
+    clone_repo https://github.com/microsoft/vscode-java-test.git ~/.local/vscode-java-test
     cd ~/.local/vscode-java-test || exit 1
     npm install
     npm run build-plugin
