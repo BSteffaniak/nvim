@@ -20,8 +20,12 @@ dependency_required() {
 
 [[ -z $(command_exists "mvn") ]] && dependency_required "mvn"
 [[ -z $(command_exists "git") ]] && dependency_required "git"
+[[ -z $(command_exists "curl") ]] && dependency_required "curl"
+[[ -z $(command_exists "npm") ]] && dependency_required "npm"
 
 if [[ "$(uname)" == "Darwin" ]]; then
+    [[ -z $(command_exists "brew") ]] && dependency_required "brew"
+
     [[ -z $(command_exists "ninja") ]] && brew install ninja
     [[ -z $(command_exists "bat") ]] && brew install bat
     [[ -z $(command_exists "gopls") ]] && brew install gopls
