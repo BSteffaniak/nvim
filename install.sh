@@ -59,17 +59,17 @@ if [[ "$(uname)" == "Darwin" ]]; then
     [[ $update || -z $(command_exists "shellcheck") ]] && brew install shellcheck
     [[ $update || -z $(command_exists "rg") ]] && brew install ripgrep
 else
-    [[ $update || -z $(command_exists "make") ]] && sudo apt-get install make
-    [[ $update || -z $(command_exists "cmake") ]] && sudo apt-get install cmake
-    [[ $update || -z $(command_exists "unzip") ]] && sudo apt-get install unzip
-    [[ $update || -z $(command_exists "gettext") ]] && sudo apt-get install gettext
-    [[ $update || -z $(command_exists "g++") ]] && sudo apt-get install g++
-    [[ $update || -z $(command_exists "ninja") ]] && sudo apt-get install ninja-build
-    [[ $update || -z $(command_exists "batcat") ]] && sudo apt-get install bat
-    [[ $update || -z $(command_exists "gopls") ]] && sudo apt-get install gopls
-    [[ $update || -z $(command_exists "pylsp") ]] && sudo apt-get install python3-pylsp
-    [[ $update || -z $(command_exists "shellcheck") ]] && sudo apt-get install shellcheck
-    [[ $update || -z $(command_exists "rg") ]] && sudo apt-get install ripgrep
+    [[ $update || -z $(command_exists "make") ]] && apt-get install make
+    [[ $update || -z $(command_exists "cmake") ]] && apt-get install cmake
+    [[ $update || -z $(command_exists "unzip") ]] && apt-get install unzip
+    [[ $update || -z $(command_exists "gettext") ]] && apt-get install gettext
+    [[ $update || -z $(command_exists "g++") ]] && apt-get install g++
+    [[ $update || -z $(command_exists "ninja") ]] && apt-get install ninja-build
+    [[ $update || -z $(command_exists "batcat") ]] && apt-get install bat
+    [[ $update || -z $(command_exists "gopls") ]] && apt-get install gopls
+    [[ $update || -z $(command_exists "pylsp") ]] && apt-get install python3-pylsp
+    [[ $update || -z $(command_exists "shellcheck") ]] && apt-get install shellcheck
+    [[ $update || -z $(command_exists "rg") ]] && apt-get install ripgrep
 fi
 
 [[ $update || -z $(command_exists "typescript-language-server") ]] && npm i -g typescript-language-server
@@ -101,7 +101,7 @@ fi
 if (clone_repo https://github.com/neovim/neovim.git ~/.local/neovim-install); then
     cd ~/.local/neovim-install || exit 1
     make CMAKE_BUILD_TYPE=RelWithDebInfo
-    sudo make install
+    make install
 fi
 
 if (clone_repo https://github.com/microsoft/java-debug.git ~/.local/java-debug); then
