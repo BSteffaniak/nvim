@@ -10,7 +10,33 @@ clone_repo() {
     local repo_url="$1"
     local directory="$2"
 
-    [[ ! $update ]] || [[ ! -d "$directory" ]] && git clone --depth 1 "$repo_url" "$directory"
+    if [[ ! -d "$directory" ]]; then
+        git clone --depth 1 "$repo_url" "$directory"
+    elif [[ $update ]]; then
+        git -C "$directory" remote update
+        local local_rev
+        local_rev=$(git -C "$directory" rev-parse @)
+        local remote_rev
+        remote_rev=$(git -C "$directory" rev-parse '@{u}')
+        local base_rev
+        base_rev=$(git -C "$directory" merge-base @ '@{u}')
+
+        if [[ "$local_rev" = "$remote_rev" ]]; then
+            echo "Already up-to-date"
+            false
+        elif [[ "$local_rev" = "$base_rev" ]]; then
+            echo "Updating repo at $directory"
+            git -C "$directory" pull
+        elif [[ "$remote_rev" = "$base_rev" ]]; then
+            echo "Need to push"
+            false
+        else
+            echo "Diverged"
+            false
+        fi
+    else
+        false
+    fi
 }
 
 dependency_required() {
