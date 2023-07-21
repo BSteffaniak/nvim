@@ -114,3 +114,10 @@ if (clone_repo https://github.com/microsoft/vscode-java-test.git ~/.local/vscode
     npm install
     npm run build-plugin
 fi
+
+clone_repo https://github.com/FlatLang/vim-flat.git ~/.local/vim-flat
+
+if [[ ! -f ~/.config/nvim/syntax/flat.vim ]]; then
+    mkdir -p ~/.config/nvim/syntax/
+    ln -s ~/.local/vim-flat/flat.vim ~/.config/nvim/syntax/flat.vim
+fi
