@@ -44,6 +44,17 @@ dependency_required() {
     exit 1
 }
 
+install_package() {
+    if [[ -n $(command_exists "apt-get") && -n $(command_exists "sudo") ]]; then
+        sudo apt-get install "$1"
+    elif [[ -n $(command_exists "apt-get") && -z $(command_exists "sudo") ]]; then
+        apt-get install "$1"
+    else
+        echo "Could not find package manager to install package '$1'"
+        exit 1
+    fi
+}
+
 [[ -z $(command_exists "mvn") ]] && dependency_required "mvn"
 [[ -z $(command_exists "git") ]] && dependency_required "git"
 [[ -z $(command_exists "curl") ]] && dependency_required "curl"
@@ -59,17 +70,17 @@ if [[ "$(uname)" == "Darwin" ]]; then
     [[ $update || -z $(command_exists "shellcheck") ]] && brew install shellcheck
     [[ $update || -z $(command_exists "rg") ]] && brew install ripgrep
 else
-    [[ $update || -z $(command_exists "make") ]] && sudo apt-get install make
-    [[ $update || -z $(command_exists "cmake") ]] && sudo apt-get install cmake
-    [[ $update || -z $(command_exists "unzip") ]] && sudo apt-get install unzip
-    [[ $update || -z $(command_exists "gettext") ]] && sudo apt-get install gettext
-    [[ $update || -z $(command_exists "g++") ]] && sudo apt-get install g++
-    [[ $update || -z $(command_exists "ninja") ]] && sudo apt-get install ninja-build
-    [[ $update || -z $(command_exists "batcat") ]] && sudo apt-get install bat
-    [[ $update || -z $(command_exists "gopls") ]] && sudo apt-get install gopls
-    [[ $update || -z $(command_exists "pylsp") ]] && sudo apt-get install python3-pylsp
-    [[ $update || -z $(command_exists "shellcheck") ]] && sudo apt-get install shellcheck
-    [[ $update || -z $(command_exists "rg") ]] && sudo apt-get install ripgrep
+    [[ $update || -z $(command_exists "make") ]] && install_package make
+    [[ $update || -z $(command_exists "cmake") ]] && install_package cmake
+    [[ $update || -z $(command_exists "unzip") ]] && install_package unzip
+    [[ $update || -z $(command_exists "gettext") ]] && install_package gettext
+    [[ $update || -z $(command_exists "g++") ]] && install_package g++
+    [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build
+    [[ $update || -z $(command_exists "batcat") ]] && install_package bat
+    [[ $update || -z $(command_exists "gopls") ]] && install_package gopls
+    [[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp
+    [[ $update || -z $(command_exists "shellcheck") ]] && install_package shellcheck
+    [[ $update || -z $(command_exists "rg") ]] && install_package ripgrep
 fi
 
 [[ $update || -z $(command_exists "typescript-language-server") ]] && npm i -g typescript-language-server
