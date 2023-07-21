@@ -44,13 +44,70 @@ dependency_required() {
     exit 1
 }
 
+parse_args() {
+    declare -n local_args_map="$1"
+    declare -n local_args_list="$2"
+    local skipped=0
+    local setting_key
+    for var in "$@"; do
+        [[ $skipped -lt 2 ]] && {
+            ((skipped++))
+            continue
+        }
+        if [[ $var == --* ]]; then
+            setting_key=${var:2}
+        elif [[ $var == -* ]]; then
+            setting_key=${var:1}
+        elif [[ -z "$setting_key" ]]; then
+            local_args_list+=("$var")
+        else
+            # shellcheck disable=SC2034
+            local_args_map["$setting_key"]="$var"
+            unset setting_key
+        fi
+    done
+}
+
 install_package() {
+    declare -A args_map
+    declare args_list
+
+    parse_args args_map args_list "$@"
+
+    [[ ${#args_list[@]} -gt 1 ]] && echo "Too many unnamed args passed to install_package" && exit 1
+
+    local apt=${args_list[0]}
+    local pacman=$apt
+    local snap=$apt
+
+    for key in "${!args_map[@]}"; do
+        case $key in
+        apt)
+            apt="${args_map[$key]}"
+            ;;
+        pacman)
+            pacman="${args_map[$key]}"
+            ;;
+        snap)
+            snap="${args_map[$key]}"
+            ;;
+        *)
+            echo "Invalid argument '$key'"
+            exit 1
+            ;;
+        esac
+    done
+
     if [[ -n $(command_exists "apt-get") && -n $(command_exists "sudo") ]]; then
-        sudo apt-get install "$1"
+        sudo apt-get install "$apt"
     elif [[ -n $(command_exists "apt-get") && -z $(command_exists "sudo") ]]; then
-        apt-get install "$1"
+        apt-get install "$apt"
     elif [[ -n $(command_exists "pacman") ]]; then
-        pacman -S "$1"
+        pacman --noconfirm -S "$pacman"
+    elif [[ -n $(command_exists "snap") && -n $(command_exists "sudo") ]]; then
+        sudo snap install "$snap"
+    elif [[ -n $(command_exists "snap") && -z $(command_exists "sudo") ]]; then
+        snap install "$snap"
     else
         echo "Could not find package manager to install package '$1'"
         exit 1
@@ -76,11 +133,11 @@ else
     [[ $update || -z $(command_exists "cmake") ]] && install_package cmake
     [[ $update || -z $(command_exists "unzip") ]] && install_package unzip
     [[ $update || -z $(command_exists "gettext") ]] && install_package gettext
-    [[ $update || -z $(command_exists "g++") ]] && install_package g++
-    [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build
-    [[ $update || -z $(command_exists "batcat") ]] && install_package bat
+    [[ $update || -z $(command_exists "g++") ]] && install_package g++ --pacman gcc
+    [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build --pacman ninja
+    [[ $update || -z $(command_exists "bat") && -z $(command_exists "batcat") ]] && install_package bat
     [[ $update || -z $(command_exists "gopls") ]] && install_package gopls
-    [[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp
+    [[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --pacman python-lsp-server --snap pylsp
     [[ $update || -z $(command_exists "shellcheck") ]] && install_package shellcheck
     [[ $update || -z $(command_exists "rg") ]] && install_package ripgrep
 fi
