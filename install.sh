@@ -154,12 +154,14 @@ fi
 [[ $update || -z $(command_exists "shfmt") ]] && curl -sS https://webi.sh/shfmt | sh
 
 if (clone_repo https://github.com/eclipse/eclipse.jdt.ls.git ~/.local/eclipse.jdt.ls); then
+    echo "Installing jdtls"
     mvn -f ~/.local/eclipse.jdt.ls clean verify -DskipTests=true
 fi
 
 clone_repo https://github.com/dgileadi/vscode-java-decompiler.git ~/.local/share/vscode-java-decompiler
 
 if (clone_repo https://github.com/LuaLS/lua-language-server ~/.local/share/lua-language-server); then
+    echo "Installing lua-language-server"
     cd ~/.local/share/lua-language-server || exit 1
     ./make.sh
     echo '#!/usr/bin/env bash
@@ -169,17 +171,20 @@ if (clone_repo https://github.com/LuaLS/lua-language-server ~/.local/share/lua-l
 fi
 
 if (clone_repo https://github.com/neovim/neovim.git ~/.local/neovim-install); then
+    echo "Installing neovim"
     cd ~/.local/neovim-install || exit 1
     make CMAKE_BUILD_TYPE=RelWithDebInfo
     sudo make install
 fi
 
 if (clone_repo https://github.com/microsoft/java-debug.git ~/.local/java-debug); then
+    echo "Installing java-debug"
     cd ~/.local/java-debug || exit 1
     ./mvnw clean install
 fi
 
 if (clone_repo https://github.com/microsoft/vscode-java-test.git ~/.local/vscode-java-test); then
+    echo "Installing vscode-java-test"
     cd ~/.local/vscode-java-test || exit 1
     npm install
     npm run build-plugin
