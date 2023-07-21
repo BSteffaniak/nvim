@@ -49,6 +49,8 @@ install_package() {
         sudo apt-get install "$1"
     elif [[ -n $(command_exists "apt-get") && -z $(command_exists "sudo") ]]; then
         apt-get install "$1"
+    elif [[ -n $(command_exists "pacman") ]]; then
+        pacman -S "$1"
     else
         echo "Could not find package manager to install package '$1'"
         exit 1
