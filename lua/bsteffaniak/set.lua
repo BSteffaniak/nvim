@@ -21,7 +21,7 @@ vim.api.nvim_create_autocmd(
   { "BufNewFile", "BufRead" },
   { pattern = "*.tsx", command = "runtime! ftplugin/typescriptreact.lua" }
 )
-vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = "*.flat", command = "set filetype=cs" })
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = "*.flat", command = "set filetype=flat" })
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = wrapping_files, command = "setlocal wrap" })
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = wrapping_files, command = "setlocal linebreak" })
 vim.api.nvim_create_autocmd({ "BufWrite" }, { command = "GitGutter" })
