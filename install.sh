@@ -146,7 +146,7 @@ else
     [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build --pacman ninja
     [[ $update || -z $(command_exists "bat") && -z $(command_exists "batcat") ]] && install_package bat
     [[ $update || -z $(command_exists "gopls") ]] && install_package gopls --yum golang-x-tools-gopls
-    [[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --pacman python-lsp-server --snap pylsp
+    [[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --pacman python-lsp-server --snap pylsp --yum python-lsp-server
     [[ $update || -z $(command_exists "shellcheck") ]] && install_package shellcheck
     [[ $update || -z $(command_exists "rg") ]] && install_package ripgrep
 fi
