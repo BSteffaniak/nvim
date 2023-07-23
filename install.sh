@@ -76,9 +76,11 @@ install_package() {
 
     [[ ${#args_list[@]} -gt 1 ]] && echo "Too many unnamed args passed to install_package" && exit 1
 
-    local apt=${args_list[0]}
-    local pacman=$apt
-    local snap=$apt
+    local default_pkg=${args_list[0]}
+    local apt=$default_pkg
+    local pacman=$default_pkg
+    local snap=$default_pkg
+    local yum=$default_pkg
 
     for key in "${!args_map[@]}"; do
         case $key in
@@ -90,6 +92,9 @@ install_package() {
             ;;
         snap)
             snap="${args_map[$key]}"
+            ;;
+        yum)
+            yum="${args_map[$key]}"
             ;;
         *)
             echo "Invalid argument '$key'"
@@ -108,6 +113,10 @@ install_package() {
         sudo snap install "$snap"
     elif [[ -n $(command_exists "snap") && -z $(command_exists "sudo") ]]; then
         snap install "$snap"
+    elif [[ -n $(command_exists "yum") && -n $(command_exists "sudo") ]]; then
+        sudo yum install "$yum"
+    elif [[ -n $(command_exists "yum") && -z $(command_exists "sudo") ]]; then
+        yum install "$yum"
     else
         echo "Could not find package manager to install package '$1'"
         exit 1
@@ -136,7 +145,7 @@ else
     [[ $update || -z $(command_exists "g++") ]] && install_package g++ --pacman gcc
     [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build --pacman ninja
     [[ $update || -z $(command_exists "bat") && -z $(command_exists "batcat") ]] && install_package bat
-    [[ $update || -z $(command_exists "gopls") ]] && install_package gopls
+    [[ $update || -z $(command_exists "gopls") ]] && install_package gopls --yum golang-x-tools-gopls
     [[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --pacman python-lsp-server --snap pylsp
     [[ $update || -z $(command_exists "shellcheck") ]] && install_package shellcheck
     [[ $update || -z $(command_exists "rg") ]] && install_package ripgrep
