@@ -22,16 +22,16 @@ clone_repo() {
         base_rev=$(git -C "$directory" merge-base @ '@{u}')
 
         if [[ "$local_rev" = "$remote_rev" ]]; then
-            echo "Already up-to-date"
+            echo "Already up-to-date at $directory"
             false
         elif [[ "$local_rev" = "$base_rev" ]]; then
             echo "Updating repo at $directory"
             git -C "$directory" pull
         elif [[ "$remote_rev" = "$base_rev" ]]; then
-            echo "Need to push"
+            echo "Need to push at $directory"
             false
         else
-            echo "Diverged"
+            echo "Diverged at $directory"
             false
         fi
     else
