@@ -142,6 +142,9 @@ else
     [[ $update || -z $(command_exists "cmake") ]] && install_package cmake
     [[ $update || -z $(command_exists "unzip") ]] && install_package unzip
     [[ $update || -z $(command_exists "gettext") ]] && install_package gettext
+    # Fedora does not install the static g++ libs with this, so a prerequisite might
+    # be to run something like `sudo yum install libstdc++-static.x86_64`
+    # https://github.com/numenta/nupic/issues/1901#issuecomment-97048452
     [[ $update || -z $(command_exists "g++") ]] && install_package g++ --pacman gcc
     [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build --pacman ninja
     [[ $update || -z $(command_exists "bat") && -z $(command_exists "batcat") ]] && install_package bat
