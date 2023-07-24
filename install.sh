@@ -4,6 +4,10 @@ command_exists() {
     command -v "$1"
 }
 
+SUDO=""
+
+[[ -n $(command_exists "sudo") ]] && SUDO="sudo"
+
 clone_repo() {
     local repo_url="$1"
     local directory="$2"
@@ -74,11 +78,8 @@ install_package_internal() {
 
     case $key in
     apt)
-        if [[ -n $(command_exists "apt-get") && -n $(command_exists "sudo") ]]; then
-            sudo apt-get install "$value"
-            return
-        elif [[ -n $(command_exists "apt-get") && -z $(command_exists "sudo") ]]; then
-            apt-get install "$value"
+        if [[ -n $(command_exists "apt-get") ]]; then
+            $SUDO apt-get install "$value"
             return
         fi
         ;;
@@ -89,20 +90,14 @@ install_package_internal() {
         fi
         ;;
     snap)
-        if [[ -n $(command_exists "snap") && -n $(command_exists "sudo") ]]; then
-            sudo snap install "$value"
-            return
-        elif [[ -n $(command_exists "snap") && -z $(command_exists "sudo") ]]; then
-            snap install "$value"
+        if [[ -n $(command_exists "snap") ]]; then
+            $SUDO snap install "$value"
             return
         fi
         ;;
     yum)
-        if [[ -n $(command_exists "yum") && -n $(command_exists "sudo") ]]; then
-            sudo yum install "$value"
-            return
-        elif [[ -n $(command_exists "yum") && -z $(command_exists "sudo") ]]; then
-            yum install "$value"
+        if [[ -n $(command_exists "yum") ]]; then
+            $SUDO yum install "$value"
             return
         fi
         ;;
@@ -186,11 +181,11 @@ update_lls() {
 build_lls() {
     echo "Installing lua-language-server"
     cd ~/.local/share/lua-language-server || exit 1
-    ./make.sh
+    ./make.sh || exit 1
     echo '#!/usr/bin/env bash
 
     ~/.local/share/lua-language-server/bin/lua-language-server' >~/.local/bin/lua-language-server
-    chmod +x ~/.local/bin/lua-language-server
+    chmod +x ~/.local/bin/lua-language-server || exit 1
 }
 
 update_neovim() {
@@ -200,12 +195,8 @@ update_neovim() {
 build_neovim() {
     echo "Installing neovim"
     cd ~/.local/neovim-install || exit 1
-    make CMAKE_BUILD_TYPE=RelWithDebInfo
-    if [[ -n $(command_exists "sudo") ]]; then
-        sudo make install
-    else
-        make install
-    fi
+    make CMAKE_BUILD_TYPE=RelWithDebInfo || exit 1
+    $SUDO make install || exit 1
 }
 
 update_jdtls() {
@@ -214,7 +205,7 @@ update_jdtls() {
 
 build_jdtls() {
     echo "Installing jdtls"
-    mvn -f ~/.local/eclipse.jdt.ls clean verify -DskipTests=true
+    mvn -f ~/.local/eclipse.jdt.ls clean verify -DskipTests=true || exit 1
 }
 
 update_java_debug() {
@@ -224,7 +215,7 @@ update_java_debug() {
 build_java_debug() {
     echo "Installing java-debug"
     cd ~/.local/java-debug || exit 1
-    ./mvnw clean install
+    ./mvnw clean install || exit 1
 }
 
 update_vscode_java_test() {
@@ -234,8 +225,8 @@ update_vscode_java_test() {
 build_vscode_java_test() {
     echo "Installing vscode-java-test"
     cd ~/.local/vscode-java-test || exit 1
-    npm install
-    npm run build-plugin
+    npm install || exit 1
+    npm run build-plugin || exit 1
 }
 
 update_vim_flat() {
