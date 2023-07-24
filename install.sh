@@ -112,7 +112,7 @@ install_package_internal() {
         ;;
     go)
         if [[ -n $(command_exists "go") ]]; then
-            go get "$value"
+            go install "$value"
             return
         fi
         ;;
