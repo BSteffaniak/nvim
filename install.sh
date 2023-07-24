@@ -338,8 +338,8 @@ if [[ "$(uname)" == "Darwin" ]]; then
     [[ $update || -z $(command_exists "shellcheck") ]] && brew install shellcheck
     [[ $update || -z $(command_exists "rg") ]] && brew install ripgrep
 else
-    [[ $update || -z $(command_exists "make") ]] && install_package make --scoop make --winget GnuWin32.Make
-    [[ $update || -z $(command_exists "cmake") ]] && install_package cmake --scoop cmake --pip cmake --winget Kitware.CMake
+    [[ $update || -z $(command_exists "make") ]] && install_package make --apt make --scoop make --winget GnuWin32.Make
+    [[ $update || -z $(command_exists "cmake") ]] && install_package cmake --apt cmake --scoop cmake --pip cmake --winget Kitware.CMake
     [[ $update || -z $(command_exists "unzip") ]] && install_package unzip
     [[ $update || -z $(command_exists "gettext") ]] && install_package gettext
     # Fedora does not install the static g++ libs with this, so a prerequisite might
