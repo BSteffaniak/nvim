@@ -67,32 +67,32 @@ parse_args() {
 }
 
 install_package() {
-    declare -A args_map
-    declare args_list
+    declare -A pkg_args_map
+    declare pkg_args_list
 
-    parse_args args_map args_list "$@"
+    parse_args pkg_args_map pkg_args_list "$@"
 
-    [[ ${#args_list[@]} -gt 1 ]] && echo "Too many unnamed args passed to install_package" && exit 1
+    [[ ${#pkg_args_list[@]} -gt 1 ]] && echo "Too many unnamed args passed to install_package" && exit 1
 
-    local default_pkg=${args_list[0]}
+    local default_pkg=${pkg_args_list[0]}
     local apt=$default_pkg
     local pacman=$default_pkg
     local snap=$default_pkg
     local yum=$default_pkg
 
-    for key in "${!args_map[@]}"; do
+    for key in "${!pkg_args_map[@]}"; do
         case $key in
         apt)
-            apt="${args_map[$key]}"
+            apt="${pkg_args_map[$key]}"
             ;;
         pacman)
-            pacman="${args_map[$key]}"
+            pacman="${pkg_args_map[$key]}"
             ;;
         snap)
-            snap="${args_map[$key]}"
+            snap="${pkg_args_map[$key]}"
             ;;
         yum)
-            yum="${args_map[$key]}"
+            yum="${pkg_args_map[$key]}"
             ;;
         *)
             echo "Invalid argument '$key'"
@@ -121,14 +121,88 @@ install_package() {
     fi
 }
 
+build_lls() {
+    echo "Installing lua-language-server"
+    cd ~/.local/share/lua-language-server || exit 1
+    ./make.sh
+    echo '#!/usr/bin/env bash
+
+    ~/.local/share/lua-language-server/bin/lua-language-server' >~/.local/bin/lua-language-server
+    chmod +x ~/.local/bin/lua-language-server
+}
+
+build_neovim() {
+    echo "Installing neovim"
+    cd ~/.local/neovim-install || exit 1
+    make CMAKE_BUILD_TYPE=RelWithDebInfo
+    sudo make install
+}
+
+build_jdtls() {
+    echo "Installing jdtls"
+    mvn -f ~/.local/eclipse.jdt.ls clean verify -DskipTests=true
+}
+
+build_java_debug() {
+    echo "Installing java-debug"
+    cd ~/.local/java-debug || exit 1
+    ./mvnw clean install
+}
+
+build_vscode_java_test() {
+    echo "Installing vscode-java-test"
+    cd ~/.local/vscode-java-test || exit 1
+    npm install
+    npm run build-plugin
+}
+
+declare -A args_map
+declare args_list
+
+parse_args args_map args_list "$@"
+
 init() {
-    declare -A args_map
-    declare args_list
-
-    parse_args args_map args_list "$@"
-
     for arg in "${args_list[@]}"; do
-        [[ "$arg" == "update" ]] && update=true
+        if [[ "$arg" == "update" ]]; then
+            update=true
+        else
+            echo "Invalid argument '$arg'"
+            exit 1
+        fi
+    done
+
+    for key in "${!args_map[@]}"; do
+        case $key in
+        build)
+            local target="${args_map[$key]}"
+            case $target in
+            lls | lua-language-server)
+                build_lls
+                ;;
+            nvim | neovim)
+                build_neovim
+                ;;
+            jdtls)
+                build_jdtls
+                ;;
+            java-debug)
+                build_java_debug
+                ;;
+            vscode-java-test)
+                build_vscode_java_test
+                ;;
+            *)
+                echo "Invalid argument '$target'"
+                exit 1
+                ;;
+            esac
+            exit 0
+            ;;
+        *)
+            echo "Invalid argument '$key'"
+            exit 1
+            ;;
+        esac
     done
 }
 
@@ -178,40 +252,25 @@ fi
 [[ $update || -z $(command_exists "shfmt") ]] && curl -sS https://webi.sh/shfmt | sh
 
 if (clone_repo https://github.com/eclipse/eclipse.jdt.ls.git ~/.local/eclipse.jdt.ls); then
-    echo "Installing jdtls"
-    mvn -f ~/.local/eclipse.jdt.ls clean verify -DskipTests=true
+    build_jdtls
 fi
 
 clone_repo https://github.com/dgileadi/vscode-java-decompiler.git ~/.local/share/vscode-java-decompiler
 
 if (clone_repo https://github.com/LuaLS/lua-language-server ~/.local/share/lua-language-server); then
-    echo "Installing lua-language-server"
-    cd ~/.local/share/lua-language-server || exit 1
-    ./make.sh
-    echo '#!/usr/bin/env bash
-
-    ~/.local/share/lua-language-server/bin/lua-language-server' >~/.local/bin/lua-language-server
-    chmod +x ~/.local/bin/lua-language-server
+    build_lls
 fi
 
 if (clone_repo https://github.com/neovim/neovim.git ~/.local/neovim-install); then
-    echo "Installing neovim"
-    cd ~/.local/neovim-install || exit 1
-    make CMAKE_BUILD_TYPE=RelWithDebInfo
-    sudo make install
+    build_neovim
 fi
 
 if (clone_repo https://github.com/microsoft/java-debug.git ~/.local/java-debug); then
-    echo "Installing java-debug"
-    cd ~/.local/java-debug || exit 1
-    ./mvnw clean install
+    build_java_debug
 fi
 
 if (clone_repo https://github.com/microsoft/vscode-java-test.git ~/.local/vscode-java-test); then
-    echo "Installing vscode-java-test"
-    cd ~/.local/vscode-java-test || exit 1
-    npm install
-    npm run build-plugin
+    build_vscode_java_test
 fi
 
 clone_repo https://github.com/FlatLang/vim-flat.git ~/.local/vim-flat
