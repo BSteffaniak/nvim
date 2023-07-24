@@ -1,7 +1,5 @@
 #!/bin/bash
 
-[[ "$1" == "update" ]] && update=true
-
 command_exists() {
     command -v "$1"
 }
@@ -123,6 +121,19 @@ install_package() {
     fi
 }
 
+init() {
+    declare -A args_map
+    declare args_list
+
+    parse_args args_map args_list "$@"
+
+    for arg in "${args_list[@]}"; do
+        [[ "$arg" == "update" ]] && update=true
+    done
+}
+
+init "$@"
+
 [[ -z $(command_exists "mvn") ]] && dependency_required "mvn"
 [[ -z $(command_exists "git") ]] && dependency_required "git"
 [[ -z $(command_exists "curl") ]] && dependency_required "curl"
@@ -154,6 +165,7 @@ else
     [[ $update || -z $(command_exists "rg") ]] && install_package ripgrep
 fi
 
+[[ $update || -z $(command_exists "tsc") ]] && npm i -g typescript
 [[ $update || -z $(command_exists "typescript-language-server") ]] && npm i -g typescript-language-server
 [[ $update || -z $(command_exists "prettier") ]] && npm i -g prettier
 [[ $update || -z $(command_exists "prettierd") ]] && npm i -g @fsouza/prettierd
