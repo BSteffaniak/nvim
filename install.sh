@@ -43,12 +43,13 @@ dependency_required() {
 }
 
 parse_args() {
-    declare -n local_args_map="$1"
-    declare -n local_args_list="$2"
+    declare -n local_args_keys="$1"
+    declare -n local_args_values="$2"
+    declare -n local_args_list="$3"
     local skipped=0
     local setting_key
     for var in "$@"; do
-        [[ $skipped -lt 2 ]] && {
+        [[ $skipped -lt 3 ]] && {
             ((skipped++))
             continue
         }
@@ -60,7 +61,8 @@ parse_args() {
             local_args_list+=("$var")
         else
             # shellcheck disable=SC2034
-            local_args_map["$setting_key"]="$var"
+            local_args_keys+=("$setting_key")
+            local_args_values+=("$var")
             unset setting_key
         fi
     done
@@ -82,7 +84,7 @@ install_package_internal() {
         ;;
     pacman)
         if [[ -n $(command_exists "pacman") ]]; then
-            pacman --noconfirm -S "$value"
+            pacman -S "$value"
             return
         fi
         ;;
@@ -122,6 +124,18 @@ install_package_internal() {
             return
         fi
         ;;
+    winget)
+        if [[ -n $(command_exists "winget") ]]; then
+            winget install -e --id "$value"
+            return
+        fi
+        ;;
+    choco)
+        if [[ -n $(command_exists "choco") ]]; then
+            choco install "$value"
+            return
+        fi
+        ;;
     *)
         echo "Invalid argument '$key'"
         exit 1
@@ -132,26 +146,31 @@ install_package_internal() {
 }
 
 install_package() {
-    declare -A pkg_args_map
+    declare pkg_args_keys
+    declare pkg_args_values
     declare pkg_args_list
 
-    parse_args pkg_args_map pkg_args_list "$@"
+    parse_args pkg_args_keys pkg_args_values pkg_args_list "$@"
 
     [[ ${#pkg_args_list[@]} -gt 1 ]] && echo "Too many unnamed args passed to install_package" && exit 1
 
-    local default_pkg=${pkg_args_list[0]}
-
-    for key in "${!pkg_args_map[@]}"; do
-        (install_package_internal "$key" "${pkg_args_map[$key]}") && return
+    for index in "${!pkg_args_keys[@]}"; do
+        (install_package_internal "${pkg_args_keys[$index]}" "${pkg_args_values[$index]}") && return
     done
 
-    (install_package_internal "apt" "$default_pkg") && return
-    (install_package_internal "pacman" "$default_pkg") && return
-    (install_package_internal "snap" "$default_pkg") && return
-    (install_package_internal "yum" "$default_pkg") && return
-    (install_package_internal "scoop" "$default_pkg") && return
-    (install_package_internal "go" "$default_pkg") && return
-    (install_package_internal "pip" "$default_pkg") && return
+    if [[ ${#pkg_args_list[@]} -gt 0 ]]; then
+        local default_pkg=${pkg_args_list[0]}
+
+        (install_package_internal "apt" "$default_pkg") && return
+        (install_package_internal "pacman" "$default_pkg") && return
+        (install_package_internal "snap" "$default_pkg") && return
+        (install_package_internal "yum" "$default_pkg") && return
+        (install_package_internal "scoop" "$default_pkg") && return
+        (install_package_internal "go" "$default_pkg") && return
+        (install_package_internal "pip" "$default_pkg") && return
+        (install_package_internal "winget" "$default_pkg") && return
+        (install_package_internal "choco" "$default_pkg") && return
+    fi
     echo "Could not find package manager to install package '$1'"
     exit 1
 }
@@ -223,10 +242,11 @@ update_vim_flat() {
     clone_repo https://github.com/FlatLang/vim-flat.git ~/.local/vim-flat
 }
 
-declare -A args_map
+declare args_keys
+declare args_values
 declare args_list
 
-parse_args args_map args_list "$@"
+parse_args args_keys args_values args_list "$@"
 
 init() {
     local updated=false
@@ -252,7 +272,7 @@ init() {
                 update_vscode_java_test && build_vscode_java_test
                 ;;
             *)
-                echo "Invalid argument '$target'"
+                echo "Invalid argument '$arg'"
                 exit 1
                 ;;
             esac
@@ -265,11 +285,12 @@ init() {
 
     $updated && exit 0
 
-    for key in "${!args_map[@]}"; do
+    for index in "${!args_keys[@]}"; do
+        local key="${args_keys[$index]}"
+        local value="${args_values[$index]}"
         case $key in
         build)
-            local target="${args_map[$key]}"
-            case $target in
+            case $value in
             lls | lua-language-server)
                 build_lls
                 ;;
@@ -286,7 +307,7 @@ init() {
                 build_vscode_java_test
                 ;;
             *)
-                echo "Invalid argument '$target'"
+                echo "Invalid argument '$value'"
                 exit 1
                 ;;
             esac
@@ -317,15 +338,15 @@ if [[ "$(uname)" == "Darwin" ]]; then
     [[ $update || -z $(command_exists "shellcheck") ]] && brew install shellcheck
     [[ $update || -z $(command_exists "rg") ]] && brew install ripgrep
 else
-    [[ $update || -z $(command_exists "make") ]] && install_package make
-    [[ $update || -z $(command_exists "cmake") ]] && install_package cmake
+    [[ $update || -z $(command_exists "make") ]] && install_package make --scoop make --winget GnuWin32.Make
+    [[ $update || -z $(command_exists "cmake") ]] && install_package cmake --scoop cmake --pip cmake --winget Kitware.CMake
     [[ $update || -z $(command_exists "unzip") ]] && install_package unzip
     [[ $update || -z $(command_exists "gettext") ]] && install_package gettext
     # Fedora does not install the static g++ libs with this, so a prerequisite might
     # be to run something like `sudo yum install libstdc++-static.x86_64`
     # https://github.com/numenta/nupic/issues/1901#issuecomment-97048452
-    [[ $update || -z $(command_exists "g++") ]] && install_package g++ --apt g++ --pacman gcc --scoop gcc
-    [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build --apt ninja-build --pacman ninja --scoop ninja
+    [[ $update || -z $(command_exists "g++") && -z $(command_exists "gcc") ]] && install_package g++ --apt g++ --pacman gcc --scoop gcc
+    [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build --apt ninja-build --pacman ninja --scoop ninja --winget Ninja-build.Ninja
     [[ $update || -z $(command_exists "bat") && -z $(command_exists "batcat") ]] && install_package bat
     [[ $update || -z $(command_exists "gopls") ]] && install_package gopls --apt gopls --yum golang-x-tools-gopls --go "golang.org/x/tools/gopls@latest"
     [[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --apt python3-pylsp --pacman python-lsp-server --snap pylsp --yum python-lsp-server --pip python-lsp-server
