@@ -156,6 +156,14 @@ install_package() {
     exit 1
 }
 
+update_vscode_java_decompiler() {
+    clone_repo https://github.com/dgileadi/vscode-java-decompiler.git ~/.local/share/vscode-java-decompiler
+}
+
+update_lls() {
+    clone_repo https://github.com/LuaLS/lua-language-server ~/.local/share/lua-language-server
+}
+
 build_lls() {
     echo "Installing lua-language-server"
     cd ~/.local/share/lua-language-server || exit 1
@@ -164,6 +172,10 @@ build_lls() {
 
     ~/.local/share/lua-language-server/bin/lua-language-server' >~/.local/bin/lua-language-server
     chmod +x ~/.local/bin/lua-language-server
+}
+
+update_neovim() {
+    clone_repo https://github.com/neovim/neovim.git ~/.local/neovim-install
 }
 
 build_neovim() {
@@ -177,15 +189,27 @@ build_neovim() {
     fi
 }
 
+update_jdtls() {
+    clone_repo https://github.com/eclipse/eclipse.jdt.ls.git ~/.local/eclipse.jdt.ls
+}
+
 build_jdtls() {
     echo "Installing jdtls"
     mvn -f ~/.local/eclipse.jdt.ls clean verify -DskipTests=true
+}
+
+update_java_debug() {
+    clone_repo https://github.com/microsoft/java-debug.git ~/.local/java-debug
 }
 
 build_java_debug() {
     echo "Installing java-debug"
     cd ~/.local/java-debug || exit 1
     ./mvnw clean install
+}
+
+update_vscode_java_test() {
+    clone_repo https://github.com/microsoft/vscode-java-test.git ~/.local/vscode-java-test
 }
 
 build_vscode_java_test() {
@@ -195,20 +219,51 @@ build_vscode_java_test() {
     npm run build-plugin
 }
 
+update_vim_flat() {
+    clone_repo https://github.com/FlatLang/vim-flat.git ~/.local/vim-flat
+}
+
 declare -A args_map
 declare args_list
 
 parse_args args_map args_list "$@"
 
 init() {
+    local updated=false
+
     for arg in "${args_list[@]}"; do
         if [[ "$arg" == "update" ]]; then
             update=true
+        elif $update; then
+            case $arg in
+            lls | lua-language-server)
+                update_lls && build_lls
+                ;;
+            nvim | neovim)
+                update_neovim && build_neovim
+                ;;
+            jdtls)
+                update_jdtls && build_jdtls
+                ;;
+            java-debug)
+                update_java_debug && build_java_debug
+                ;;
+            vscode-java-test)
+                update_vscode_java_test && build_vscode_java_test
+                ;;
+            *)
+                echo "Invalid argument '$target'"
+                exit 1
+                ;;
+            esac
+            updated=true
         else
             echo "Invalid argument '$arg'"
             exit 1
         fi
     done
+
+    $updated && exit 0
 
     for key in "${!args_map[@]}"; do
         case $key in
@@ -271,7 +326,7 @@ else
     # https://github.com/numenta/nupic/issues/1901#issuecomment-97048452
     [[ $update || -z $(command_exists "g++") ]] && install_package g++ --apt g++ --pacman gcc --scoop gcc
     [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build --apt ninja-build --pacman ninja --scoop ninja
-    [[ $update || -z $(command_exists "bat") && -z $(command_exists "batcat") ]] && install_package  bat
+    [[ $update || -z $(command_exists "bat") && -z $(command_exists "batcat") ]] && install_package bat
     [[ $update || -z $(command_exists "gopls") ]] && install_package gopls --apt gopls --yum golang-x-tools-gopls --go "golang.org/x/tools/gopls@latest"
     [[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --apt python3-pylsp --pacman python-lsp-server --snap pylsp --yum python-lsp-server --pip python-lsp-server
     [[ $update || -z $(command_exists "shellcheck") ]] && install_package shellcheck
@@ -290,29 +345,29 @@ fi
 [[ $update || -z $(command_exists "fixjson") ]] && npm i -g fixjson
 [[ $update || -z $(command_exists "shfmt") ]] && curl -sS https://webi.sh/shfmt | sh
 
-if (clone_repo https://github.com/eclipse/eclipse.jdt.ls.git ~/.local/eclipse.jdt.ls); then
+if (update_jdtls); then
     build_jdtls
 fi
 
-clone_repo https://github.com/dgileadi/vscode-java-decompiler.git ~/.local/share/vscode-java-decompiler
+update_vscode_java_decompiler
 
-if (clone_repo https://github.com/LuaLS/lua-language-server ~/.local/share/lua-language-server); then
+if (update_lls); then
     build_lls
 fi
 
-if (clone_repo https://github.com/neovim/neovim.git ~/.local/neovim-install); then
+if (update_neovim); then
     build_neovim
 fi
 
-if (clone_repo https://github.com/microsoft/java-debug.git ~/.local/java-debug); then
+if (update_java_debug); then
     build_java_debug
 fi
 
-if (clone_repo https://github.com/microsoft/vscode-java-test.git ~/.local/vscode-java-test); then
+if (update_vscode_java_test); then
     build_vscode_java_test
 fi
 
-clone_repo https://github.com/FlatLang/vim-flat.git ~/.local/vim-flat
+update_vim_flat
 
 if [[ ! -f ~/.config/nvim/syntax/flat.vim ]]; then
     mkdir -p ~/.config/nvim/syntax/
