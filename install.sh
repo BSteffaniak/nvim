@@ -79,6 +79,9 @@ install_package() {
     local pacman=$default_pkg
     local snap=$default_pkg
     local yum=$default_pkg
+    local scoop=$default_pkg
+    local go=$default_pkg
+    local pip=$default_pkg
 
     for key in "${!pkg_args_map[@]}"; do
         case $key in
@@ -93,6 +96,15 @@ install_package() {
             ;;
         yum)
             yum="${pkg_args_map[$key]}"
+            ;;
+        scoop)
+            scoop="${pkg_args_map[$key]}"
+            ;;
+        go)
+            go="${pkg_args_map[$key]}"
+            ;;
+        pip)
+            pip="${pkg_args_map[$key]}"
             ;;
         *)
             echo "Invalid argument '$key'"
@@ -115,6 +127,12 @@ install_package() {
         sudo yum install "$yum"
     elif [[ -n $(command_exists "yum") && -z $(command_exists "sudo") ]]; then
         yum install "$yum"
+    elif [[ -n $(command_exists "scoop") ]]; then
+        scoop install "$scoop"
+    elif [[ -n $(command_exists "go") ]]; then
+        go get "$go"
+    elif [[ -n $(command_exists "pip") ]]; then
+        pip install "$pip"
     else
         echo "Could not find package manager to install package '$1'"
         exit 1
@@ -230,11 +248,11 @@ else
     # Fedora does not install the static g++ libs with this, so a prerequisite might
     # be to run something like `sudo yum install libstdc++-static.x86_64`
     # https://github.com/numenta/nupic/issues/1901#issuecomment-97048452
-    [[ $update || -z $(command_exists "g++") ]] && install_package g++ --pacman gcc
-    [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build --pacman ninja
+    [[ $update || -z $(command_exists "g++") ]] && install_package g++ --pacman gcc --scoop gcc
+    [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build --pacman ninja --scoop ninja
     [[ $update || -z $(command_exists "bat") && -z $(command_exists "batcat") ]] && install_package bat
-    [[ $update || -z $(command_exists "gopls") ]] && install_package gopls --yum golang-x-tools-gopls
-    [[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --pacman python-lsp-server --snap pylsp --yum python-lsp-server
+    [[ $update || -z $(command_exists "gopls") ]] && install_package gopls --yum golang-x-tools-gopls --go "golang.org/x/tools/gopls@latest"
+    [[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --pacman python-lsp-server --snap pylsp --yum python-lsp-server --pip python-lsp-server
     [[ $update || -z $(command_exists "shellcheck") ]] && install_package shellcheck
     [[ $update || -z $(command_exists "rg") ]] && install_package ripgrep
 fi
