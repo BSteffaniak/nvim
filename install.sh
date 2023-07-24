@@ -66,6 +66,71 @@ parse_args() {
     done
 }
 
+install_package_internal() {
+    local key=$1
+    local value=$2
+
+    case $key in
+    apt)
+        if [[ -n $(command_exists "apt-get") && -n $(command_exists "sudo") ]]; then
+            sudo apt-get install "$value"
+            return
+        elif [[ -n $(command_exists "apt-get") && -z $(command_exists "sudo") ]]; then
+            apt-get install "$value"
+            return
+        fi
+        ;;
+    pacman)
+        if [[ -n $(command_exists "pacman") ]]; then
+            pacman --noconfirm -S "$value"
+            return
+        fi
+        ;;
+    snap)
+        if [[ -n $(command_exists "snap") && -n $(command_exists "sudo") ]]; then
+            sudo snap install "$value"
+            return
+        elif [[ -n $(command_exists "snap") && -z $(command_exists "sudo") ]]; then
+            snap install "$value"
+            return
+        fi
+        ;;
+    yum)
+        if [[ -n $(command_exists "yum") && -n $(command_exists "sudo") ]]; then
+            sudo yum install "$value"
+            return
+        elif [[ -n $(command_exists "yum") && -z $(command_exists "sudo") ]]; then
+            yum install "$value"
+            return
+        fi
+        ;;
+    scoop)
+        if [[ -n $(command_exists "scoop") ]]; then
+            scoop install "$value"
+            return
+        fi
+        ;;
+    go)
+        if [[ -n $(command_exists "go") ]]; then
+            go get "$value"
+            return
+        fi
+        ;;
+    pip)
+        if [[ -n $(command_exists "pip") ]]; then
+            pip install "$value"
+            return
+        fi
+        ;;
+    *)
+        echo "Invalid argument '$key'"
+        exit 1
+        ;;
+    esac
+
+    false
+}
+
 install_package() {
     declare -A pkg_args_map
     declare pkg_args_list
@@ -75,68 +140,20 @@ install_package() {
     [[ ${#pkg_args_list[@]} -gt 1 ]] && echo "Too many unnamed args passed to install_package" && exit 1
 
     local default_pkg=${pkg_args_list[0]}
-    local apt=$default_pkg
-    local pacman=$default_pkg
-    local snap=$default_pkg
-    local yum=$default_pkg
-    local scoop=$default_pkg
-    local go=$default_pkg
-    local pip=$default_pkg
 
     for key in "${!pkg_args_map[@]}"; do
-        case $key in
-        apt)
-            apt="${pkg_args_map[$key]}"
-            ;;
-        pacman)
-            pacman="${pkg_args_map[$key]}"
-            ;;
-        snap)
-            snap="${pkg_args_map[$key]}"
-            ;;
-        yum)
-            yum="${pkg_args_map[$key]}"
-            ;;
-        scoop)
-            scoop="${pkg_args_map[$key]}"
-            ;;
-        go)
-            go="${pkg_args_map[$key]}"
-            ;;
-        pip)
-            pip="${pkg_args_map[$key]}"
-            ;;
-        *)
-            echo "Invalid argument '$key'"
-            exit 1
-            ;;
-        esac
+        (install_package_internal "$key" "${pkg_args_map[$key]}") && return
     done
 
-    if [[ -n $(command_exists "apt-get") && -n $(command_exists "sudo") ]]; then
-        sudo apt-get install "$apt"
-    elif [[ -n $(command_exists "apt-get") && -z $(command_exists "sudo") ]]; then
-        apt-get install "$apt"
-    elif [[ -n $(command_exists "pacman") ]]; then
-        pacman --noconfirm -S "$pacman"
-    elif [[ -n $(command_exists "snap") && -n $(command_exists "sudo") ]]; then
-        sudo snap install "$snap"
-    elif [[ -n $(command_exists "snap") && -z $(command_exists "sudo") ]]; then
-        snap install "$snap"
-    elif [[ -n $(command_exists "yum") && -n $(command_exists "sudo") ]]; then
-        sudo yum install "$yum"
-    elif [[ -n $(command_exists "yum") && -z $(command_exists "sudo") ]]; then
-        yum install "$yum"
-    elif [[ -n $(command_exists "scoop") ]]; then
-        scoop install "$scoop"
-    elif [[ -n $(command_exists "go") ]]; then
-        go get "$go"
-    elif [[ -n $(command_exists "pip") ]]; then
-        pip install "$pip"
-    else
-        echo "Could not find package manager to install package '$1'"
-        exit 1
-    fi
+    (install_package_internal "apt" "$default_pkg") && return
+    (install_package_internal "pacman" "$default_pkg") && return
+    (install_package_internal "snap" "$default_pkg") && return
+    (install_package_internal "yum" "$default_pkg") && return
+    (install_package_internal "scoop" "$default_pkg") && return
+    (install_package_internal "go" "$default_pkg") && return
+    (install_package_internal "pip" "$default_pkg") && return
+    echo "Could not find package manager to install package '$1'"
+    exit 1
 }
 
 build_lls() {
@@ -153,7 +170,11 @@ build_neovim() {
     echo "Installing neovim"
     cd ~/.local/neovim-install || exit 1
     make CMAKE_BUILD_TYPE=RelWithDebInfo
-    sudo make install
+    if [[ -n $(command_exists "sudo") ]]; then
+        sudo make install
+    else
+        make install
+    fi
 }
 
 build_jdtls() {
@@ -248,11 +269,11 @@ else
     # Fedora does not install the static g++ libs with this, so a prerequisite might
     # be to run something like `sudo yum install libstdc++-static.x86_64`
     # https://github.com/numenta/nupic/issues/1901#issuecomment-97048452
-    [[ $update || -z $(command_exists "g++") ]] && install_package g++ --pacman gcc --scoop gcc
-    [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build --pacman ninja --scoop ninja
-    [[ $update || -z $(command_exists "bat") && -z $(command_exists "batcat") ]] && install_package bat
-    [[ $update || -z $(command_exists "gopls") ]] && install_package gopls --yum golang-x-tools-gopls --go "golang.org/x/tools/gopls@latest"
-    [[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --pacman python-lsp-server --snap pylsp --yum python-lsp-server --pip python-lsp-server
+    [[ $update || -z $(command_exists "g++") ]] && install_package g++ --apt g++ --pacman gcc --scoop gcc
+    [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build --apt ninja-build --pacman ninja --scoop ninja
+    [[ $update || -z $(command_exists "bat") && -z $(command_exists "batcat") ]] && install_package  bat
+    [[ $update || -z $(command_exists "gopls") ]] && install_package gopls --apt gopls --yum golang-x-tools-gopls --go "golang.org/x/tools/gopls@latest"
+    [[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --apt python3-pylsp --pacman python-lsp-server --snap pylsp --yum python-lsp-server --pip python-lsp-server
     [[ $update || -z $(command_exists "shellcheck") ]] && install_package shellcheck
     [[ $update || -z $(command_exists "rg") ]] && install_package ripgrep
 fi
