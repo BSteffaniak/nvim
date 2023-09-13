@@ -2,6 +2,7 @@ require("bsteffaniak/savesession")
 
 local key_opts = { noremap = true }
 
+vim.keymap.set({ "n", "v" }, "gm", "m")
 vim.keymap.set({ "n", "v" }, "m", "n")
 vim.keymap.set({ "n", "v" }, "M", "N")
 vim.keymap.set({ "n", "v" }, "h", "<left>", key_opts)
