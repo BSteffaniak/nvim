@@ -1,5 +1,4 @@
-if Rust_initialized then return end
-Rust_initialized = true
+vim.g.rustfmt_autosave = 1
 
 local lsp = require("bsteffaniak.lsp")
 local on_attach = lsp.on_attach
