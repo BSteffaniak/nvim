@@ -154,8 +154,6 @@ local servers = {
 require("config.lsp.null-ls").setup(lsp_on_attach)
 require("config.lsp.installer").setup(servers)
 
-vim.g.rustfmt_autosave = 1
-
 -- empty setup using defaults
 require("nvim-tree").setup()
 
