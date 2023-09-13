@@ -42,7 +42,10 @@ function M.lsp_on_attach(client, bufnr)
 end
 
 function M.init_formatting(client, bufnr)
-  if client.supports_method("textDocument/formatting") then
+  if
+      client.supports_method("textDocument/formatting")
+      or client.server_capabilities.documentFormattingProvider ~= nil
+  then
     vim.keymap.set("n", "<Leader>a", function()
       vim.lsp.buf.format({
         bufnr = vim.api.nvim_get_current_buf(),
@@ -53,11 +56,13 @@ function M.init_formatting(client, bufnr)
     end, { buffer = bufnr, desc = "[lsp] format" })
   end
 
-  if client.supports_method("textDocument/rangeFormatting") then
+  if
+      client.supports_method("textDocument/rangeFormatting")
+      or client.server_capabilities.documentRangeFormattingProvider ~= nil
+  then
     vim.keymap.set("x", "<Leader>a", function()
       vim.lsp.buf.format({
         bufnr = vim.api.nvim_get_current_buf(),
-        range = get_range(),
         filter = function(c)
           return c.name ~= "tsserver"
         end,
