@@ -133,4 +133,7 @@ require("lazy").setup({
   {
     "ray-x/lsp_signature.nvim",
   },
+
+  "tpope/vim-dadbod",
+  "kristijanhusak/vim-dadbod-ui"
 })
