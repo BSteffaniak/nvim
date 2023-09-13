@@ -77,6 +77,18 @@ install_package_internal() {
     local value=$2
 
     case $key in
+    npm)
+        if [[ -n $(command_exists "npm") ]]; then
+            npm i -g "$value"
+            return
+        fi
+        ;;
+    brew)
+        if [[ -n $(command_exists "brew") ]]; then
+            brew install "$value"
+            return
+        fi
+        ;;
     apt)
         if [[ -n $(command_exists "apt-get") ]]; then
             $SUDO apt-get install "$value"
@@ -156,6 +168,8 @@ install_package() {
     if [[ ${#pkg_args_list[@]} -gt 0 ]]; then
         local default_pkg=${pkg_args_list[0]}
 
+        (install_package_internal "npm" "$default_pkg") && return
+        (install_package_internal "brew" "$default_pkg") && return
         (install_package_internal "apt" "$default_pkg") && return
         (install_package_internal "pacman" "$default_pkg") && return
         (install_package_internal "snap" "$default_pkg") && return
@@ -319,43 +333,32 @@ init "$@"
 [[ -z $(command_exists "curl") ]] && dependency_required "curl"
 [[ -z $(command_exists "npm") ]] && dependency_required "npm"
 
-if [[ "$(uname)" == "Darwin" ]]; then
-    [[ -z $(command_exists "brew") ]] && dependency_required "brew"
-
-    [[ $update || -z $(command_exists "ninja") ]] && brew install ninja
-    [[ $update || -z $(command_exists "bat") ]] && brew install bat
-    [[ $update || -z $(command_exists "gopls") ]] && brew install gopls
-    [[ $update || -z $(command_exists "pylsp") ]] && brew install pylsp
-    [[ $update || -z $(command_exists "shellcheck") ]] && brew install shellcheck
-    [[ $update || -z $(command_exists "rg") ]] && brew install ripgrep
-else
-    [[ $update || -z $(command_exists "make") ]] && install_package make --apt make --scoop make --winget GnuWin32.Make
-    [[ $update || -z $(command_exists "cmake") ]] && install_package cmake --apt cmake --scoop cmake --pip cmake --winget Kitware.CMake
-    [[ $update || -z $(command_exists "unzip") ]] && install_package unzip
-    [[ $update || -z $(command_exists "gettext") ]] && install_package gettext
-    # Fedora does not install the static g++ libs with this, so a prerequisite might
-    # be to run something like `sudo yum install libstdc++-static.x86_64`
-    # https://github.com/numenta/nupic/issues/1901#issuecomment-97048452
-    [[ $update || -z $(command_exists "g++") && -z $(command_exists "gcc") ]] && install_package g++ --apt g++ --pacman gcc --scoop gcc
-    [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build --apt ninja-build --pacman ninja --scoop ninja --winget Ninja-build.Ninja
-    [[ $update || -z $(command_exists "bat") && -z $(command_exists "batcat") ]] && install_package bat
-    [[ $update || -z $(command_exists "gopls") ]] && install_package gopls --apt gopls --yum golang-x-tools-gopls --go "golang.org/x/tools/gopls@latest"
-    [[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --apt python3-pylsp --pacman python-lsp-server --snap pylsp --yum python-lsp-server --pip python-lsp-server
-    [[ $update || -z $(command_exists "shellcheck") ]] && install_package shellcheck
-    [[ $update || -z $(command_exists "rg") ]] && install_package ripgrep
-fi
-
-[[ $update || -z $(command_exists "tsc") ]] && npm i -g typescript
-[[ $update || -z $(command_exists "typescript-language-server") ]] && npm i -g typescript-language-server
-[[ $update || -z $(command_exists "prettier") ]] && npm i -g prettier
-[[ $update || -z $(command_exists "prettierd") ]] && npm i -g @fsouza/prettierd
-[[ $update || -z $(command_exists "diagnostic-languageserver") ]] && npm i -g diagnostic-languageserver
-[[ $update || -z $(command_exists "vscode-json-language-server") ]] && npm i -g vscode-langservers-extracted
-[[ $update || -z $(command_exists "bash-language-server") ]] && npm i -g bash-language-server
-[[ $update || -z $(command_exists "write-good") ]] && npm i -g write-good
-[[ $update || -z $(command_exists "stylua") ]] && npm i -g @johnnymorganz/stylua-bin
-[[ $update || -z $(command_exists "fixjson") ]] && npm i -g fixjson
+[[ $update || -z $(command_exists "make") ]] && install_package make --apt make --scoop make --winget GnuWin32.Make
+[[ $update || -z $(command_exists "cmake") ]] && install_package cmake --apt cmake --scoop cmake --pip cmake --winget Kitware.CMake
+[[ $update || -z $(command_exists "unzip") ]] && install_package unzip
+[[ $update || -z $(command_exists "gettext") ]] && install_package gettext
+# Fedora does not install the static g++ libs with this, so a prerequisite might
+# be to run something like `sudo yum install libstdc++-static.x86_64`
+# https://github.com/numenta/nupic/issues/1901#issuecomment-97048452
+[[ $update || -z $(command_exists "g++") && -z $(command_exists "gcc") ]] && install_package g++ --apt g++ --pacman gcc --scoop gcc
+[[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build --brew ninja --apt ninja-build --pacman ninja --scoop ninja --winget Ninja-build.Ninja
+[[ $update || -z $(command_exists "bat") && -z $(command_exists "batcat") ]] && install_package bat --brew bat
+[[ $update || -z $(command_exists "gopls") ]] && install_package gopls --brew gopls --apt gopls --yum golang-x-tools-gopls --go "golang.org/x/tools/gopls@latest"
+[[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --brew pylsp --apt python3-pylsp --pacman python-lsp-server --snap pylsp --yum python-lsp-server --pip python-lsp-server
+[[ $update || -z $(command_exists "shellcheck") ]] && install_package shellcheck --brew shellcheck
+[[ $update || -z $(command_exists "rg") ]] && install_package ripgrep --brew ripgrep
+[[ $update || -z $(command_exists "tsc") ]] && install_package --npm typescript
+[[ $update || -z $(command_exists "typescript-language-server") ]] && install_package --npm typescript-language-server
+[[ $update || -z $(command_exists "prettier") ]] && install_package --npm prettier
+[[ $update || -z $(command_exists "prettierd") ]] && install_package --npm @fsouza/prettierd
+[[ $update || -z $(command_exists "diagnostic-languageserver") ]] && install_package --npm diagnostic-languageserver
+[[ $update || -z $(command_exists "vscode-json-language-server") ]] && install_package --npm vscode-langservers-extracted
+[[ $update || -z $(command_exists "bash-language-server") ]] && install_package --npm bash-language-server
+[[ $update || -z $(command_exists "write-good") ]] && install_package --npm write-good
+[[ $update || -z $(command_exists "stylua") ]] && install_package --npm @johnnymorganz/stylua-bin
+[[ $update || -z $(command_exists "fixjson") ]] && install_package --npm fixjson
 [[ $update || -z $(command_exists "shfmt") ]] && curl -sS https://webi.sh/shfmt | sh
+[[ $update || -z $(command_exists "eslint_d") ]] && install_package --npm eslint_d
 
 if (update_jdtls); then
     build_jdtls
