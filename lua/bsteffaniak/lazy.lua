@@ -117,7 +117,7 @@ require("lazy").setup({
 
   "folke/zen-mode.nvim",
   {
-    "declancm/maximize.nvim",
+    "BSteffaniak/maximize.nvim",
     init = function()
       require("maximize").setup()
     end,
