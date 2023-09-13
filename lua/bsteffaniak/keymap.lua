@@ -42,6 +42,10 @@ vim.keymap.set({ "n", "v" }, "<Leader>.[", ":GitGutterPrevHunk<Enter>", key_opts
 vim.keymap.set("n", "H", "<c-o>", key_opts)
 vim.keymap.set("n", "S", "<c-i>", key_opts)
 vim.keymap.set("v", "<Enter>", '"*y', key_opts)
+vim.keymap.set({ "n", "v" }, "g#", function()
+  vim.cmd(vim.api.nvim_replace_termcodes("normal gm`", true, true, true))
+  vim.cmd("keepjumps normal! #``")
+end)
 
 local maximize = require("maximize")
 
