@@ -206,6 +206,12 @@ update_neovim() {
     clone_repo https://github.com/neovim/neovim.git ~/.local/neovim-install
 }
 
+clean_neovim() {
+    echo "Cleaning neovim"
+    cd ~/.local/neovim-install || exit 1
+    $SUDO make clean || exit 1
+}
+
 build_neovim() {
     echo "Installing neovim"
     cd ~/.local/neovim-install || exit 1
@@ -294,6 +300,18 @@ init() {
         local key="${args_keys[$index]}"
         local value="${args_values[$index]}"
         case $key in
+        clean)
+            case $value in
+            nvim | neovim)
+                clean_neovim
+                ;;
+            *)
+                echo "Invalid argument '$value'"
+                exit 1
+                ;;
+            esac
+            exit 0
+            ;;
         build)
             case $value in
             lls | lua-language-server)
