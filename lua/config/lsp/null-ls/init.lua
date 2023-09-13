@@ -30,7 +30,7 @@ local sources = {
   -- diagnostics
   b.diagnostics.write_good,
   -- b.diagnostics.markdownlint,
-  -- b.diagnostics.eslint_d,
+  b.diagnostics.eslint_d,
   b.diagnostics.flake8,
   b.diagnostics.tsc,
   with_root_file(b.diagnostics.selene, "selene.toml"),
