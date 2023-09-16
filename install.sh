@@ -377,6 +377,9 @@ init "$@"
 [[ $update || -z $(command_exists "fixjson") ]] && install_package --npm fixjson
 [[ $update || -z $(command_exists "shfmt") ]] && curl -sS https://webi.sh/shfmt | sh
 [[ $update || -z $(command_exists "eslint_d") ]] && install_package --npm eslint_d
+[[ $update || -z $(command_exists "isort") ]] && install_package --pip isort
+[[ $update || -z $(command_exists "black") ]] && install_package --pip black
+[[ $update || -z $(command_exists "pyright") ]] && install_package --pip pyright
 
 if (update_jdtls); then
     build_jdtls

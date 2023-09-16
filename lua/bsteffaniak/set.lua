@@ -119,6 +119,7 @@ local servers = {
   html = {},
   jsonls = {},
   rust_analyzer = {},
+  pyright = {},
   lua_ls = {
     filetypes = { "lua" },
     settings = {
