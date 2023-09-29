@@ -352,6 +352,7 @@ init "$@"
 [[ -z $(command_exists "npm") ]] && dependency_required "npm"
 
 [[ $update || -z $(command_exists "make") ]] && install_package make --apt make --scoop make --winget GnuWin32.Make
+[[ $update || -z $(command_exists "gettext") ]] && install_package gettext
 [[ $update || -z $(command_exists "cmake") ]] && install_package cmake --apt cmake --scoop cmake --pip cmake --winget Kitware.CMake
 [[ $update || -z $(command_exists "unzip") ]] && install_package unzip
 [[ $update || -z $(command_exists "gettext") ]] && install_package gettext
