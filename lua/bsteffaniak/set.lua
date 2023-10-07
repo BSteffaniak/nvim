@@ -12,6 +12,8 @@ vim.bo.fileformat = "unix"
 
 vim.opt.wrap = false
 vim.opt.relativenumber = true
+vim.opt.spelllang = 'en_us'
+vim.opt.spell = true
 
 vim.g.sessions_home_directory = os.getenv("NVIM_SESSIONS_HOME_DIRECTORY")
 
@@ -22,6 +24,7 @@ vim.api.nvim_create_autocmd(
   { pattern = "*.tsx", command = "runtime! ftplugin/typescriptreact.lua" }
 )
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = "*.flat", command = "set filetype=flat" })
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = "*", command = "set spelloptions=camel" })
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = wrapping_files, command = "setlocal wrap" })
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = wrapping_files, command = "setlocal linebreak" })
 vim.api.nvim_create_autocmd({ "BufWrite" }, { command = "GitGutter" })
