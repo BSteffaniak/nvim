@@ -1,10 +1,5 @@
 local M = {}
 
--- local protocol = require('vim.lsp.protocol')
-
-local butil = require("bsteffaniak.util")
-local get_range = butil.get_range
-
 function Format()
   vim.lsp.buf.format({
     bufnr = vim.api.nvim_get_current_buf(),
