@@ -46,6 +46,7 @@ vim.keymap.set({ "n", "v" }, "g#", function()
   vim.cmd(vim.api.nvim_replace_termcodes("normal gm`", true, true, true))
   vim.cmd("keepjumps normal! #``")
 end)
+vim.keymap.set("n", "YY", '"*yy', key_opts)
 
 local maximize = require("maximize")
 
