@@ -140,6 +140,13 @@ install_package_internal() {
             return
         fi
         ;;
+    pipx)
+        if [[ -n $(command_exists "pipx") ]]; then
+            echo "pipx install \"$value\""
+            pipx install "$value"
+            return
+        fi
+        ;;
     winget)
         if [[ -n $(command_exists "winget") ]]; then
             echo "winget install -e --id \"$value\""
@@ -188,6 +195,7 @@ install_package() {
         (install_package_internal "scoop" "$default_pkg") && return
         (install_package_internal "go" "$default_pkg") && return
         (install_package_internal "pip" "$default_pkg") && return
+        (install_package_internal "pipx" "$default_pkg") && return
         (install_package_internal "winget" "$default_pkg") && return
         (install_package_internal "choco" "$default_pkg") && return
     fi
@@ -364,7 +372,7 @@ init "$@"
 
 [[ $update || -z $(command_exists "make") ]] && install_package make --apt make --scoop make --winget GnuWin32.Make
 [[ $update || -z $(command_exists "gettext") ]] && install_package gettext
-[[ $update || -z $(command_exists "cmake") ]] && install_package cmake --apt cmake --scoop cmake --pip cmake --winget Kitware.CMake
+[[ $update || -z $(command_exists "cmake") ]] && install_package cmake --apt cmake --pacman cmake --pipx cmake --pip cmake --scoop cmake --winget Kitware.CMake
 [[ $update || -z $(command_exists "unzip") ]] && install_package unzip
 [[ $update || -z $(command_exists "gettext") ]] && install_package gettext
 # Fedora does not install the static g++ libs with this, so a prerequisite might
@@ -374,7 +382,7 @@ init "$@"
 [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build --brew ninja --apt ninja-build --pacman ninja --scoop ninja --winget Ninja-build.Ninja
 [[ $update || -z $(command_exists "bat") && -z $(command_exists "batcat") ]] && install_package bat --brew bat
 [[ $update || -z $(command_exists "gopls") ]] && install_package gopls --brew gopls --apt gopls --yum golang-x-tools-gopls --go "golang.org/x/tools/gopls@latest"
-[[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --brew pylsp --apt python3-pylsp --pacman python-lsp-server --snap pylsp --yum python-lsp-server --pip python-lsp-server
+[[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --brew pylsp --apt python3-pylsp --pacman python-lsp-server --snap pylsp --yum python-lsp-server --pipx python-lsp-server --pip python-lsp-server
 [[ $update || -z $(command_exists "shellcheck") ]] && install_package shellcheck --brew shellcheck
 [[ $update || -z $(command_exists "rg") ]] && install_package ripgrep --brew ripgrep
 [[ $update || -z $(command_exists "tsc") ]] && install_package --npm typescript
@@ -389,9 +397,9 @@ init "$@"
 [[ $update || -z $(command_exists "fixjson") ]] && install_package --npm fixjson
 [[ $update || -z $(command_exists "shfmt") ]] && curl -sS https://webi.sh/shfmt | sh
 [[ $update || -z $(command_exists "eslint_d") ]] && install_package --npm eslint_d
-[[ $update || -z $(command_exists "isort") ]] && install_package --pip isort
-[[ $update || -z $(command_exists "black") ]] && install_package --pip black
-[[ $update || -z $(command_exists "pyright") ]] && install_package --pip pyright
+[[ $update || -z $(command_exists "isort") ]] && install_package --pipx isort --pip isort
+[[ $update || -z $(command_exists "black") ]] && install_package --pipx black --pip black
+[[ $update || -z $(command_exists "pyright") ]] && install_package --pipx pyright --pip pyright
 
 if (update_jdtls); then
     build_jdtls
