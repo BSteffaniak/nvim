@@ -384,7 +384,7 @@ init "$@"
 [[ $update || -z $(command_exists "gopls") ]] && install_package gopls --brew gopls --apt gopls --yum golang-x-tools-gopls --go "golang.org/x/tools/gopls@latest"
 [[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --brew pylsp --apt python3-pylsp --pacman python-lsp-server --snap pylsp --yum python-lsp-server --pipx python-lsp-server --pip python-lsp-server
 [[ $update || -z $(command_exists "shellcheck") ]] && install_package shellcheck --brew shellcheck
-[[ $update || -z $(command_exists "rg") ]] && install_package ripgrep --brew ripgrep
+[[ $update || -z $(command_exists "rg") ]] && install_package ripgrep --brew ripgrep --pacman ripgrep
 [[ $update || -z $(command_exists "tsc") ]] && install_package --npm typescript
 [[ $update || -z $(command_exists "typescript-language-server") ]] && install_package --npm typescript-language-server
 [[ $update || -z $(command_exists "prettier") ]] && install_package --npm prettier
