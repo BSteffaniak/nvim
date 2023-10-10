@@ -79,66 +79,77 @@ install_package_internal() {
     case $key in
     npm)
         if [[ -n $(command_exists "npm") ]]; then
+            echo "npm i -g \"$value\""
             npm i -g "$value"
             return
         fi
         ;;
     brew)
         if [[ -n $(command_exists "brew") ]]; then
+            echo "brew install \"$value\""
             brew install "$value"
             return
         fi
         ;;
     apt)
         if [[ -n $(command_exists "apt-get") ]]; then
+            echo "$SUDO apt-get install \"$value\""
             $SUDO apt-get install "$value"
             return
         fi
         ;;
     pacman)
         if [[ -n $(command_exists "pacman") ]]; then
-            pacman -S "$value"
+            echo "$SUDO pacman -S \"$value\""
+            $SUDO pacman -S "$value"
             return
         fi
         ;;
     snap)
         if [[ -n $(command_exists "snap") ]]; then
+            echo "$SUDO snap install \"$value\""
             $SUDO snap install "$value"
             return
         fi
         ;;
     yum)
         if [[ -n $(command_exists "yum") ]]; then
+            echo "$SUDO yum install \"$value\""
             $SUDO yum install "$value"
             return
         fi
         ;;
     scoop)
         if [[ -n $(command_exists "scoop") ]]; then
+            echo "scoop install \"$value\""
             scoop install "$value"
             return
         fi
         ;;
     go)
         if [[ -n $(command_exists "go") ]]; then
+            echo "go install \"$value\""
             go install "$value"
             return
         fi
         ;;
     pip)
         if [[ -n $(command_exists "pip") ]]; then
+            echo "pip install \"$value\""
             pip install "$value"
             return
         fi
         ;;
     winget)
         if [[ -n $(command_exists "winget") ]]; then
+            echo "winget install -e --id \"$value\""
             winget install -e --id "$value"
             return
         fi
         ;;
     choco)
         if [[ -n $(command_exists "choco") ]]; then
+            echo "choco install \"$value\""
             choco install "$value"
             return
         fi
