@@ -380,7 +380,7 @@ init "$@"
 # https://github.com/numenta/nupic/issues/1901#issuecomment-97048452
 [[ $update || -z $(command_exists "g++") && -z $(command_exists "gcc") ]] && install_package g++ --apt g++ --pacman gcc --scoop gcc
 [[ $update || -z $(command_exists "ninja") ]] && install_package ninja-build --brew ninja --apt ninja-build --pacman ninja --scoop ninja --winget Ninja-build.Ninja
-[[ $update || -z $(command_exists "bat") && -z $(command_exists "batcat") ]] && install_package bat --brew bat
+[[ $update || -z $(command_exists "bat") && -z $(command_exists "batcat" || command_exists "bat") ]] && install_package bat --brew bat
 [[ $update || -z $(command_exists "gopls") ]] && install_package gopls --brew gopls --apt gopls --yum golang-x-tools-gopls --go "golang.org/x/tools/gopls@latest"
 [[ $update || -z $(command_exists "pylsp") ]] && install_package python3-pylsp --brew pylsp --apt python3-pylsp --pacman python-lsp-server --snap pylsp --yum python-lsp-server --pipx python-lsp-server --pip python-lsp-server
 [[ $update || -z $(command_exists "shellcheck") ]] && install_package shellcheck --brew shellcheck
