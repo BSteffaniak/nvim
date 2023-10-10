@@ -186,10 +186,10 @@ install_package() {
     if [[ ${#pkg_args_list[@]} -gt 0 ]]; then
         local default_pkg=${pkg_args_list[0]}
 
-        (install_package_internal "npm" "$default_pkg") && return
-        (install_package_internal "brew" "$default_pkg") && return
         (install_package_internal "apt" "$default_pkg") && return
         (install_package_internal "pacman" "$default_pkg") && return
+        (install_package_internal "npm" "$default_pkg") && return
+        (install_package_internal "brew" "$default_pkg") && return
         (install_package_internal "snap" "$default_pkg") && return
         (install_package_internal "yum" "$default_pkg") && return
         (install_package_internal "scoop" "$default_pkg") && return
