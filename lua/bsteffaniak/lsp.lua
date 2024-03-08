@@ -9,6 +9,8 @@ function Format()
   })
 end
 
+vim.g.show_inlays = {}
+
 function M.lsp_on_attach(client, bufnr)
   M.init_formatting(client, bufnr)
 
@@ -34,6 +36,16 @@ function M.lsp_on_attach(client, bufnr)
   vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
   vim.keymap.set("n", "gL", "<cmd>Telescope diagnostics<CR>", opts)
   vim.keymap.set("n", "gt", "<cmd>TroubleToggle<CR>", opts)
+
+  vim.g.show_inlays[bufnr] = true
+  vim.lsp.inlay_hint(bufnr, vim.g.show_inlays[bufnr])
+
+  vim.keymap.set({ "n", "i", "v" }, "<c-Space>", function()
+    local current_buf = vim.api.nvim_get_current_buf()
+    vim.g.show_inlays[current_buf] = not vim.g.show_inlays[current_buf]
+    local show = vim.g.show_inlays[current_buf]
+    vim.lsp.inlay_hint(current_buf, show)
+  end, opts)
 
   -- format on save
   if client.server_capabilities.documentFormattingProvider then

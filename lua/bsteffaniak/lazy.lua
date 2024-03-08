@@ -57,7 +57,13 @@ require("lazy").setup({
   -- Snippet engine
   "hrsh7th/vim-vsnip",
   -- Adds extra functionality over rust analyzer
-  "simrat39/rust-tools.nvim",
+  -- "simrat39/rust-tools.nvim",
+
+  {
+    "mrcjkb/rustaceanvim",
+    version = "^4", -- Recommended
+    ft = { "rust" },
+  },
 
   -- Optional
   "nvim-lua/popup.nvim",
@@ -65,7 +71,7 @@ require("lazy").setup({
   "nvim-telescope/telescope.nvim",
   "wincent/ferret",
 
-  "rust-lang/rust.vim",
+  -- "rust-lang/rust.vim",
 
   { "junegunn/fzf",    build = "./install --all" },
   { "junegunn/fzf.vim" },

@@ -1,12 +1,11 @@
 vim.g.rustfmt_autosave = 1
 
 local lsp = require("bsteffaniak.lsp")
-local on_attach = lsp.on_attach
 
 -- Configure LSP through rust-tools.nvim plugin.
 -- rust-tools will configure and enable certain LSP features for us.
 -- See https://github.com/simrat39/rust-tools.nvim#configuration
-local opts = {
+vim.g.rustaceanvim = {
   tools = {
     runnables = {
       use_telescope = true,
@@ -23,8 +22,14 @@ local opts = {
   -- these override the defaults set by rust-tools.nvim
   -- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
   server = {
+    cmd = {
+      "ra-multiplex",
+    },
     -- on_attach is a callback called when the language server attachs to the buffer
-    on_attach = on_attach,
+    on_attach = function(client, bufnr)
+      -- you can also put keymaps in here
+      lsp.lsp_on_attach(client, bufnr)
+    end,
     settings = {
       -- to enable rust-analyzer settings visit:
       -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
@@ -37,5 +42,3 @@ local opts = {
     },
   },
 }
-
-require("rust-tools").setup(opts)
