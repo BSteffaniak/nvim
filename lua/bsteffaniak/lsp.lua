@@ -6,8 +6,11 @@ function Format()
     filter = function(c)
       return c.name ~= "tsserver"
     end,
+    timeout_ms = 1000,
   })
 end
+
+local lsp_signature = require("lsp_signature")
 
 vim.g.show_inlays = {}
 
@@ -25,11 +28,9 @@ function M.lsp_on_attach(client, bufnr)
   vim.keymap.set("n", "[i", "<cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.INFO})<CR>", opts)
   vim.keymap.set("n", "]i", "<cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.INFO})<CR>", opts)
   vim.keymap.set("n", "ga", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-  vim.keymap.set("n", "K", "<cmp>lua require('lsp_signature').toggle_float_win()<CR>", opts)
-  vim.keymap.set("n", "gr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>", opts)
+  vim.keymap.set("n", "K", lsp_signature.toggle_float_win, opts)
   vim.keymap.set("n", "gh", "<cmd>Telescope lsp_references<CR>", opts)
-  vim.keymap.set("i", "<C-m>", "<cmp>lua require('lsp_signature').toggle_float_win()<CR>", opts)
-  vim.keymap.set("n", "gp", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", opts)
+  vim.keymap.set({ "i", "n", "v" }, "<c-Enter>", lsp_signature.toggle_float_win, opts)
   vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
   vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
   vim.keymap.set("n", "gR", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
@@ -59,18 +60,11 @@ end
 
 function M.init_formatting(client, bufnr)
   if client.supports_method("textDocument/formatting") then
-    vim.keymap.set("n", "<Leader>a", function()
-      vim.lsp.buf.format({
-        bufnr = vim.api.nvim_get_current_buf(),
-        filter = function(c)
-          return c.name ~= "tsserver"
-        end,
-      })
-    end, { buffer = bufnr, desc = "[lsp] format" })
+    vim.keymap.set("n", "<Leader>a", Format, { buffer = bufnr, desc = "[lsp] format" })
   end
 
   if client.supports_method("textDocument/rangeFormatting") then
-    vim.keymap.set("x", "<Leader>a", Format, { buffer = bufnr, desc = "[lsp] format" })
+    vim.keymap.set("x", "<Leader>a", Format, { buffer = bufnr, desc = "[lsp] range format" })
   end
 end
 
