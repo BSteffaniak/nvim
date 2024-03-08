@@ -26,6 +26,8 @@ local sources = {
   b.formatting.fixjson,
   b.formatting.black.with({ extra_args = { "--fast" } }),
   b.formatting.isort,
+  b.formatting.taplo,
+  -- b.formatting.dprint.with({ filetypes = { "toml" } }),
 
   -- diagnostics
   b.diagnostics.write_good,

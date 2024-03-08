@@ -400,6 +400,8 @@ init "$@"
 [[ $update || -z $(command_exists "isort") ]] && install_package --pipx isort --pip isort
 [[ $update || -z $(command_exists "black") ]] && install_package --pipx black --pip black
 [[ $update || -z $(command_exists "pyright") ]] && install_package --pipx pyright --pip pyright
+# [[ $update || -z $(command_exists "dprint") ]] && install_package --npm dprint --scoop dprint
+[[ $update || -z $(command_exists "taplo") ]] && install_package --npm @taplo/cli
 
 if (update_jdtls); then
     build_jdtls
