@@ -30,6 +30,7 @@ local sources = {
   -- b.formatting.dprint.with({ filetypes = { "toml" } }),
 
   -- diagnostics
+  b.diagnostics.tidy,
   b.diagnostics.write_good,
   -- b.diagnostics.markdownlint,
   b.diagnostics.eslint_d,
