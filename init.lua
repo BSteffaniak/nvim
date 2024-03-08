@@ -21,6 +21,8 @@ vim.g.loaded_netrwPlugin = 1
 -- set termguicolors to enable highlight groups
 vim.opt.termguicolors = true
 
+vim.g.mkdp_echo_preview_url = 1
+
 vim.g.astro_typescript = "enable"
 
 require("bsteffaniak.lazy")
