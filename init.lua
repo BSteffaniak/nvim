@@ -21,6 +21,11 @@ vim.g.loaded_netrwPlugin = 1
 -- set termguicolors to enable highlight groups
 vim.opt.termguicolors = true
 
+function OpenMarkdownPreview(url)
+  vim.cmd("silent ! firefox --new-window " .. url)
+end
+
+-- vim.g.mkdp_browserfunc = "OpenMarkdownPreview"
 vim.g.mkdp_echo_preview_url = 1
 
 vim.g.astro_typescript = "enable"
