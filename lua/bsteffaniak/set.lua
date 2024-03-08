@@ -115,7 +115,7 @@ telescope.setup({
   },
 })
 
-require("goto-preview").setup({})
+-- require("goto-preview").setup({})
 
 require("lsp_signature").setup({})
 

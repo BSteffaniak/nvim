@@ -7,17 +7,17 @@ require("lazy").setup({
 
   "lewis6991/gitsigns.nvim",
 
-  "folke/tokyonight.nvim",
-  "morhetz/gruvbox",
-  "olimorris/onedarkpro.nvim",
-  "kyazdani42/blue-moon",
-  "ayu-theme/ayu-vim",
-  "sainnhe/sonokai",
+  -- "folke/tokyonight.nvim",
+  -- "morhetz/gruvbox",
+  -- "olimorris/onedarkpro.nvim",
+  -- "kyazdani42/blue-moon",
+  -- "ayu-theme/ayu-vim",
+  -- "sainnhe/sonokai",
   "srcery-colors/srcery-vim",
-  "fcpg/vim-fahrenheit",
-  "jdsimcoe/hyper.vim",
-  "yearofmoo/vim-darkmate",
-  "tomasiser/vim-code-dark",
+  -- "fcpg/vim-fahrenheit",
+  -- "jdsimcoe/hyper.vim",
+  -- "yearofmoo/vim-darkmate",
+  -- "tomasiser/vim-code-dark",
 
   {
     "folke/trouble.nvim",
@@ -66,8 +66,8 @@ require("lazy").setup({
   },
 
   -- Optional
-  "nvim-lua/popup.nvim",
-  "nvim-lua/plenary.nvim",
+  -- "nvim-lua/popup.nvim",
+  -- "nvim-lua/plenary.nvim",
   "nvim-telescope/telescope.nvim",
   "wincent/ferret",
 
@@ -81,15 +81,53 @@ require("lazy").setup({
     dependencies = {
       "nvim-tree/nvim-web-devicons", -- optional, for file icons
     },
-    tag = "nightly",                 -- optional, updated every week. (see issue #1193)
+    tag = "nightly",              -- optional, updated every week. (see issue #1193)
   },
 
   "airblade/vim-gitgutter",
 
-  { "mhanberg/elixir.nvim",            dependencies = { "nvim-lua/plenary.nvim" } },
+  { "mhanberg/elixir.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   "elixir-editors/vim-elixir",
 
-  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    dependencies = {
+      { "luckasRanarison/tree-sitter-hypr" },
+      "nvim-treesitter/playground",
+    },
+    build = ":TSUpdate",
+    config = function()
+      require("nvim-treesitter.configs").setup({
+        playground = {
+          enable = true,
+          disable = {},
+          updatetime = 25,    -- Debounced time for highlighting nodes in the playground from source code
+          persist_queries = false, -- Whether the query persists across vim sessions
+          keybindings = {
+            toggle_query_editor = "o",
+            toggle_hl_groups = "i",
+            toggle_injected_languages = "t",
+            toggle_anonymous_nodes = "a",
+            toggle_language_display = "I",
+            focus_language = "f",
+            unfocus_language = "F",
+            update = "R",
+            goto_node = "<cr>",
+            show_help = "?",
+          },
+        },
+      })
+      local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+      parser_config.hypr = {
+        install_info = {
+          url = "https://github.com/luckasRanarison/tree-sitter-hypr",
+          files = { "src/parser.c" },
+          branch = "master",
+        },
+        filetype = "hypr",
+      }
+    end,
+  },
 
   {
     "creativenull/diagnosticls-configs-nvim",
@@ -122,19 +160,19 @@ require("lazy").setup({
             {
               "filename",
               file_status = true, -- displays file status (readonly status, modified status)
-              path = 1,   -- 0 = just filename, 1 = relative path, 2 = absolute path
+              path = 1,    -- 0 = just filename, 1 = relative path, 2 = absolute path
             },
           },
         },
       })
-    end
+    end,
   },
 
   "rrethy/vim-illuminate",
 
   "wesQ3/vim-windowswap",
 
-  "folke/zen-mode.nvim",
+  -- "folke/zen-mode.nvim",
   {
     "BSteffaniak/maximize.nvim",
     init = function()
@@ -142,12 +180,12 @@ require("lazy").setup({
     end,
   },
 
-  {
-    "rmagatti/goto-preview",
-    init = function()
-      require("goto-preview").setup({})
-    end,
-  },
+  -- {
+  --   "rmagatti/goto-preview",
+  --   init = function()
+  --     require("goto-preview").setup({})
+  --   end,
+  -- },
 
   {
     "ray-x/lsp_signature.nvim",
@@ -157,4 +195,8 @@ require("lazy").setup({
   "kristijanhusak/vim-dadbod-ui",
 
   "wuelnerdotexe/vim-astro",
+
+  "HerringtonDarkholme/yats.vim",
+
+  "ionide/Ionide-vim",
 })
