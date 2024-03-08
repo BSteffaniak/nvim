@@ -12,7 +12,7 @@ vim.bo.fileformat = "unix"
 
 vim.opt.wrap = false
 vim.opt.relativenumber = true
-vim.opt.spelllang = 'en_us'
+vim.opt.spelllang = "en_us"
 vim.opt.spell = true
 
 vim.g.sessions_home_directory = os.getenv("NVIM_SESSIONS_HOME_DIRECTORY")
