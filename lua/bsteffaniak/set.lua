@@ -29,6 +29,15 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = wrapping_fi
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = wrapping_files, command = "setlocal linebreak" })
 vim.api.nvim_create_autocmd({ "BufWrite" }, { command = "GitGutter" })
 
+-- local register = require("nvim-treesitter.lanugage").register
+vim.treesitter.language.register("astro", "tsx")
+
+vim.filetype.add({
+  extension = {
+    astro = "astro",
+  },
+})
+
 require("mason").setup({
   ui = {
     icons = {
@@ -118,6 +127,7 @@ local lsp = require("bsteffaniak.lsp")
 local lsp_on_attach = lsp.lsp_on_attach
 
 local servers = {
+  astro = {},
   gopls = {},
   html = {},
   jsonls = {},

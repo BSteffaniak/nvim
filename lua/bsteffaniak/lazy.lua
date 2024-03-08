@@ -148,5 +148,7 @@ require("lazy").setup({
   },
 
   "tpope/vim-dadbod",
-  "kristijanhusak/vim-dadbod-ui"
+  "kristijanhusak/vim-dadbod-ui",
+
+  "wuelnerdotexe/vim-astro",
 })
