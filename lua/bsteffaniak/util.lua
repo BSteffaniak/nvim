@@ -1,5 +1,17 @@
 local M = {}
 
+function M.get_home_directory()
+  local home_dir = os.getenv("HOME")
+
+  if home_dir == nil or home_dir == "" then
+    home_dir = os.getenv("userprofile")
+  end
+
+  return home_dir
+end
+
+M.home_dir = M.get_home_directory()
+
 function M.split(inputstr, sep)
   local t = {}
   for str in string.gmatch(inputstr, "([^" .. sep .. "]+)") do

@@ -5,21 +5,9 @@ vim.opt_local.shiftwidth = 4
 local util = require("bsteffaniak.util")
 local lsp = require("bsteffaniak.lsp")
 
-local function get_home_directory()
-  local home_dir = os.getenv("HOME")
-
-  if home_dir == nil or home_dir == "" then
-    home_dir = os.getenv("userprofile")
-  end
-
-  return home_dir
-end
-
-local home_dir = get_home_directory()
-
 local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
 local project_name = util.sanitize_location(util.cwd)
-local workspace_dir = util.join_paths(home_dir, ".jdtls_nvim", project_name)
+local workspace_dir = util.join_paths(util.home_dir, ".jdtls_nvim", project_name)
 local root_dir = require("jdtls.setup").find_root(root_markers)
 local jdtls = require("jdtls")
 local extendedClientCapabilities = jdtls.extendedClientCapabilities
@@ -29,7 +17,7 @@ local jdtls_config = {
   on_attach = lsp.lsp_on_attach,
   cmd = {
     util.join_paths(
-      home_dir,
+      util.home_dir,
       ".local",
       "eclipse.jdt.ls",
       "org.eclipse.jdt.ls.product",
