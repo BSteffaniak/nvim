@@ -38,12 +38,16 @@ function M.lsp_on_attach(client, bufnr)
   vim.keymap.set("n", "gL", "<cmd>Telescope diagnostics<CR>", opts)
   vim.keymap.set("n", "gt", "<cmd>TroubleToggle<CR>", opts)
 
-  vim.g.show_inlays[bufnr] = true
+  local show_inlays = vim.g.show_inlays
+  show_inlays[bufnr] = true
+  vim.g.show_inlays = show_inlays
   vim.lsp.inlay_hint.enable(bufnr, vim.g.show_inlays[bufnr])
 
   vim.keymap.set({ "n", "i", "v" }, "<c-Space>", function()
     local current_buf = vim.api.nvim_get_current_buf()
-    vim.g.show_inlays[current_buf] = not vim.g.show_inlays[current_buf]
+    local show_inlays = vim.g.show_inlays
+    show_inlays[current_buf] = not show_inlays[current_buf]
+    vim.g.show_inlays = show_inlays
     local show = vim.g.show_inlays[current_buf]
     vim.lsp.inlay_hint.enable(current_buf, show)
   end, opts)
