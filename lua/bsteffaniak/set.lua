@@ -169,13 +169,11 @@ local servers = {
 require("config.lsp.null-ls").setup(lsp_on_attach)
 require("config.lsp.installer").setup(servers)
 
--- empty setup using defaults
-require("nvim-tree").setup()
-
--- OR setup with some options
 require("nvim-tree").setup({
   sort_by = "case_sensitive",
   on_attach = function(bufnr)
+    local api = require("nvim-tree.api")
+    api.config.mappings.default_on_attach(bufnr)
     vim.keymap.del("n", "s", { buffer = bufnr })
   end,
   renderer = {
