@@ -39,13 +39,13 @@ function M.lsp_on_attach(client, bufnr)
   vim.keymap.set("n", "gt", "<cmd>TroubleToggle<CR>", opts)
 
   vim.g.show_inlays[bufnr] = true
-  vim.lsp.inlay_hint(bufnr, vim.g.show_inlays[bufnr])
+  vim.lsp.inlay_hint.enable(bufnr, vim.g.show_inlays[bufnr])
 
   vim.keymap.set({ "n", "i", "v" }, "<c-Space>", function()
     local current_buf = vim.api.nvim_get_current_buf()
     vim.g.show_inlays[current_buf] = not vim.g.show_inlays[current_buf]
     local show = vim.g.show_inlays[current_buf]
-    vim.lsp.inlay_hint(current_buf, show)
+    vim.lsp.inlay_hint.enable(current_buf, show)
   end, opts)
 
   -- format on save
