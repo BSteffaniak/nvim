@@ -147,6 +147,13 @@ local servers = {
   tsserver = {
     cmd = { "typescript-language-server", "--stdio" },
   },
+  kotlin_language_server = {
+    cmd = { "kotlin-language-server" },
+    init_options = {
+      storagePath = util.join_paths(util.home_dir, ".local", "share", "nvim-kotlin-language-server"),
+    },
+    on_attach = lsp_on_attach,
+  },
   svelte = {},
   bashls = {},
   clangd = {},

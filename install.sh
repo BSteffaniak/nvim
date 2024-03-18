@@ -221,6 +221,20 @@ build_lls() {
     chmod +x ~/.local/bin/lua-language-server || exit 1
 }
 
+update_kotlin_language_server() {
+    clone_repo https://github.com/fwcd/kotlin-language-server ~/.local/share/kotlin-language-server
+}
+
+build_kotlin_language_server() {
+    echo "Installing kotlin-language-server"
+    cd ~/.local/share/kotlin-language-server || exit 1
+    ./gradlew :server:installDist || exit 1
+    echo '#!/usr/bin/env bash
+
+    ~/.local/share/kotlin-language-server/server/build/install/server/bin/kotlin-language-server' >~/.local/bin/kotlin-language-server
+    chmod +x ~/.local/bin/kotlin-language-server || exit 1
+}
+
 update_neovim() {
     clone_repo https://github.com/neovim/neovim.git ~/.local/neovim-install
 }
@@ -290,6 +304,9 @@ init() {
             lls | lua-language-server)
                 update_lls && build_lls
                 ;;
+            kotlin-language-server)
+                update_kotlin_language_server && build_kotlin_language_server
+                ;;
             nvim | neovim)
                 update_neovim && build_neovim
                 ;;
@@ -335,6 +352,9 @@ init() {
             case $value in
             lls | lua-language-server)
                 build_lls
+                ;;
+            kotlin-language-server)
+                build_kotlin_language_server
                 ;;
             nvim | neovim)
                 build_neovim
@@ -411,6 +431,10 @@ update_vscode_java_decompiler
 
 if (update_lls); then
     build_lls
+fi
+
+if (update_kotlin_language_server); then
+    build_kotlin_language_server
 fi
 
 if (update_neovim); then
