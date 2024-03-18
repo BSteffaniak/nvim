@@ -281,10 +281,11 @@ parse_args args_keys args_values args_list "$@"
 init() {
     local updated=false
 
+    # ./install.sh update lls
     for arg in "${args_list[@]}"; do
         if [[ "$arg" == "update" ]]; then
             update=true
-        elif $update; then
+        elif [[ "$update" == "true" ]]; then
             case $arg in
             lls | lua-language-server)
                 update_lls && build_lls
@@ -307,14 +308,13 @@ init() {
                 ;;
             esac
             updated=true
-        else
-            echo "Invalid argument '$arg'"
-            exit 1
         fi
     done
 
     $updated && exit 0
 
+    # ./install.sh --build lls
+    # ./install.sh --clean nvim
     for index in "${!args_keys[@]}"; do
         local key="${args_keys[$index]}"
         local value="${args_values[$index]}"
