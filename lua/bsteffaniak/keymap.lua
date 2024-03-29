@@ -48,6 +48,19 @@ vim.keymap.set({ "n", "v" }, "g#", function()
 end)
 vim.keymap.set("n", "YY", '"*yy', key_opts)
 
+vim.keymap.set({ "n", "v" }, "t", function()
+  return vim.v.count > 0 and "j" or "gj"
+end, { expr = true, noremap = true })
+vim.keymap.set({ "n", "v" }, "n", function()
+  return vim.v.count > 0 and "k" or "gk"
+end, { expr = true, noremap = true })
+vim.keymap.set({ "n", "v" }, "j", function()
+  return vim.v.count > 0 and "j" or "gj"
+end, { expr = true, noremap = true })
+vim.keymap.set({ "n", "v" }, "k", function()
+  return vim.v.count > 0 and "k" or "gk"
+end, { expr = true, noremap = true })
+
 local maximize = require("maximize")
 
 vim.keymap.set({ "n", "v" }, "<Leader><Tab>", function()
