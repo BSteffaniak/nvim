@@ -199,6 +199,10 @@ require("lazy").setup({
   "tpope/vim-dadbod",
   "kristijanhusak/vim-dadbod-ui",
 
+  "tpope/vim-fugitive",
+  "tpope/vim-commentary",
+  "tpope/vim-capslock",
+
   "wuelnerdotexe/vim-astro",
 
   "HerringtonDarkholme/yats.vim",
