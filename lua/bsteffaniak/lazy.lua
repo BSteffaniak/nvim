@@ -7,17 +7,7 @@ require("lazy").setup({
 
   "lewis6991/gitsigns.nvim",
 
-  -- "folke/tokyonight.nvim",
-  -- "morhetz/gruvbox",
-  -- "olimorris/onedarkpro.nvim",
-  -- "kyazdani42/blue-moon",
-  -- "ayu-theme/ayu-vim",
-  -- "sainnhe/sonokai",
   "srcery-colors/srcery-vim",
-  -- "fcpg/vim-fahrenheit",
-  -- "jdsimcoe/hyper.vim",
-  -- "yearofmoo/vim-darkmate",
-  -- "tomasiser/vim-code-dark",
 
   {
     "folke/trouble.nvim",
@@ -56,8 +46,6 @@ require("lazy").setup({
   -- See hrsh7th other plugins for more great completion sources!
   -- Snippet engine
   "hrsh7th/vim-vsnip",
-  -- Adds extra functionality over rust analyzer
-  -- "simrat39/rust-tools.nvim",
 
   {
     "mrcjkb/rustaceanvim",
@@ -66,12 +54,8 @@ require("lazy").setup({
   },
 
   -- Optional
-  -- "nvim-lua/popup.nvim",
-  -- "nvim-lua/plenary.nvim",
   "nvim-telescope/telescope.nvim",
   "wincent/ferret",
-
-  -- "rust-lang/rust.vim",
 
   {
     "ibhagwan/fzf-lua",
@@ -177,20 +161,12 @@ require("lazy").setup({
 
   "wesQ3/vim-windowswap",
 
-  -- "folke/zen-mode.nvim",
   {
     "BSteffaniak/maximize.nvim",
     init = function()
       require("maximize").setup()
     end,
   },
-
-  -- {
-  --   "rmagatti/goto-preview",
-  --   init = function()
-  --     require("goto-preview").setup({})
-  --   end,
-  -- },
 
   {
     "ray-x/lsp_signature.nvim",
