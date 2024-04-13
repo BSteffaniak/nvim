@@ -93,6 +93,25 @@ cmp.setup({
 })
 
 require("fzf-lua").setup({
+  previewers = {
+    builtin = {
+      title_fnamemodify = function(t, width)
+        local min_left_padding = 4
+        local min_right_padding = 4
+        local max_text_width = width - min_left_padding - min_right_padding
+        if #t > max_text_width then
+          return "..." .. t:sub(#t - max_text_width + 3 + 1, #t)
+        end
+        return t
+      end,
+    },
+  },
+  winopts = {
+    fullscreen = true,
+    preview = {
+      title_pos = "left",
+    },
+  },
   grep = {
     fzf_opts = {
       ["--delimiter"] = ":",
