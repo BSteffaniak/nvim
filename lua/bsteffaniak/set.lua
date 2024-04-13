@@ -98,6 +98,10 @@ require("fzf-lua").setup({
       ["--delimiter"] = ":",
       ["--nth"] = "4..",
     },
+    -- for case sensitive globs use '--glob'
+    glob_flag = "--iglob",
+    -- query separator pattern (lua): ' --'
+    glob_separator = "%s%-%-",
     -- these are defaults that will be used if you run
     -- functions like live_grep directly from require("fzf-lua")
     rg_opts = "--color=always --max-columns=4096 --glob='!.git/' "
