@@ -92,52 +92,12 @@ cmp.setup({
   },
 })
 
-local rg_opts_tbl = {
-  ["--color"] = "always",
-  ["--max-columns"] = "4096",
-  ["--glob"] = "'!.git/'",
-  ["--column"] = "",
-  ["--line-number"] = "",
-  ["--no-heading"] = "",
-  ["--no-ignore"] = "",
-  ["--smart-case"] = "",
-  ["--hidden"] = "",
-  ["--fixed-strings"] = "",
-  ["--ignore-file"] = util.join_paths(util.cwd, ".gitignore"),
-}
-
-local function rg_toggle_flag(flag)
-  return function(_, opts)
-    local o = { resume = true, cwd = opts.cwd }
-    if not flag:match("^%s") then
-      -- flag must be preceded by whitespace
-      flag = " " .. flag
-    end
-    -- grep|live_grep sets `opts._cmd` to the original
-    -- command without the search argument
-    local cmd = opts._cmd or opts.cmd
-    if cmd:match(require("fzf-lua.utils").lua_regex_escape(flag)) then
-      o.cmd = cmd:gsub(require("fzf-lua.utils").lua_regex_escape(flag), "")
-      print("first " .. o.cmd)
-    else
-      local bin, args = cmd:match("([^%s]+)(.*)$")
-      o.cmd = string.format("%s%s%s", bin, flag, args)
-      print("second " .. o.cmd)
-    end
-    opts.__call_fn(o)
-  end
-end
-
 require("fzf-lua").setup({
   grep = {
     fzf_opts = {
       ["--delimiter"] = ":",
       ["--nth"] = "4..",
     },
-    -- rg_opts will be constructed from this table
-    -- if you run one of the wrapper functions above
-    -- (e.g. live_grep_native)
-    rg_opts_tbl = rg_opts_tbl,
     -- these are defaults that will be used if you run
     -- functions like live_grep directly from require("fzf-lua")
     rg_opts = "--color=always --max-columns=4096 --glob='!.git/' "
@@ -145,10 +105,6 @@ require("fzf-lua").setup({
         .. "--smart-case --hidden --fixed-strings "
         .. "--ignore-file "
         .. util.join_paths(util.cwd, ".gitignore"),
-    actions = {
-      -- ["ctrl-h"] = { rg_toggle_flag("--hidden") },
-      ["ctrl-r"] = { rg_toggle_flag("--fixed-strings") },
-    },
     exec_empty_query = true,
   },
 }, true)
