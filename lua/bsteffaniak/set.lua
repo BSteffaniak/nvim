@@ -11,7 +11,7 @@ vim.wo.signcolumn = "yes"
 vim.bo.fileformat = "unix"
 
 vim.opt.wrap = false
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false
 vim.opt.spelllang = "en_us"
 vim.opt.spell = true
 
