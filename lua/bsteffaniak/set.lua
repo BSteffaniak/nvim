@@ -211,9 +211,12 @@ local servers = {
       ),
     },
   },
+  taplo = {
+    on_attach = lsp_on_attach,
+  },
 }
 
-require("config.lsp.null-ls").setup(lsp_on_attach)
+require("config.lsp.none-ls").setup(lsp_on_attach)
 require("config.lsp.installer").setup(servers)
 
 require("nvim-tree").setup({

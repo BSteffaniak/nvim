@@ -18,26 +18,38 @@ local with_root_file = function(builtin, file)
   })
 end
 
+require("mason-null-ls").setup({
+  -- Each of one of these needs to be added in the configuration for none-ls.nvim
+  ensure_installed = {
+    -- Diagnostics
+    "hadolint",
+    "markdownlint", -- This is both, formatter and diagnostics
+
+    -- Formatters
+    "black",
+    "isort",
+    "prettier",
+    "stylua",
+
+    -- Deprecated LSPs in none-ls plugin
+    "beautysh",
+    "eslint_d",
+    "jq",
+  },
+})
+
 local sources = {
   -- formatting
   b.formatting.prettierd,
   b.formatting.stylua,
   b.formatting.shfmt.with({ extra_args = { "-i", "4" } }),
-  b.formatting.fixjson,
   b.formatting.black.with({ extra_args = { "--fast" } }),
   b.formatting.isort,
-  b.formatting.taplo,
-  -- b.formatting.dprint.with({ filetypes = { "toml" } }),
 
   -- diagnostics
   b.diagnostics.tidy,
   b.diagnostics.write_good,
-  -- b.diagnostics.markdownlint,
-  b.diagnostics.eslint_d,
-  -- b.diagnostics.flake8,
-  b.diagnostics.tsc,
   with_root_file(b.diagnostics.selene, "selene.toml"),
-  with_diagnostics_code(b.diagnostics.shellcheck),
 
   -- code actions
   b.code_actions.gitsigns,
@@ -45,6 +57,12 @@ local sources = {
 
   -- hover
   b.hover.dictionary,
+
+  require("none-ls.diagnostics.eslint_d"),
+  require("none-ls.formatting.eslint_d"),
+  require("none-ls.code_actions.eslint_d"),
+  with_diagnostics_code(require("none-ls-shellcheck.diagnostics")),
+  require("none-ls-shellcheck.code_actions"),
 }
 
 function M.setup(on_attach)

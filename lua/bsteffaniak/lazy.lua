@@ -28,7 +28,15 @@ require("lazy").setup({
     end,
     tag = "legacy",
   },
-  "jose-elias-alvarez/null-ls.nvim",
+  {
+    "nvimtools/none-ls.nvim",
+    dependencies = {
+      "nvimtools/none-ls-extras.nvim",
+      "gbprod/none-ls-shellcheck.nvim",
+    },
+  },
+
+  "jay-babu/mason-null-ls.nvim",
 
   -- Autocompletion framework
   "hrsh7th/nvim-cmp",
