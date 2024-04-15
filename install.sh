@@ -422,6 +422,7 @@ init "$@"
 [[ $update || -z $(command_exists "pyright") ]] && install_package --pipx pyright --pip pyright
 # [[ $update || -z $(command_exists "dprint") ]] && install_package --npm dprint --scoop dprint
 [[ $update || -z $(command_exists "taplo") ]] && install_package --npm @taplo/cli
+[[ $update || -z $(command_exists "cronstrue") ]] && install_package --npm cronstrue
 
 if (update_jdtls); then
     build_jdtls

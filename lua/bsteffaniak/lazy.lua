@@ -192,4 +192,21 @@ require("lazy").setup({
   "HerringtonDarkholme/yats.vim",
 
   "ionide/Ionide-vim",
+
+  {
+    "fabridamicelli/cronex.nvim",
+    opts = {},
+    config = function()
+      -- Initialize module (important to create namespace)
+      require("cronex").setup({})
+      -- Grab the namespace that Cronex uses for the explanations
+      local ns = vim.api.nvim_get_namespaces()["cronex"]
+      -- Override the config only for that namespace
+      vim.diagnostic.config({
+        virtual_text = {
+          prefix = "󰥔",
+        },
+      }, ns)
+    end,
+  },
 })

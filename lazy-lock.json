@@ -4,6 +4,7 @@
   "cmp-nvim-lsp": { "branch": "main", "commit": "5af77f54de1b16c34b23cba810150689a3a90312" },
   "cmp-path": { "branch": "main", "commit": "91ff86cd9c29299a64f968ebb45846c485725f23" },
   "cmp-vsnip": { "branch": "main", "commit": "989a8a73c44e926199bfd05fa7a516d51f2d2752" },
+  "cronex.nvim": { "branch": "main", "commit": "5994356ef63f20495cf85fc4a1f48bb20f31662d" },
   "diagnosticls-configs-nvim": { "branch": "main", "commit": "0c261b7ce2d2f20904e4eadf66cbdc6e3f66dde6" },
   "elixir.nvim": { "branch": "main", "commit": "4d003f4b41ab9b4f8b569104fa7818f048ed4e25" },
   "ferret": { "branch": "main", "commit": "0190acf27440d9f5acd67582bdb1a2b55f31c51a" },
