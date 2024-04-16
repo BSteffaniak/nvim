@@ -125,7 +125,7 @@ require("fzf-lua").setup({
     -- functions like live_grep directly from require("fzf-lua")
     rg_opts = "--color=always --max-columns=4096 --glob='!.git/' "
         .. "--column --line-number --no-heading --no-ignore "
-        .. "--smart-case --hidden --fixed-strings "
+        .. "--smart-case --hidden "
         .. "--ignore-file "
         .. util.join_paths(util.cwd, ".gitignore"),
     exec_empty_query = true,
