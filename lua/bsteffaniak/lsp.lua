@@ -45,7 +45,7 @@ function M.lsp_on_attach(client, bufnr)
 
   vim.keymap.set({ "n", "i", "v" }, "<c-Space>", function()
     local current_buf = vim.api.nvim_get_current_buf()
-    local show_inlays = vim.g.show_inlays
+    show_inlays = vim.g.show_inlays
     show_inlays[current_buf] = not show_inlays[current_buf]
     vim.g.show_inlays = show_inlays
     local show = vim.g.show_inlays[current_buf]
