@@ -41,7 +41,7 @@ function M.lsp_on_attach(client, bufnr)
   local show_inlays = vim.g.show_inlays
   show_inlays[bufnr] = true
   vim.g.show_inlays = show_inlays
-  vim.lsp.inlay_hint.enable(bufnr, vim.g.show_inlays[bufnr])
+  vim.lsp.inlay_hint.enable(vim.g.show_inlays[bufnr], { bufnr = bufnr })
 
   vim.keymap.set({ "n", "i", "v" }, "<c-Space>", function()
     local current_buf = vim.api.nvim_get_current_buf()
@@ -49,7 +49,7 @@ function M.lsp_on_attach(client, bufnr)
     show_inlays[current_buf] = not show_inlays[current_buf]
     vim.g.show_inlays = show_inlays
     local show = vim.g.show_inlays[current_buf]
-    vim.lsp.inlay_hint.enable(current_buf, show)
+    vim.lsp.inlay_hint.enable(show, { bufnr = current_buf })
   end, opts)
 
   -- format on save
