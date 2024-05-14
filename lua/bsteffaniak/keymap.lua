@@ -84,3 +84,14 @@ vim.keymap.set({ "n", "v" }, "<Leader>j", function()
     vim.opt.scrolloff = 0
   end
 end, key_opts)
+
+vim.keymap.set({ "n", "v" }, "<Leader>k", function()
+  local so = vim.opt.scrolloff:get()
+
+  if so == 999 then
+    vim.opt.scrolloff = vim.g.lastscrolloff
+  else
+    vim.g.lastscrolloff = so
+    vim.opt.scrolloff = 999
+  end
+end, key_opts)
