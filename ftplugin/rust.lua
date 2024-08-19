@@ -45,6 +45,7 @@ vim.g.rustaceanvim = {
           extraEnv = {
             TUNNEL_ACCESS_TOKEN = "123",
             STATIC_TOKEN = "123",
+            ENABLE_ASSERT = "1",
           },
         },
       },
