@@ -38,12 +38,6 @@ vim.g.rustaceanvim = {
         checkOnSave = {
           command = "clippy",
         },
-        check = {
-          extraEnv = {
-            TUNNEL_ACCESS_TOKEN = "123",
-            STATIC_TOKEN = "123",
-          },
-        },
         cargo = {
           extraEnv = {
             TUNNEL_ACCESS_TOKEN = "123",
