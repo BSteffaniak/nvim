@@ -38,6 +38,9 @@ vim.g.rustaceanvim = {
         checkOnSave = {
           command = "clippy",
         },
+        rustfmt = {
+          rangeFormatting = { enable = true },
+        },
         cargo = {
           extraEnv = {
             TUNNEL_ACCESS_TOKEN = "123",
