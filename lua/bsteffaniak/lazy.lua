@@ -83,7 +83,7 @@ require("lazy").setup({
 
   "airblade/vim-gitgutter",
 
-  { "mhanberg/elixir.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+  { "mhanberg/elixir.nvim",  dependencies = { "nvim-lua/plenary.nvim" } },
   "elixir-editors/vim-elixir",
 
   {
@@ -215,4 +215,6 @@ require("lazy").setup({
     opts = {},
     dependencies = { { "echasnovski/mini.icons", opts = {} } },
   },
+
+  { "nvim-pack/nvim-spectre" },
 })

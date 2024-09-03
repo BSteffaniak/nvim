@@ -252,6 +252,12 @@ build_neovim() {
     $SUDO make install || exit 1
 }
 
+build_spectre() {
+    echo "Installing spectre"
+    cd ~/.local/share/nvim/lazy/nvim-spectre || exit 1
+    ./build.sh || exit 1
+}
+
 update_jdtls() {
     clone_repo https://github.com/eclipse/eclipse.jdt.ls.git ~/.local/eclipse.jdt.ls
 }
@@ -310,6 +316,9 @@ init() {
             nvim | neovim)
                 update_neovim && build_neovim
                 ;;
+            spectre)
+                build_spectre
+                ;;
             jdtls)
                 update_jdtls && build_jdtls
                 ;;
@@ -358,6 +367,9 @@ init() {
                 ;;
             nvim | neovim)
                 build_neovim
+                ;;
+            spectre)
+                build_spectre
                 ;;
             jdtls)
                 build_jdtls
@@ -440,6 +452,10 @@ fi
 
 if (update_neovim); then
     build_neovim
+fi
+
+if (update_spectre); then
+    build_spectre
 fi
 
 if (update_java_debug); then

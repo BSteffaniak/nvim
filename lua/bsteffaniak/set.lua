@@ -255,3 +255,11 @@ require("oil").setup({
     show_hidden = true,
   },
 })
+
+require("spectre").setup({
+  default = {
+    replace = {
+      cmd = "oxi",
+    },
+  },
+})
