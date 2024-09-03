@@ -68,7 +68,9 @@ function M.init_formatting(client, bufnr)
   end
 
   if client.supports_method("textDocument/rangeFormatting") then
-    vim.keymap.set("x", "<Leader>a", Format, { buffer = bufnr, desc = "[lsp] range format" })
+    vim.keymap.set({ "x", "v" }, "<Leader>a", Format, { buffer = bufnr, desc = "[lsp] range format" })
+  else
+    -- print("odusnt support range formatting")
   end
 end
 

@@ -1,6 +1,4 @@
 local util = require("bsteffaniak.util")
-local nvim_tree_view = require("nvim-tree.view")
-local nvim_tree_api = require("nvim-tree.api")
 
 local function get_session_directory()
   local sessions_home_directory = vim.g.sessions_home_directory
@@ -76,21 +74,11 @@ end
 
 function Handle_save_session()
   local focused_buf = vim.fn.bufnr("%")
-  local toggle_tree = nvim_tree_view.is_visible()
-
-  if toggle_tree then
-    nvim_tree_api.tree.close()
-  end
 
   vim.cmd("mksession! " .. get_session_file())
   write_props({
-    toggle_tree = toggle_tree,
     focused_buf = focused_buf,
   })
-
-  if toggle_tree then
-    nvim_tree_api.tree.open()
-  end
 
   focus_buffer(focused_buf)
 end
@@ -110,10 +98,6 @@ function Handle_load_session()
 
   if props == nil then
     return
-  end
-
-  if props.toggle_tree then
-    nvim_tree_api.tree.open()
   end
 
   if props.focused_buf then

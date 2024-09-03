@@ -219,24 +219,6 @@ local servers = {
 require("config.lsp.none-ls").setup(lsp_on_attach)
 require("config.lsp.installer").setup(servers)
 
-require("nvim-tree").setup({
-  sort_by = "case_sensitive",
-  on_attach = function(bufnr)
-    local api = require("nvim-tree.api")
-    api.config.mappings.default_on_attach(bufnr)
-    vim.keymap.del("n", "s", { buffer = bufnr })
-  end,
-  renderer = {
-    group_empty = true,
-  },
-  filters = {
-    dotfiles = false,
-  },
-  git = {
-    ignore = false,
-  },
-})
-
 if vim.fn.has("wsl") == 1 then
   vim.api.nvim_create_autocmd("TextYankPost", {
     group = vim.api.nvim_create_augroup("Yank", { clear = true }),

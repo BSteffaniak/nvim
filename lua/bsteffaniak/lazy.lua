@@ -74,12 +74,12 @@ require("lazy").setup({
     end,
   },
 
-  {
-    "nvim-tree/nvim-tree.lua",
-    dependencies = {
-      "nvim-tree/nvim-web-devicons", -- optional, for file icons
-    },
-  },
+  -- {
+  --   "nvim-tree/nvim-tree.lua",
+  --   dependencies = {
+  --     "nvim-tree/nvim-web-devicons", -- optional, for file icons
+  --   },
+  -- },
 
   "airblade/vim-gitgutter",
 
@@ -208,5 +208,11 @@ require("lazy").setup({
         },
       }, ns)
     end,
+  },
+
+  {
+    "stevearc/oil.nvim",
+    opts = {},
+    dependencies = { { "echasnovski/mini.icons", opts = {} } },
   },
 })
