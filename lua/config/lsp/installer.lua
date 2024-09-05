@@ -16,8 +16,9 @@ function M.setup(servers)
   })
 
   for server_name, _ in pairs(servers) do
-    if lspconfig[server_name] ~= nil then
-      lspconfig[server_name].setup(servers[server_name])
+    local server = lspconfig[server_name]
+    if server ~= nil then
+      server.setup(servers[server_name])
     end
   end
 end
