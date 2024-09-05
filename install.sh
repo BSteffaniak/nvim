@@ -454,10 +454,6 @@ if (update_neovim); then
     build_neovim
 fi
 
-if (update_spectre); then
-    build_spectre
-fi
-
 if (update_java_debug); then
     build_java_debug
 fi
