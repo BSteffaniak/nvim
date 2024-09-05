@@ -16,7 +16,11 @@ function M.setup(servers)
   })
 
   for server_name, _ in pairs(servers) do
-    local server = lspconfig[server_name]
+    local lsp_server_name = server_name
+    if server_name == "tsserver" then
+      lsp_server_name = "ts_ls"
+    end
+    local server = lspconfig[lsp_server_name]
     if server ~= nil then
       server.setup(servers[server_name])
     end
