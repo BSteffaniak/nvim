@@ -8,7 +8,7 @@ vim.opt.background = "dark"
 -- vim.cmd("colorscheme blue-moon")
 -- vim.cmd("colorscheme ayu-vim")
 -- vim.cmd("colorscheme sonokai")
-vim.g.srcery_black='#0C0B09'
+vim.g.srcery_black = "#0C0B0900"
 vim.cmd("colorscheme srcery")
 -- vim.cmd("colorscheme fahrenheit")
 -- vim.cmd("colorscheme hyper")
