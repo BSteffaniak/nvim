@@ -184,7 +184,7 @@ local servers = {
       },
     },
   },
-  tsserver = {
+  ts_ls = {
     cmd = { "typescript-language-server", "--stdio" },
   },
   kotlin_language_server = {
