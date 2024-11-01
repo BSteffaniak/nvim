@@ -79,7 +79,7 @@ install_package_internal() {
     case $key in
     npm)
         if [[ -n $(command_exists "npm") ]]; then
-            echo "npm i - \"$value\""
+            echo "npm i --location=global \"$value\""
             npm i --location=global "$value"
             return
         fi
