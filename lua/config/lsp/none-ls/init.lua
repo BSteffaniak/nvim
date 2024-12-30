@@ -40,6 +40,7 @@ require("mason-null-ls").setup({
 
 local sources = {
   -- formatting
+  b.formatting.nixfmt,
   b.formatting.prettierd,
   b.formatting.stylua,
   b.formatting.shfmt.with({ extra_args = { "-i", "4" } }),

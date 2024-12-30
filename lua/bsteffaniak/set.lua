@@ -214,6 +214,7 @@ local servers = {
   taplo = {
     on_attach = lsp_on_attach,
   },
+  nil_ls = {},
 }
 
 require("config.lsp.none-ls").setup(lsp_on_attach)
