@@ -196,7 +196,9 @@ local servers = {
   },
   svelte = {},
   bashls = {},
-  clangd = {},
+  clangd = {
+    filetypes = { "c", "cpp", "objc", "objcpp", "cuda" }, -- exclude "proto"
+  },
   elixirls = {
     cmd = {
       util.join_paths(
@@ -215,6 +217,7 @@ local servers = {
     on_attach = lsp_on_attach,
   },
   nil_ls = {},
+  buf_ls = {},
 }
 
 require("config.lsp.none-ls").setup(lsp_on_attach)
