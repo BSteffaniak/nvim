@@ -45,12 +45,12 @@ vim.keymap.set({ "n", "v" }, "<Leader>.[", ":GitGutterPrevHunk<Enter>", key_opts
 vim.keymap.set({ "n", "v" }, "<Leader>.h", ":0Gclog<Enter>", key_opts)
 vim.keymap.set("n", "H", "<c-o>", key_opts)
 vim.keymap.set("n", "S", "<c-i>", key_opts)
-vim.keymap.set("v", "<Enter>", '"*y', key_opts)
+vim.keymap.set("v", "<Enter>", '"+y', key_opts)
 vim.keymap.set({ "n", "v" }, "g#", function()
   vim.cmd(vim.api.nvim_replace_termcodes("normal gm`", true, true, true))
   vim.cmd("keepjumps normal! #``")
 end)
-vim.keymap.set("n", "YY", '"*yy', key_opts)
+vim.keymap.set("n", "YY", '"+yy', key_opts)
 
 vim.keymap.set({ "n", "v" }, "t", function()
   return vim.v.count > 0 and "j" or "gj"

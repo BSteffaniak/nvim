@@ -6,6 +6,7 @@ vim.opt.expandtab = true
 vim.opt.termguicolors = true
 vim.opt.fixendofline = false
 vim.opt.scrolloff = 6
+vim.opt.clipboard = "unnamedplus"
 
 vim.wo.signcolumn = "yes"
 vim.bo.fileformat = "unix"
