@@ -1,4 +1,5 @@
 vim.g.rustfmt_autosave = 1
+vim.g.rustfmt_options = '--edition 2024'
 
 local lsp = require("bsteffaniak.lsp")
 
