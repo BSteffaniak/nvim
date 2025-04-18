@@ -215,8 +215,6 @@ require("lazy").setup({
     dependencies = { { "echasnovski/mini.icons", opts = {} } },
   },
 
-  { "nvim-pack/nvim-spectre" },
-
   {
     "folke/which-key.nvim",
     event = "VeryLazy",

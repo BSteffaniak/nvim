@@ -261,10 +261,10 @@ require("oil").setup({
   },
 })
 
-require("spectre").setup({
-  default = {
-    replace = {
-      cmd = "oxi",
-    },
-  },
-})
+-- require("spectre").setup({
+--   default = {
+--     replace = {
+--       cmd = "oxi",
+--     },
+--   },
+-- })
