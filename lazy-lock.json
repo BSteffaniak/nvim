@@ -6,6 +6,7 @@
   "cmp-vsnip": { "branch": "main", "commit": "989a8a73c44e926199bfd05fa7a516d51f2d2752" },
   "cronex.nvim": { "branch": "main", "commit": "c137fa9bd2d2c80e5afe0f1a290558a79c6e5226" },
   "diagnosticls-configs-nvim": { "branch": "main", "commit": "0c261b7ce2d2f20904e4eadf66cbdc6e3f66dde6" },
+  "dressing.nvim": { "branch": "master", "commit": "2d7c2db2507fa3c4956142ee607431ddb2828639" },
   "elixir.nvim": { "branch": "main", "commit": "6beae8194152e2d8b4a59de19a3e60c1f7ffcff5" },
   "ferret": { "branch": "main", "commit": "80a1c6f2f6e18952fa6eb85000446650216987fd" },
   "fidget.nvim": { "branch": "main", "commit": "0ba1e16d07627532b6cae915cc992ecac249fb97" },
