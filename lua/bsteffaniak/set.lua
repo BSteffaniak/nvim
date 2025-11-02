@@ -219,7 +219,6 @@ local servers = {
   },
   nil_ls = {},
   buf_ls = {},
-  yamlls = {},
 }
 
 require("config.lsp.none-ls").setup(lsp_on_attach)
