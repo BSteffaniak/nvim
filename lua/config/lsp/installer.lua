@@ -1,5 +1,4 @@
 local mason_lspconfig = require("mason-lspconfig")
-local lspconfig = require("lspconfig")
 
 local M = {}
 
@@ -15,15 +14,14 @@ function M.setup(servers)
     automatic_installation = true,
   })
 
-  for server_name, _ in pairs(servers) do
+  for server_name, config in pairs(servers) do
     local lsp_server_name = server_name
     if server_name == "tsserver" then
       lsp_server_name = "ts_ls"
     end
-    local server = lspconfig[lsp_server_name]
-    if server ~= nil then
-      server.setup(servers[server_name])
-    end
+
+    vim.lsp.config[lsp_server_name] = vim.tbl_deep_extend("force", vim.lsp.config[lsp_server_name] or {}, config)
+    vim.lsp.enable(lsp_server_name)
   end
 end
 
