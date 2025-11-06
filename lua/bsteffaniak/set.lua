@@ -39,13 +39,22 @@ vim.filetype.add({
   },
 })
 
-require("mason").setup({
-  ui = {
-    icons = {
-      package_installed = "✓",
+-- Helper function to detect if Nix is available on the system
+local function is_nix_system()
+  return vim.fn.executable("nix") == 1
+end
+
+-- Only setup Mason if not on a Nix system
+-- On Nix systems, LSP servers are managed by Nix instead
+if not is_nix_system() then
+  require("mason").setup({
+    ui = {
+      icons = {
+        package_installed = "✓",
+      },
     },
-  },
-})
+  })
+end
 
 -- Set completeopt to have a better completion experience
 -- :help completeopt
@@ -167,6 +176,25 @@ require("illuminate").configure({})
 local lsp = require("bsteffaniak.lsp")
 local lsp_on_attach = lsp.lsp_on_attach
 
+local elixirls = {}
+
+if not is_nix_system() then
+  elixirls = {
+    cmd = {
+      util.join_paths(
+        util.home_dir,
+        ".local",
+        "share",
+        "nvim",
+        "lsp_servers",
+        "elixir",
+        "elixir-ls",
+        "language_server" .. util.executable_ext
+      ),
+    },
+  }
+end
+
 local servers = {
   astro = {},
   gopls = {},
@@ -200,21 +228,8 @@ local servers = {
   clangd = {
     filetypes = { "c", "cpp", "objc", "objcpp", "cuda" }, -- exclude "proto"
   },
-  elixirls = {
-    cmd = {
-      util.join_paths(
-        util.home_dir,
-        ".local",
-        "share",
-        "nvim",
-        "lsp_servers",
-        "elixir",
-        "elixir-ls",
-        "language_server" .. util.executable_ext
-      ),
-    },
-  },
   csharp_ls = {},
+  elixirls = elixirls,
   taplo = {
     on_attach = lsp_on_attach,
   },
