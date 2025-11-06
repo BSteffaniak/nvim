@@ -310,3 +310,7 @@ end, {
   nargs = "?", -- Optional argument
   desc = "Load git changes into args, optionally filtered by glob pattern",
 })
+
+function SaveQuery()
+  vim.cmd([[execute "normal! \<Plug>(DBUI_SaveQuery)"]])
+end
