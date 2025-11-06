@@ -219,6 +219,7 @@ local servers = {
   },
   nil_ls = {},
   buf_ls = {},
+  terraformls = {},
 }
 
 require("config.lsp.none-ls").setup(lsp_on_attach)
