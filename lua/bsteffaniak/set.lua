@@ -314,3 +314,34 @@ end, {
 function SaveQuery()
   vim.cmd([[execute "normal! \<Plug>(DBUI_SaveQuery)"]])
 end
+
+vim.diagnostic.config({
+  float = {
+    source = "always",
+    format = function(diagnostic)
+      -- Custom formatting logic
+      local message = diagnostic.message
+
+      -- Example transformations:
+      -- Replace specific separators
+      message = message:gsub("%c", "\n")
+      message = message:gsub("\x1d", "\n")
+
+      -- Optional: Add prefix based on diagnostic severity
+      local prefix = ({
+        [vim.diagnostic.severity.ERROR] = "❌ ",
+        [vim.diagnostic.severity.WARN] = "⚠️ ",
+        [vim.diagnostic.severity.INFO] = "ℹ️ ",
+        [vim.diagnostic.severity.HINT] = "💡 ",
+      })[diagnostic.severity] or ""
+
+      return prefix .. message
+    end,
+
+    -- Additional float window configuration
+    border = "rounded",
+    max_width = 80,
+    header = "",
+  },
+})
+
