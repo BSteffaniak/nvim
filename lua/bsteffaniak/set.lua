@@ -214,6 +214,7 @@ local servers = {
       ),
     },
   },
+  csharp_ls = {},
   taplo = {
     on_attach = lsp_on_attach,
   },
