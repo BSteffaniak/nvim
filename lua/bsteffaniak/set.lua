@@ -271,20 +271,20 @@ require("oil").setup({
 --   },
 -- })
 
-vim.api.nvim_create_user_command('ArgsGitChanges', function(opts)
+vim.api.nvim_create_user_command("ArgsGitChanges", function(opts)
   local files = vim.fn.system('git status --porcelain | awk \'$1 != "D" && $1 != "DD" { print $2 }\'')
   -- Remove trailing newline and split
   files = vim.trim(files)
 
-  if files == '' then
+  if files == "" then
     print("No git changes found")
     return
   end
 
-  local file_list = vim.split(files, '\n')
+  local file_list = vim.split(files, "\n")
 
   -- If a pattern was provided, filter the files
-  if opts.args ~= '' then
+  if opts.args ~= "" then
     local pattern = opts.args
     local filtered = {}
 
@@ -304,9 +304,9 @@ vim.api.nvim_create_user_command('ArgsGitChanges', function(opts)
   end
 
   -- Use vim.fn.execute to avoid shell expansion issues
-  vim.fn.execute('args ' .. vim.fn.fnameescape(table.concat(file_list, ' ')))
+  vim.fn.execute("args " .. vim.fn.fnameescape(table.concat(file_list, " ")))
   print("Loaded " .. #file_list .. " file(s)")
 end, {
-  nargs = '?',  -- Optional argument
-  desc = 'Load git changes into args, optionally filtered by glob pattern'
+  nargs = "?", -- Optional argument
+  desc = "Load git changes into args, optionally filtered by glob pattern",
 })
